@@ -30,7 +30,7 @@ const MenuMobile = ({ handleCloseMenu }: Props) => {
 
         <ul className="flex flex-col w-11/12 sm:w-10/12 md:w-6/12 mx-auto">
           {sideBarItem.map((item) => (
-            <li>
+            <li key={item.path}>
               <Link
                 to={item.path}
                 className="w-full flex p-2 items-center border border-secondary my-2 hover:bg-[rgb(0,0,0,0.1)]"

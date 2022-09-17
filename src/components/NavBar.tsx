@@ -13,8 +13,6 @@ const NavBar = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
-  console.log('navbar render');
-
   return (
     <header className="fixed z-50 left-0 top-0 w-screen bg-[whitesmoke] shadow-lg">
       <div className="px-2 md:px-6 lg:px-8 xl:px-5 max-w-[1636px] mx-auto">

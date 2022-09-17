@@ -3,6 +3,7 @@ import Latest from '../pages/Latest';
 import Private from '../pages/Private';
 import Ranking from '../pages/Ranking';
 import Search from '../pages/Search';
+import SongInfo from '../pages/SongInfo';
 import { RoutesProps } from '../types';
 
 const routes: RoutesProps[] = [
@@ -31,6 +32,11 @@ const routes: RoutesProps[] = [
     title: 'Bảng xếp hạng',
     path: '/bxh',
     component: Ranking,
+  },
+  {
+    title: 'Thông tin bài hát',
+    path: '/bai-hat',
+    component: SongInfo,
   },
 ];
 

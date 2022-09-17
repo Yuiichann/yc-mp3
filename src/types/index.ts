@@ -15,6 +15,22 @@ interface SideBarItem {
   title: string;
 }
 
+// Main Infomation of app include banner,playlist,...
+interface MainInfo {
+  banner: BannerApi[];
+
+  isLoading: boolean;
+}
+
+interface BannerApi {
+  banner: string;
+  cover: string;
+  description: string;
+  encodeId: string;
+  title: string;
+  type: number;
+}
+
 // Interface params API
 interface SearchParams {
   keyword: string;
@@ -40,4 +56,6 @@ export type {
   ArtistParams,
   RoutesProps,
   SideBarItem,
+  BannerApi,
+  MainInfo,
 };
