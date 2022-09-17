@@ -8,7 +8,7 @@ body {
 
 @layer base {
   body {
-    @apply font-inter text-black text-[16px] scrollbar-thin scrollbar-track-[whitesmoke] scrollbar-thumb-secondary;
+    @apply font-inter text-black text-16 scrollbar-thin scrollbar-track-[whitesmoke] scrollbar-thumb-secondary;
   }
 
   .app {
@@ -33,5 +33,16 @@ body {
 
   .button-outline {
     @apply flex justify-center text-primary items-center cursor-pointer rounded-sm border border-primary px-[7px] py-[3px] min-w-[105px] max-w-[120px];
+  }
+
+  .icon-btn {
+    @apply hover:bg-slate-200 rounded-full effect;
+  }
+
+  .sidebar-item {
+    @apply flex flex-row gap-4 items-center p-3 cursor-pointer hover:bg-[rgb(0,0,0,0.1)] effect relative border border-[transparent];
+  }
+  .sidebar-item--active {
+    @apply before:absolute before:top-0 before:left-0 before:h-full before:w-[3px] border before:border-t before:border-b before:border-primary before:bg-primary border-secondary ;
   }
 }

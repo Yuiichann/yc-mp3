@@ -13,13 +13,15 @@ const NavBar = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
+  console.log('navbar render');
+
   return (
-    <header className="fixed left-0 top-0 w-screen bg-[whitesmoke] shadow-lg">
-      <div className="container">
+    <header className="fixed z-50 left-0 top-0 w-screen bg-[whitesmoke] shadow-lg">
+      <div className="px-2 md:px-6 lg:px-8 xl:px-5 max-w-[1636px] mx-auto">
         <div className="flex flex-row justify-between items-center h-navbar">
           {/* Menu Icon Mobile */}
           <div
-            className="p-2 cursor-pointer text-[26px] text-secondary lg:hidden"
+            className="p-2 cursor-pointer text-[26px] text-secondary lg:hidden icon-btn"
             onClick={handleToggleMenu}
           >
             {isMenuOpen ? <IoCloseSharp /> : <BiMenuAltLeft />}
@@ -35,7 +37,10 @@ const NavBar = () => {
           </div>
 
           {/* Logo */}
-          <div className="font-bold tracking-widest p-1 hover:opacity-70 text-2xl ">
+          <div
+            className="font-bold tracking-widest p-1 hover:opacity-70 text-2xl"
+            onClick={() => setIsMenuOpen(false)}
+          >
             <Link to="/" className="text-secondary logo">
               YC MP3
             </Link>
@@ -58,7 +63,7 @@ const NavBar = () => {
           </div>
 
           {/* Search Icon Mobile */}
-          <div className="p-2 cursor-pointer lg:hidden" onClick={handleToggleMenu}>
+          <div className="p-2 cursor-pointer lg:hidden icon-btn" onClick={handleToggleMenu}>
             <BiSearchAlt className="text-[26px] text-secondary" />
           </div>
         </div>

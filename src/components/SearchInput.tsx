@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -14,8 +14,8 @@ const SearchInput = () => {
       return;
     }
 
+    navigate(`/tim-kiem?keyword=${encodeURI(searchInput)}`);
     setSearchInput('');
-    navigate(`/tim-kiem?keyword=${searchInput}`);
   };
 
   //   hanlde when click enter on input field

@@ -1,12 +1,36 @@
 import Home from '../pages/Home';
+import Latest from '../pages/Latest';
+import Private from '../pages/Private';
+import Ranking from '../pages/Ranking';
+import Search from '../pages/Search';
 import { RoutesProps } from '../types';
 
 const routes: RoutesProps[] = [
   {
-    title: 'Home Page',
-    exact: true,
+    title: 'Trang chủ(Khám phá)',
+    index: true,
     path: '/',
     component: Home,
+  },
+  {
+    title: 'Nhạc mới nhất(Latest)',
+    path: '/nhac-moi',
+    component: Latest,
+  },
+  {
+    title: 'Cá Nhân',
+    path: '/ca-nhan',
+    component: Private,
+  },
+  {
+    title: 'Tìm kiếm',
+    path: '/tim-kiem',
+    component: Search,
+  },
+  {
+    title: 'Bảng xếp hạng',
+    path: '/bxh',
+    component: Ranking,
   },
 ];
 

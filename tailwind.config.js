@@ -15,6 +15,19 @@ module.exports = {
         navbar: '56px',
         player: '90px',
       },
+      fontSize: {
+        12: '12px',
+        14: '14px',
+        16: '16px',
+        18: '18px',
+        24: '24px',
+        28: '28px',
+        32: '32px',
+        36: '36px',
+        40: '40px',
+        42: '42px',
+        48: '48px',
+      },
     },
     fontFamily: {
       inter: 'Inter, sans-serif',
@@ -22,7 +35,7 @@ module.exports = {
     container: {
       center: true,
       padding: {
-        DEFAULT: '1.5rem',
+        DEFAULT: '2rem',
       },
     },
     backgroundImage: {

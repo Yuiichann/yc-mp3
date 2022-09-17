@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import SearchInput from './SearchInput';
+import { sideBarItem } from './SideBar';
 
 interface Props {
   handleCloseMenu: VoidFunction;
@@ -26,6 +27,21 @@ const MenuMobile = ({ handleCloseMenu }: Props) => {
         </div>
 
         <div className="w-full h-[3px] bg-main rounded-sm opacity-70"></div>
+
+        <ul className="flex flex-col w-11/12 sm:w-10/12 md:w-6/12 mx-auto">
+          {sideBarItem.map((item) => (
+            <li>
+              <Link
+                to={item.path}
+                className="w-full flex p-2 items-center border border-secondary my-2 hover:bg-[rgb(0,0,0,0.1)]"
+                onClick={() => setTimeout(() => handleCloseMenu(), 100)}
+              >
+                <item.Icon width={20} height={20} className="w-1/5 md:w-2/5" />
+                <p className="flex-grow text-center">{item.title}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </nav>
   );

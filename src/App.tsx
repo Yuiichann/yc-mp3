@@ -9,7 +9,6 @@ import routes from './routes';
 import { RoutesProps } from './types';
 
 const App = () => {
-  
   return (
     <BrowserRouter>
       {/* Toastify */}
@@ -19,13 +18,13 @@ const App = () => {
       <NavBar />
 
       {/* main section */}
-      <div className="mt-navbar py-4 h-[1500px]">
-        <div className="container flex">
-          <div className="hidden lg:flex w-[240px] ">
+      <div className="mt-navbar py-4">
+        <div className="container flex gap-1">
+          <div className="hidden lg:block w-[200px]">
             <SideBar />
           </div>
 
-          <div className="flex-grow">
+          <div className="flex-grow h-screen">
             <Routes>
               {routes.map((route: RoutesProps) => (
                 <Route path={route.path} element={<route.component />} key={route.title} />

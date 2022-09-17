@@ -4,9 +4,15 @@ interface ApiConfig {
 
 interface RoutesProps {
   title: string;
-  exact?: boolean;
+  index?: boolean;
   path: string;
   component: () => JSX.Element;
+}
+
+interface SideBarItem {
+  Icon: any;
+  path: string;
+  title: string;
 }
 
 // Interface params API
@@ -26,4 +32,12 @@ interface ArtistParams {
   name: string;
 }
 
-export type { ApiConfig, SearchParams, IDParams, HomeParams, ArtistParams, RoutesProps };
+export type {
+  ApiConfig,
+  SearchParams,
+  IDParams,
+  HomeParams,
+  ArtistParams,
+  RoutesProps,
+  SideBarItem,
+};
