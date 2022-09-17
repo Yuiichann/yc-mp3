@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+import Footer from './components/Footer';
+import MusicPlayer from './components/MusicPlayer';
+import NavBar from './components/NavBar';
+import SideBar from './components/SideBar';
+import routes from './routes';
+import { RoutesProps } from './types';
 
-function App() {
+const App = () => {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      {/* Toastify */}
+      <ToastContainer autoClose={1200} />
+
+      {/* Header */}
+      <NavBar />
+
+      {/* main section */}
+      <div className="mt-navbar py-4 h-[1500px]">
+        <div className="container flex">
+          <div className="hidden lg:flex w-[240px] ">
+            <SideBar />
+          </div>
+
+          <div className="flex-grow">
+            <Routes>
+              {routes.map((route: RoutesProps) => (
+                <Route path={route.path} element={<route.component />} key={route.title} />
+              ))}
+            </Routes>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Music Player */}
+      <MusicPlayer />
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

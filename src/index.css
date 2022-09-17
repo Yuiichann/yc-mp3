@@ -1,13 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer base {
+  body {
+    @apply font-inter text-black text-[16px] scrollbar-thin scrollbar-track-[whitesmoke] scrollbar-thumb-secondary;
+  }
+
+  .app {
+    @apply w-screen;
+  }
+
+  .logo {
+    @apply relative after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] rounded-sm after:bg-main;
+  }
+
+  .effect {
+    @apply transition-all ease-in duration-150;
+  }
+
+  .button {
+    @apply flex justify-center bg-main text-white rounded-sm items-center border-none outline-none cursor-pointer px-[8px] py-[4px] min-w-[105px] max-w-[120px] ;
+  }
+
+  .button-none {
+    @apply flex justify-center text-primary items-center cursor-pointer rounded-sm px-[8px] py-[4px] min-w-[105px] max-w-[120px] hover:bg-slate-200 effect;
+  }
+
+  .button-outline {
+    @apply flex justify-center text-primary items-center cursor-pointer rounded-sm border border-primary px-[7px] py-[3px] min-w-[105px] max-w-[120px];
+  }
 }
