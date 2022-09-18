@@ -15,13 +15,29 @@ interface SideBarItem {
   title: string;
 }
 
-// Main Infomation of app include banner,playlist,...
-interface MainInfo {
-  banner: BannerApi[];
+// curr song playing in app => use in redux
+interface SongPlaying {
+  currentPlaying?: string;
 
-  isLoading: boolean;
+  listWatting: string[]; // array include endcodeId waitting be play
+
+  error?: {
+    message: string;
+  };
 }
 
+// Main Infomation of app include banner,playlist,... ==> use in rudux
+interface MainInfo {
+  banner: BannerApi[];
+  newRelease: NewReleaseApi;
+
+  isLoading: boolean;
+  error?: {
+    message: string;
+  };
+}
+
+// Banner Api of main info
 interface BannerApi {
   banner: string;
   cover: string;
@@ -29,6 +45,39 @@ interface BannerApi {
   encodeId: string;
   title: string;
   type: number;
+}
+
+// New Release Api of main info
+interface NewReleaseApi {
+  title: string;
+  song: SongApi[];
+  album: AlbumApi[];
+}
+
+// Song api
+interface SongApi {
+  thumbnail: string;
+  thumbnailM: string;
+  title: string;
+  relaseDate: number;
+  duration: number;
+  alias: string;
+  artistsNames: string;
+  artists: [];
+  encodeId: string;
+  hasLyric: boolean;
+}
+
+// Album API
+interface AlbumApi {
+  encodeId: string;
+  artistNames: string;
+  artists: [];
+  releaseDate: string;
+  textType: string;
+  thumbnail: string;
+  thumbnailM: string;
+  title: string;
 }
 
 // Interface params API
@@ -58,4 +107,8 @@ export type {
   SideBarItem,
   BannerApi,
   MainInfo,
+  SongApi,
+  AlbumApi,
+  NewReleaseApi,
+  SongPlaying,
 };

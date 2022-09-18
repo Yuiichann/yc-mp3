@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'swiper/css';
 import ycMp3 from './api/ycmp3Api';
 import Footer from './components/Footer';
 import MusicPlayer from './components/MusicPlayer';
@@ -12,7 +11,7 @@ import SideBar from './components/SideBar';
 import { AppDispatch } from './config/store';
 import { setDataOfMainInfo } from './reducer/mainInfoSlice';
 import routes from './routes';
-import { BannerApi, RoutesProps } from './types';
+import { BannerApi, NewReleaseApi, RoutesProps } from './types';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,12 +23,20 @@ const App = () => {
 
       if (res.msg === 'Success') {
         const items: any = res.data.items;
+        // console.log(items);
         const banner = items.find((item: any) => item.sectionType === 'banner'); // banner api
+        const newRelease = items.find((item: any) => item.sectionType === 'new-release');
 
-        // dispatch actions
         dispatch(
           setDataOfMainInfo({
+            // set data banner
             banner: banner.items as BannerApi[],
+            // set data newRelease
+            newRelease: {
+              title: newRelease.title || '',
+              ...newRelease.items[0],
+            } as NewReleaseApi,
+
             isLoading: false,
           })
         );
@@ -49,7 +56,7 @@ const App = () => {
 
       {/* main section */}
       <div className="mt-navbar py-4">
-        <div className="container flex gap-1">
+        <div className="container flex gap-2">
           {/* side bar on left screen */}
           <div className="hidden lg:block min-w-[200px] max-w-[200px]">
             <SideBar />

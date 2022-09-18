@@ -1,13 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { BannerApi, MainInfo } from '../types';
+import { MainInfo } from '../types';
 
 const initialState: MainInfo = {
   banner: [],
+  newRelease: {
+    title: '',
+    song: [],
+    album: [],
+  },
   isLoading: true,
 };
 
-export const mainInfoSlice = createSlice({
+const mainInfoSlice = createSlice({
   name: 'mainInfo',
   initialState,
   reducers: {
