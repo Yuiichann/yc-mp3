@@ -1,13 +1,31 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import NewReleaseTab from '../components/NewReleaseTab';
 import Slide from '../components/Slide';
 import { RootState } from '../config/store';
+import { useState } from 'react';
+
+const newReleaseType = [
+  {
+    type: 'song',
+    title: 'Bài hát',
+  },
+  {
+    type: 'album',
+    title: 'Album',
+  },
+];
 
 // Home and Discover
 const Home = () => {
+  const [typeNewRelease, setTypeNewRelease] = useState<'song' | 'album'>('song');
   const { banner, newRelease, isLoading, error } = useSelector(
     (state: RootState) => state.mainInfo
   );
+
+  // change type of tab new release
+  const handleChangeTypeNewRealse = (type: typeof typeNewRelease) => {
+    setTypeNewRelease(type);
+  };
 
   return (
     <div className="px-1 lg:px-2">
@@ -17,20 +35,37 @@ const Home = () => {
         </>
       ) : (
         <>
-          <div className="flex flex-col pt-1 space-y-10">
+          <div className="pt-1">
+            {/* Slider */}
             <div>
               <Slide data={banner} />
             </div>
 
-            <div>
-              <div className="text-3xl font-bold py-2 tracking-wider">
-                <h1>{newRelease.title}</h1>
+            {/* New Release */}
+            <div className="mt-8">
+              {/* title */}
+              <h1 className="text-2xl font-semibold tracking-widest text-underline">
+                {newRelease.title}
+              </h1>
+              {/* Button change Type */}
+              <div className="w-full flex mt-6 justify-center md:gap-6 lg:justify-start lg:gap-0 lg:space-x-8">
+                {newReleaseType.map((item) => (
+                  <button
+                    className={`flex-1 mx-1 lg:mx-0 ${
+                      item.type === typeNewRelease ? 'button' : 'button-outline'
+                    }`}
+                    key={item.type}
+                    onClick={() => handleChangeTypeNewRealse(item.type as typeof typeNewRelease)}
+                  >
+                    {item.title}
+                  </button>
+                ))}
+                {/* New Release List */}
               </div>
-              {newRelease.song.map((item) => (
-                <div key={item.alias}>
-                  <Link to={`/bai-hat?id=${item.encodeId}`}>{item.title}</Link>
-                </div>
-              ))}
+              <NewReleaseTab
+                type={typeNewRelease}
+                data={typeNewRelease === 'song' ? newRelease.song : newRelease.album}
+              />
             </div>
           </div>
         </>

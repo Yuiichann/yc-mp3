@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as Svg1 } from '../assets/icons/svg1.svg'; // kham pha
 import { ReactComponent as Svg3 } from '../assets/icons/svg3.svg'; // ca nhan
@@ -31,6 +31,7 @@ export const sideBarItem: SideBarItem[] = [
 ];
 
 const SideBar = () => {
+  // tac nhan gay re-render
   const navigate = useNavigate();
   const location = useLocation(); //get location now
 
@@ -57,4 +58,4 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+export default memo(SideBar);

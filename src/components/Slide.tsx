@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { A11y, Navigation, Scrollbar } from 'swiper';
 import 'swiper/css';
@@ -26,4 +27,4 @@ const Slide = ({ data }: Props) => {
   );
 };
 
-export default Slide;
+export default memo(Slide);

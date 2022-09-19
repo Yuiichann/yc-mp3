@@ -7,7 +7,7 @@ const getUrlByType = (type: number) => {
     }
 
     case 4: {
-      url = 'playlist';
+      url = 'album';
       break;
     }
 

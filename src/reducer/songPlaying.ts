@@ -23,12 +23,21 @@ const songPlayingSlice = createSlice({
         listWatting: [...state.listWatting, action.payload],
       };
     },
+    // add a playlist to play
+    addPlaylist: (state, action: PayloadAction<string[]>) => {
+      return {
+        ...state,
+        listWatting: action.payload,
+      };
+    },
+    // play a song
     setOneSongPlaying: (state, action: PayloadAction<string>) => {
       return {
         ...state,
         currentPlaying: action.payload,
       };
     },
+    // set song in queue to play
     setSongPlayingInQueue: (state, action: PayloadAction<number>) => {
       const currentPlaying = state.listWatting[action.payload];
 

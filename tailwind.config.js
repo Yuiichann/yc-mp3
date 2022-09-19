@@ -15,6 +15,10 @@ module.exports = {
         navbar: '56px',
         player: '90px',
       },
+      padding: {
+        navbar: '56px',
+        player: '90px',
+      },
       fontSize: {
         12: '12px',
         14: '14px',

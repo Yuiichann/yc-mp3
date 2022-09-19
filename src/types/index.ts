@@ -59,13 +59,14 @@ interface SongApi {
   thumbnail: string;
   thumbnailM: string;
   title: string;
-  relaseDate: number;
+  releaseDate: number | string;
   duration: number;
   alias: string;
   artistsNames: string;
   artists: [];
   encodeId: string;
   hasLyric: boolean;
+  genres: [];
 }
 
 // Album API
@@ -73,7 +74,7 @@ interface AlbumApi {
   encodeId: string;
   artistNames: string;
   artists: [];
-  releaseDate: string;
+  releaseDate: string | number;
   textType: string;
   thumbnail: string;
   thumbnailM: string;

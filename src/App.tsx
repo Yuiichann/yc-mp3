@@ -7,6 +7,7 @@ import ycMp3 from './api/ycmp3Api';
 import Footer from './components/Footer';
 import MusicPlayer from './components/MusicPlayer';
 import NavBar from './components/NavBar';
+import ScrollTopButton from './components/ScrollTopButton';
 import SideBar from './components/SideBar';
 import { AppDispatch } from './config/store';
 import { setDataOfMainInfo } from './reducer/mainInfoSlice';
@@ -55,7 +56,7 @@ const App = () => {
       <NavBar />
 
       {/* main section */}
-      <div className="mt-navbar py-4">
+      <div className="mt-navbar py-8">
         <div className="container flex gap-2">
           {/* side bar on left screen */}
           <div className="hidden lg:block min-w-[200px] max-w-[200px]">
@@ -77,7 +78,10 @@ const App = () => {
       <Footer />
 
       {/* Music Player */}
-      <MusicPlayer />
+      {/* <MusicPlayer /> */}
+
+      {/* Button Scroll Top */}
+      <ScrollTopButton />
     </BrowserRouter>
   );
 };

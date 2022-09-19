@@ -1,3 +1,4 @@
+import AlbumInfo from '../pages/AlbumInfo';
 import Home from '../pages/Home';
 import Latest from '../pages/Latest';
 import Private from '../pages/Private';
@@ -37,6 +38,11 @@ const routes: RoutesProps[] = [
     title: 'Thông tin bài hát',
     path: '/bai-hat',
     component: SongInfo,
+  },
+  {
+    title: 'Thông tin Album',
+    path: '/album',
+    component: AlbumInfo,
   },
 ];
 
