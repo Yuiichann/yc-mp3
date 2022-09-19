@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';

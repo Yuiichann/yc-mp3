@@ -37,9 +37,7 @@ const Home = () => {
         <>
           <div className="pt-1">
             {/* Slider */}
-            <div>
-              <Slide data={banner} />
-            </div>
+            <Slide data={banner} />
 
             {/* New Release */}
             <div className="mt-8">
