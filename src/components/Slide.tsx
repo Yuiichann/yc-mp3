@@ -1,9 +1,10 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { A11y, Navigation, Scrollbar, EffectFade, Autoplay } from 'swiper';
+import { A11y, Autoplay, EffectFade, Navigation, Pagination, Scrollbar } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { BannerApi } from '../types';
@@ -41,10 +42,11 @@ const Slide = ({ data }: Props) => {
       {/* Slider on Mobile */}
       <div className="block lg:hidden">
         <Swiper
-          modules={[Scrollbar, A11y, EffectFade, Autoplay]}
+          modules={[Scrollbar, A11y, EffectFade, Autoplay, Pagination]}
           autoplay={{
             delay: 4000,
           }}
+          pagination={{ clickable: true }}
           effect="fade"
           spaceBetween={10}
           slidesPerView={1}
@@ -52,7 +54,7 @@ const Slide = ({ data }: Props) => {
           {data.map((item, index) => (
             <SwiperSlide key={index}>
               <Link to={`/${getUrlByType(item.type)}?id=${item.encodeId}`}>
-                <img src={item.banner} alt={item.title} className="rounded-xl mx-auto" />
+                <img src={item.banner} alt={item.title} className="rounded-xl w-full" />
               </Link>
             </SwiperSlide>
           ))}

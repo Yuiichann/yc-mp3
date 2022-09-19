@@ -23,10 +23,10 @@ const App = () => {
       const res: any = await ycMp3.getHome({ page: '1' });
 
       if (res.msg === 'Success') {
-        const items: any = res.data.items;
-        // console.log(items);
-        const banner = items.find((item: any) => item.sectionType === 'banner'); // banner api
-        const newRelease = items.find((item: any) => item.sectionType === 'new-release');
+        const resItems: any = res.data.items;
+        console.log(resItems);
+        const banner = resItems.find((item: any) => item.sectionType === 'banner'); // banner api
+        const newRelease = resItems.find((item: any) => item.sectionType === 'new-release');
 
         dispatch(
           setDataOfMainInfo({

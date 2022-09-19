@@ -3,6 +3,7 @@ import NewReleaseTab from '../components/NewReleaseTab';
 import Slide from '../components/Slide';
 import { RootState } from '../config/store';
 import { useState } from 'react';
+import Loading from '../components/Loading';
 
 const newReleaseType = [
   {
@@ -31,7 +32,7 @@ const Home = () => {
     <div className="px-1 lg:px-2">
       {isLoading ? (
         <>
-          <h1>Loading ....</h1>
+          <Loading />
         </>
       ) : (
         <>

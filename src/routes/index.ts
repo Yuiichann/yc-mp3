@@ -16,7 +16,7 @@ const routes: RoutesProps[] = [
   },
   {
     title: 'Nhạc mới nhất(Latest)',
-    path: '/nhac-moi',
+    path: '/nhac-moi-nhat',
     component: Latest,
   },
   {

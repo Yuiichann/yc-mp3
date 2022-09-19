@@ -4,6 +4,7 @@ import { ReactComponent as Svg1 } from '../assets/icons/svg1.svg'; // kham pha
 import { ReactComponent as Svg3 } from '../assets/icons/svg3.svg'; // ca nhan
 import { ReactComponent as Svg4 } from '../assets/icons/svg4.svg'; // nhac moi
 import { ReactComponent as Ranking } from '../assets/icons/ranking.svg'; // ranking
+import { ReactComponent as AlbumSvg } from '../assets/icons/album.svg';
 import { SideBarItem } from '../types';
 
 // export for mobile menu
@@ -15,8 +16,13 @@ export const sideBarItem: SideBarItem[] = [
   },
   {
     Icon: Svg4,
-    path: '/nhac-moi',
+    path: '/nhac-moi-nhat',
     title: 'Nhạc Mới',
+  },
+  {
+    Icon: AlbumSvg,
+    path: '/album',
+    title: 'Album',
   },
   {
     Icon: Ranking,
