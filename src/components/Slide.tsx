@@ -13,6 +13,7 @@ interface Props {
   data: BannerApi[];
 }
 
+// Slider using banner api in getHome zingmp3
 const Slide = ({ data }: Props) => {
   return (
     <>
@@ -40,14 +41,13 @@ const Slide = ({ data }: Props) => {
       {/* Slider on Mobile */}
       <div className="block lg:hidden">
         <Swiper
-          modules={[Navigation, Scrollbar, A11y, EffectFade, Autoplay]}
+          modules={[Scrollbar, A11y, EffectFade, Autoplay]}
           autoplay={{
             delay: 4000,
           }}
           effect="fade"
           spaceBetween={10}
           slidesPerView={1}
-          navigation
         >
           {data.map((item, index) => (
             <SwiperSlide key={index}>
