@@ -3,7 +3,12 @@ import { BiSearchAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const SearchInput = () => {
+interface Props {
+  isMobile?: boolean;
+  handleCloseMenu?: VoidFunction;
+}
+
+const SearchInput = ({ isMobile, handleCloseMenu }: Props) => {
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState('');
 
@@ -16,6 +21,11 @@ const SearchInput = () => {
 
     navigate(`/tim-kiem?keyword=${encodeURI(searchInput)}`);
     setSearchInput('');
+
+    // if in mobile, after enter keyword in field search, this will close menu
+    if (isMobile && handleCloseMenu) {
+      handleCloseMenu();
+    }
   };
 
   //   hanlde when click enter on input field

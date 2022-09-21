@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { BiMenuAltLeft, BiSearchAlt } from 'react-icons/bi';
 import { IoCloseSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
@@ -70,4 +70,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default memo(NavBar);

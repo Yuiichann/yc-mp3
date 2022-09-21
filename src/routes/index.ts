@@ -1,6 +1,7 @@
 import AlbumInfo from '../pages/AlbumInfo';
 import Home from '../pages/Home';
 import Latest from '../pages/Latest';
+import NotFound from '../pages/NotFound';
 import Private from '../pages/Private';
 import Ranking from '../pages/Ranking';
 import Search from '../pages/Search';
@@ -43,6 +44,11 @@ const routes: RoutesProps[] = [
     title: 'Thông tin Album',
     path: '/album',
     component: AlbumInfo,
+  },
+  {
+    title: 'Không tìm thấy',
+    path: '/:error',
+    component: NotFound,
   },
 ];
 

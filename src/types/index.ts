@@ -17,13 +17,16 @@ interface SideBarItem {
 
 // curr song playing in app => use in redux
 interface SongPlaying {
-  currentPlaying?: string;
+  currentSong: string;
+  loading: 'idle' | 'pending' | 'successed' | 'failed';
+}
 
-  listWatting: string[]; // array include endcodeId waitting be play
-
-  error?: {
-    message: string;
-  };
+// playlist Slice
+interface PlayList {
+  title: string;
+  artistsNames?: string;
+  thumbnail: string;
+  thumbnailM: string;
 }
 
 // Main Infomation of app include banner,playlist,... ==> use in rudux
@@ -112,4 +115,5 @@ export type {
   AlbumApi,
   NewReleaseApi,
   SongPlaying,
+  PlayList,
 };

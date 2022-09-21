@@ -1,54 +1,53 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import ycMp3 from '../api/ycmp3Api';
 import { SongPlaying } from '../types';
 
+// thunk function fetch data link mp3
+export const fetchDataMp3 = createAsyncThunk(
+  'song/fetchLinkMusic',
+  async (encodeId: string, thunkAPI) => {
+    const res: any = await ycMp3.getSong({ id: encodeId });
+
+    if (res.msg === 'Success' && res.data['128']) {
+      return res.data['128'];
+    } else {
+      return thunkAPI.rejectWithValue(res.msg);
+    }
+  }
+);
+
 const initialState: SongPlaying = {
-  listWatting: [],
+  currentSong: '',
+  loading: 'idle',
 };
 
 const songPlayingSlice = createSlice({
   name: 'song-playing',
   initialState,
-  reducers: {
-    // add id song into queue
-    addSongToQueue: (state, action: PayloadAction<string>) => {
-      const checkSongInQueue = state.listWatting.find((item) => item === action.payload);
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchDataMp3.pending, (state, action) => {
+      return {
+        ...state,
+        loading: 'pending',
+      };
+    });
 
-      if (checkSongInQueue) {
-        console.log('Song already in list');
-        return;
-      }
+    builder.addCase(fetchDataMp3.fulfilled, (state, action: PayloadAction<string>) => {
+      return {
+        currentSong: action.payload,
+        loading: 'successed',
+      };
+    });
 
+    builder.addCase(fetchDataMp3.rejected, (state, action) => {
       return {
-        ...state,
-        listWatting: [...state.listWatting, action.payload],
+        currentSong: '',
+        loading: 'failed',
       };
-    },
-    // add a playlist to play
-    addPlaylist: (state, action: PayloadAction<string[]>) => {
-      return {
-        ...state,
-        listWatting: action.payload,
-      };
-    },
-    // play a song
-    setOneSongPlaying: (state, action: PayloadAction<string>) => {
-      return {
-        ...state,
-        currentPlaying: action.payload,
-      };
-    },
-    // set song in queue to play
-    setSongPlayingInQueue: (state, action: PayloadAction<number>) => {
-      const currentPlaying = state.listWatting[action.payload];
-
-      return {
-        ...state,
-        currentPlaying,
-      };
-    },
+    });
   },
 });
 
-export const { addSongToQueue, setSongPlayingInQueue, setOneSongPlaying } =
-  songPlayingSlice.actions;
+export const {} = songPlayingSlice.actions;
 export default songPlayingSlice.reducer;

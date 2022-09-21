@@ -13,7 +13,7 @@ const MenuMobile = ({ handleCloseMenu }: Props) => {
       <div className="flex flex-col space-y-6">
         {/* Input Search */}
         <div className="mt-4">
-          <SearchInput />
+          <SearchInput isMobile={true} handleCloseMenu={handleCloseMenu} />
         </div>
 
         {/* Button Group Signin / Signup */}
