@@ -29,12 +29,12 @@ const MusicPlayer = () => {
 
   const handlePlayMusic = () => {
     audioRef.current?.play();
-    setIsPlay(false);
+    setIsPlay(true);
   };
 
   const handlePauseMusic = () => {
     audioRef.current?.pause();
-    setIsPlay(true);
+    setIsPlay(false);
   };
 
   return (
