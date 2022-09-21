@@ -1,6 +1,10 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import { MdPlayCircleFilled } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AlbumApi, SongApi } from '../types';
+import { AppDispatch } from '../config/store';
+import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
+import { AlbumApi, SongApi, SongPlaying } from '../types';
 import convertDate from '../utils/convertDate';
 import { SkeletonNewRelease } from './Skeleton';
 
@@ -11,14 +15,29 @@ interface Props {
 
 const NewReleaseTab = ({ data, type }: Props) => {
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
 
-  //   fake loading after 400 milisecond will render
+  //fake loading after 400 milisecond will render
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 400);
   }, [type]);
+
+  // handle play 1 song when click play this, after click, they will dispatch 2 actions: 1 actions set info song, the other will fetch link mp3
+  const handlePlayCurrentMusic = (
+    e: React.MouseEvent<HTMLDivElement>,
+    encodeId: string,
+    detailSong: SongPlaying['details']
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // dispatch actions
+    dispatch(setInfoSongPlaying(detailSong));
+    dispatch(fetchDataMp3(encodeId));
+  };
 
   return loading ? (
     <>
@@ -32,16 +51,26 @@ const NewReleaseTab = ({ data, type }: Props) => {
           (item, index) =>
             index < 10 && (
               <div className="p-1" key={item.encodeId}>
-                <div className="">
-                  <Link to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}>
-                    <img
-                      src={item.thumbnailM}
-                      alt=""
-                      loading="lazy"
-                      className="rounded-md mx-auto"
-                    />
-                  </Link>
-                </div>
+                <Link
+                  to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}
+                  className="relative"
+                >
+                  <img src={item.thumbnailM} alt="" loading="lazy" className="rounded-md mx-auto" />
+                  <div className="absolute top-0 left-0 h-full w-full bg-overlay">
+                    <div
+                      className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
+                      onClick={(e) =>
+                        handlePlayCurrentMusic(e, item.encodeId, {
+                          title: item.title,
+                          artistsNames: item.artistsNames,
+                          thumbnail: item.thumbnail,
+                        })
+                      }
+                    >
+                      <MdPlayCircleFilled />
+                    </div>
+                  </div>
+                </Link>
                 <div className="mt-1 text-center lg:text-left">
                   <div className="w-full min-w-0 truncate my-1">
                     <Link to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}>

@@ -18,6 +18,11 @@ interface SideBarItem {
 // curr song playing in app => use in redux
 interface SongPlaying {
   currentSong: string;
+  details: {
+    title: string;
+    thumbnail: string;
+    artistsNames: string;
+  };
   loading: 'idle' | 'pending' | 'successed' | 'failed';
 }
 
@@ -78,6 +83,7 @@ interface AlbumApi {
   artistNames: string;
   artists: [];
   releaseDate: string | number;
+  artistsNames: string;
   textType: string;
   thumbnail: string;
   thumbnailM: string;

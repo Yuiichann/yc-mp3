@@ -18,13 +18,26 @@ export const fetchDataMp3 = createAsyncThunk(
 
 const initialState: SongPlaying = {
   currentSong: '',
+  details: {
+    thumbnail: '',
+    title: '',
+    artistsNames: '',
+  },
   loading: 'idle',
 };
 
+// always dipatch actions setInfoSongPlaying before createayncthunk
 const songPlayingSlice = createSlice({
-  name: 'song-playing',
+  name: 'song',
   initialState,
-  reducers: {},
+  reducers: {
+    setInfoSongPlaying: (state, action: PayloadAction<SongPlaying['details']>) => {
+      return {
+        ...state,
+        details: { ...action.payload },
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchDataMp3.pending, (state, action) => {
       return {
@@ -35,6 +48,7 @@ const songPlayingSlice = createSlice({
 
     builder.addCase(fetchDataMp3.fulfilled, (state, action: PayloadAction<string>) => {
       return {
+        ...state,
         currentSong: action.payload,
         loading: 'successed',
       };
@@ -42,6 +56,7 @@ const songPlayingSlice = createSlice({
 
     builder.addCase(fetchDataMp3.rejected, (state, action) => {
       return {
+        ...state,
         currentSong: '',
         loading: 'failed',
       };
@@ -49,5 +64,5 @@ const songPlayingSlice = createSlice({
   },
 });
 
-export const {} = songPlayingSlice.actions;
+export const { setInfoSongPlaying } = songPlayingSlice.actions;
 export default songPlayingSlice.reducer;

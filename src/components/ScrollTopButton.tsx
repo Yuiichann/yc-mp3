@@ -24,7 +24,7 @@ const ScrollTopButton = () => {
   };
 
   return isShow ? (
-    <div className="fixed bottom-[30px] right-[30px] select-none shadow-sm">
+    <div className="fixed bottom-[calc(90px+10px)] right-[20px] select-none shadow-sm">
       <div
         className="text-4xl cursor-pointer hover:opacity-80 rounded-full bg-secondary"
         onClick={handleScrollToTop}

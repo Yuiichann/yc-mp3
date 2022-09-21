@@ -28,6 +28,8 @@ const Home = () => {
     setTypeNewRelease(type);
   };
 
+  // console.log('home-render');
+
   return (
     <div className="px-1 lg:px-2">
       {isLoading ? (

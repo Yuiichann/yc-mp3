@@ -44,6 +44,7 @@ module.exports = {
     },
     backgroundImage: {
       main: 'linear-gradient(45deg, #2f80ed 0%, #00aeef 100%)',
+      overlay: 'linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.4) 100%)',
     },
   },
   plugins: [require('tailwind-scrollbar')],
