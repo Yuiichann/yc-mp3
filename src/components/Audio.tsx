@@ -10,6 +10,8 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  console.log('re-render');
+
   //when fetch data mp3 to change music, in status pending ==> stop music now and wait new linkMp3
   useEffect(() => {
     if (lazyLoading === 'pending' && linkMp3) {
@@ -19,7 +21,10 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
 
   //handle change music
   useEffect(() => {
-    if (!linkMp3) return;
+    if (!linkMp3) {
+      setIsPlaying(false);
+      return;
+    }
 
     handleReloadMusic();
     handlePlayMusic();
@@ -49,7 +54,7 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
   };
 
   const handleEndedMusic = () => {
-    if (!audioRef.current) return;
+    handlePauseMusic();
   };
 
   return (
@@ -74,7 +79,7 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
 
       {/* Audio */}
       {linkMp3 && (
-        <audio ref={audioRef}>
+        <audio ref={audioRef} onEnded={handleEndedMusic}>
           <source src={linkMp3} />
         </audio>
       )}
