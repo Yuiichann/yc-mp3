@@ -29,7 +29,7 @@ const NewReleaseTab = ({ data, type }: Props) => {
   const handlePlayCurrentMusic = (
     e: React.MouseEvent<HTMLDivElement>,
     encodeId: string,
-    detailSong: SongPlaying['details']
+    detailSong: SongPlaying['currentDetails']
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -74,6 +74,7 @@ const NewReleaseTab = ({ data, type }: Props) => {
                           title: item.title,
                           artistsNames: item.artistsNames,
                           thumbnail: item.thumbnail,
+                          encodeId: item.encodeId,
                         })
                       }
                     >
