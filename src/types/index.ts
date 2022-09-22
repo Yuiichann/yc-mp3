@@ -18,10 +18,11 @@ interface SideBarItem {
 // curr song playing in app => use in redux
 interface SongPlaying {
   currentSong: string;
-  details: {
+  currentDetails: {
     title: string;
     thumbnail: string;
     artistsNames: string;
+    encodeId: string;
   };
   loading: 'idle' | 'pending' | 'successed' | 'failed';
 }

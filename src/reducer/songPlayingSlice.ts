@@ -18,10 +18,11 @@ export const fetchDataMp3 = createAsyncThunk(
 
 const initialState: SongPlaying = {
   currentSong: '',
-  details: {
+  currentDetails: {
     thumbnail: '',
     title: '',
     artistsNames: '',
+    encodeId: '',
   },
   loading: 'idle',
 };
@@ -31,10 +32,10 @@ const songPlayingSlice = createSlice({
   name: 'song',
   initialState,
   reducers: {
-    setInfoSongPlaying: (state, action: PayloadAction<SongPlaying['details']>) => {
+    setInfoSongPlaying: (state, action: PayloadAction<SongPlaying['currentDetails']>) => {
       return {
         ...state,
-        details: { ...action.payload },
+        currentDetails: { ...action.payload },
       };
     },
   },

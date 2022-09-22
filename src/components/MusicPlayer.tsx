@@ -1,85 +1,54 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../config/store';
-import { memo, useRef, useEffect, useState } from 'react';
-
-import { IoPlay, IoPlaySkipBack, IoPlaySkipForwardSharp, IoPauseCircle } from 'react-icons/io5';
+import { memo, useEffect, useState } from 'react';
+import Audio from './Audio';
+import { Link } from 'react-router-dom';
 
 const MusicPlayer = () => {
-  const { currentSong, details, loading } = useSelector((state: RootState) => state.songPlaying);
-  const [playAble, setPlayAble] = useState(false); // song able play
-  const [isPlay, setIsPlay] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { currentSong, currentDetails, loading } = useSelector(
+    (state: RootState) => state.songPlaying
+  );
 
-  console.log('music re-render');
-
-  // handle change music will change audio tag
-  useEffect(() => {
-    if (loading === 'successed') {
-      setPlayAble(true);
-    } else {
-      setPlayAble(false);
-    }
-  }, [loading]);
-
-  // auto play when choose new song
-  useEffect(() => {
-    if (!playAble) return;
-
-    audioRef.current?.play();
-    setIsPlay(true);
-  }, [playAble]);
-
-  // handle click play music
-  const handlePlayMusic = () => {
-    audioRef.current?.play();
-    setIsPlay(true);
-  };
-
-  // handle click pause music
-  const handlePauseMusic = () => {
-    audioRef.current?.pause();
-    setIsPlay(false);
-  };
-
-  const handleEndedMusic = () => {
-    audioRef.current?.load();
-  };
+  console.log(currentDetails);
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 w-screen bg-tertiary bg-main text-white">
-        <div className="h-player px-1 py-2 lg:px-8">
-          <div className="flex flex-col space-y-2 items-center h-full justify-center">
-            <div className="flex gap-12 text-24">
-              <div className="cursor-pointer p-1">
-                <IoPlaySkipBack />
-              </div>
-
-              {isPlay ? (
-                <div className="cursor-pointer p-1" onClick={handlePauseMusic}>
-                  <IoPauseCircle />
+      <div className="fixed h-player bottom-0 left-0 w-screen bg-tertiary bg-main text-white">
+        <div className="h-full px-1 py-2 lg:px-8 flex">
+          {/* Current Song Playing Infomation */}
+          <div className="w-6/12 flex items-center">
+            {loading === 'idle' ? (
+              <></>
+            ) : loading === 'pending' ? (
+              <></>
+            ) : loading === 'successed' ? (
+              <>
+                <div className="px-1">
+                  <Link to="/">
+                    <img
+                      src={currentDetails.thumbnail}
+                      alt=""
+                      className="w-full h-full max-w-[60px] max-h-[60px] rounded-md"
+                    />
+                  </Link>
                 </div>
-              ) : (
-                <div className="cursor-pointer p-1" onClick={handlePlayMusic}>
-                  <IoPlay />
+                <div className="px-1 text-14 tracking-normal">
+                  <Link to="/">
+                    <h3>{currentDetails.title}</h3>
+                  </Link>
                 </div>
-              )}
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
 
-              <div className="cursor-pointer p-1">
-                <IoPlaySkipForwardSharp />
-              </div>
-            </div>
-            <div>{loading === 'pending' ? 'Đang tải nhạc . . .' : <h1>{details.title}</h1>}</div>
+          {/* Audio Component */}
+          <div className="w-6/12 text-32">
+            <Audio linkMp3={currentSong} lazyLoading={loading} />
           </div>
         </div>
       </div>
-
-      {/* Audio */}
-      {playAble && (
-        <audio ref={audioRef} onEnded={handleEndedMusic}>
-          <source src={currentSong} />
-        </audio>
-      )}
     </>
   );
 };

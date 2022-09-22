@@ -31,7 +31,7 @@ const Home = () => {
   // console.log('home-render');
 
   return (
-    <div className="px-1 lg:px-2">
+    <section className="px-1 lg:px-2">
       {isLoading ? (
         <>
           <Loading />
@@ -71,7 +71,7 @@ const Home = () => {
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 };
 

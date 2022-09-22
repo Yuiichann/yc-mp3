@@ -82,7 +82,7 @@ const App = () => {
       <MusicPlayer />
 
       {/* Button Scroll Top */}
-      <ScrollTopButton />
+      {/* <ScrollTopButton /> */}
     </BrowserRouter>
   );
 };
