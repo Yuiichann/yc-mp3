@@ -6,10 +6,11 @@ import { IoPlay, IoPlaySkipBack, IoPlaySkipForwardSharp, IoPauseCircle } from 'r
 
 const MusicPlayer = () => {
   const { currentSong, details, loading } = useSelector((state: RootState) => state.songPlaying);
-  // handle change music will remove current song
-  const [playAble, setPlayAble] = useState(false);
+  const [playAble, setPlayAble] = useState(false); // song able play
   const [isPlay, setIsPlay] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  console.log('music re-render');
 
   // handle change music will change audio tag
   useEffect(() => {
@@ -20,6 +21,7 @@ const MusicPlayer = () => {
     }
   }, [loading]);
 
+  // auto play when choose new song
   useEffect(() => {
     if (!playAble) return;
 
@@ -27,14 +29,20 @@ const MusicPlayer = () => {
     setIsPlay(true);
   }, [playAble]);
 
+  // handle click play music
   const handlePlayMusic = () => {
     audioRef.current?.play();
     setIsPlay(true);
   };
 
+  // handle click pause music
   const handlePauseMusic = () => {
     audioRef.current?.pause();
     setIsPlay(false);
+  };
+
+  const handleEndedMusic = () => {
+    audioRef.current?.load();
   };
 
   return (
@@ -61,14 +69,14 @@ const MusicPlayer = () => {
                 <IoPlaySkipForwardSharp />
               </div>
             </div>
-            <div>{loading === 'pending' ? 'Loading...' : <h1>{details.title}</h1>}</div>
+            <div>{loading === 'pending' ? 'Đang tải nhạc . . .' : <h1>{details.title}</h1>}</div>
           </div>
         </div>
       </div>
 
       {/* Audio */}
       {playAble && (
-        <audio ref={audioRef}>
+        <audio ref={audioRef} onEnded={handleEndedMusic}>
           <source src={currentSong} />
         </audio>
       )}

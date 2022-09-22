@@ -34,6 +34,11 @@ const NewReleaseTab = ({ data, type }: Props) => {
     e.preventDefault();
     e.stopPropagation();
 
+    if (type === 'album') {
+      console.warn('Chưa hỗ trợ phát Album');
+      return;
+    }
+
     // dispatch actions
     dispatch(setInfoSongPlaying(detailSong));
     dispatch(fetchDataMp3(encodeId));
@@ -55,8 +60,13 @@ const NewReleaseTab = ({ data, type }: Props) => {
                   to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}
                   className="relative"
                 >
-                  <img src={item.thumbnailM} alt="" loading="lazy" className="rounded-md mx-auto" />
-                  <div className="absolute top-0 left-0 h-full w-full bg-overlay">
+                  <img
+                    src={item.thumbnailM}
+                    alt=""
+                    loading="lazy"
+                    className="rounded-md mx-auto w-full"
+                  />
+                  <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
                     <div
                       className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
                       onClick={(e) =>
