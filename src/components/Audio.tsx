@@ -14,7 +14,6 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
   useEffect(() => {
     if (lazyLoading === 'pending' && linkMp3) {
       handlePauseMusic();
-      handleReloadMusic();
     }
   }, [lazyLoading]);
 
@@ -22,6 +21,7 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
   useEffect(() => {
     if (!linkMp3) return;
 
+    handleReloadMusic();
     handlePlayMusic();
   }, [linkMp3]);
 
