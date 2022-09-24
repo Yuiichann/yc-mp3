@@ -47,4 +47,13 @@ const SkeletonNewRelease = () => {
   );
 };
 
-export { SkeletonNewRelease };
+const SkeletonSongPlaying = () => {
+  return (
+    <div className="flex items-center animate-pulse">
+      <div className="w-[60px] h-[60px] bg-[rgb(0,0,0,0.4)] ml-2 rounded-md"></div>
+      <div className="w-[100px] h-[20px] bg-[rgb(0,0,0,0.4)] ml-2 rounded-md"></div>
+    </div>
+  );
+};
+
+export { SkeletonNewRelease, SkeletonSongPlaying };
