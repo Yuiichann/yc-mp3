@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { SkeletonSongPlaying } from './Skeleton';
 import { AiOutlineQuestion } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+import Marquee from 'react-fast-marquee';
 
 const MusicPlayer = () => {
   const { currentSong, currentDetails, loading } = useSelector(
@@ -23,12 +24,12 @@ const MusicPlayer = () => {
     <>
       <div
         className={`fixed h-player effect ${
-          loading === 'idle' ? '-bottom-[90px]' : 'bottom-0'
-        } left-0 w-screen bg-tertiary bg-main text-white overflow-hidden`}
+          loading === 'idle' || loading === 'failed' ? '-bottom-[90px]' : 'bottom-0'
+        } left-0 w-screen bg-tertiary bg-main text-white select-none overflow-hidden`}
       >
-        <div className="h-full px-1 py-2 lg:px-8 flex">
+        <div className="h-full px-1 py-2 lg:px-8 flex justify-center lg:justify-between">
           {/* Current Song Playing Infomation */}
-          <div className="w-6/12 flex items-center">
+          <div className="flex items-center w-6/12">
             {loading === 'idle' ? (
               <>
                 <h1>Rỗng</h1>
@@ -39,7 +40,7 @@ const MusicPlayer = () => {
               </>
             ) : loading === 'successed' ? (
               <>
-                <div className="px-1">
+                <div className="px-1 min-w-max">
                   <Link to="/">
                     <img
                       src={currentDetails.thumbnail}
@@ -48,9 +49,11 @@ const MusicPlayer = () => {
                     />
                   </Link>
                 </div>
-                <div className="px-1 text-14 tracking-normal">
+                <div className="px-1 text-14">
                   <Link to="/">
-                    <h3>{currentDetails.title}</h3>
+                    <Marquee gradient={false}>
+                      <h1>{currentDetails.title}</h1>
+                    </Marquee>
                   </Link>
                 </div>
               </>
@@ -64,7 +67,7 @@ const MusicPlayer = () => {
           </div>
 
           {/* Audio Component */}
-          <div className="w-6/12 text-32">
+          <div className="text-32 w-6/12">
             <Audio linkMp3={currentSong} lazyLoading={loading} />
           </div>
         </div>

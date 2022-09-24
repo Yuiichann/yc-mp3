@@ -7,6 +7,10 @@ module.exports = {
         primary: '#2f80ed',
         secondary: '#00aeef',
       },
+      width: {
+        none: 'none',
+        unset: 'unset',
+      },
       height: {
         navbar: '56px',
         player: '90px',

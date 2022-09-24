@@ -13,6 +13,7 @@ interface Props {
   type: 'song' | 'album';
 }
 
+// use page search && home
 const NewReleaseTab = ({ data, type }: Props) => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
@@ -34,14 +35,18 @@ const NewReleaseTab = ({ data, type }: Props) => {
     e.preventDefault();
     e.stopPropagation();
 
+    // with type === album
     if (type === 'album') {
       console.warn('Chưa hỗ trợ phát Album');
       return;
     }
 
-    // dispatch actions
-    dispatch(setInfoSongPlaying(detailSong));
-    dispatch(fetchDataMp3(encodeId));
+    // with type === song
+    if (type === 'song') {
+      // dispatch actions
+      dispatch(setInfoSongPlaying(detailSong));
+      dispatch(fetchDataMp3(encodeId));
+    }
   };
 
   return loading ? (
@@ -52,49 +57,46 @@ const NewReleaseTab = ({ data, type }: Props) => {
   ) : (
     <>
       <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-1">
-        {data.map(
-          (item, index) =>
-            index < 10 && (
-              <div className="p-1" key={item.encodeId}>
-                <Link
-                  to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}
-                  className="relative"
+        {data.map((item, index) => (
+          <div className="p-1" key={item.encodeId}>
+            <Link
+              to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}
+              className="relative"
+            >
+              <img
+                src={item.thumbnailM}
+                alt=""
+                loading="lazy"
+                className="rounded-md mx-auto w-full"
+              />
+              <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
+                <div
+                  className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
+                  onClick={(e) =>
+                    handlePlayCurrentMusic(e, item.encodeId, {
+                      title: item.title,
+                      artistsNames: item.artistsNames,
+                      thumbnail: item.thumbnail,
+                      encodeId: item.encodeId,
+                    })
+                  }
                 >
-                  <img
-                    src={item.thumbnailM}
-                    alt=""
-                    loading="lazy"
-                    className="rounded-md mx-auto w-full"
-                  />
-                  <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
-                    <div
-                      className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
-                      onClick={(e) =>
-                        handlePlayCurrentMusic(e, item.encodeId, {
-                          title: item.title,
-                          artistsNames: item.artistsNames,
-                          thumbnail: item.thumbnail,
-                          encodeId: item.encodeId,
-                        })
-                      }
-                    >
-                      <MdPlayCircleFilled />
-                    </div>
-                  </div>
-                </Link>
-                <div className="mt-1 text-center lg:text-left">
-                  <div className="w-full min-w-0 truncate my-1">
-                    <Link to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}>
-                      <h2 className="font-medium text-16 md:text-18 cursor-pointer hover:opacity-60">
-                        {item.title}
-                      </h2>
-                    </Link>
-                  </div>
-                  <p className="cursor-default">{convertDate(item.releaseDate)}</p>
+                  <MdPlayCircleFilled />
                 </div>
               </div>
-            )
-        )}
+            </Link>
+            <div className="mt-1 text-center lg:text-left">
+              <div className="w-full min-w-0 truncate my-1">
+                <Link to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}>
+                  <h2 className="font-medium text-16 md:text-18 cursor-pointer hover:opacity-60">
+                    {item.title}
+                  </h2>
+                </Link>
+              </div>
+              <p className="cursor-default">{convertDate(item.releaseDate)}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </>
   );

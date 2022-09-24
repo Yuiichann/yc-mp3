@@ -54,12 +54,14 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
   };
 
   const handleEndedMusic = () => {
-    handlePauseMusic();
+    setIsPlaying(false);
+
+    handlePlayMusic();
   };
 
   return (
     <>
-      <div className="h-full flex gap-4 items-center">
+      <div className="h-full flex space-x-4 items-center">
         <div className="icon-player">
           <IoPlaySkipBack />
         </div>

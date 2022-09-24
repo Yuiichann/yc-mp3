@@ -2,7 +2,7 @@ import React from 'react';
 // Page Cá Nhân
 
 const Private = () => {
-  return <div>Cá Nhân</div>;
+  return <div>Ca nhan</div>;
 };
 
 export default Private;

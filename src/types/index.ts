@@ -27,6 +27,14 @@ interface SongPlaying {
   loading: 'idle' | 'pending' | 'successed' | 'failed';
 }
 
+// Type state Search in page Search
+interface SearchItems {
+  song: SongApi[];
+  playlists: AlbumApi[];
+  top: any;
+  artists: any;
+}
+
 // playlist Slice
 interface PlayList {
   title: string;
@@ -123,4 +131,5 @@ export type {
   NewReleaseApi,
   SongPlaying,
   PlayList,
+  SearchItems,
 };

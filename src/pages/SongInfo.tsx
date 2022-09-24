@@ -6,6 +6,7 @@ import Loading from '../components/Loading';
 import { AppDispatch } from '../config/store';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongApi } from '../types';
+import NotFound from './NotFound';
 
 const SongInfo = () => {
   // get id song on url
@@ -43,6 +44,11 @@ const SongInfo = () => {
       dispatch(fetchDataMp3(encodeId));
     }
   };
+
+  // URL failed ==> page not found
+  if (!songId) {
+    return <NotFound />;
+  }
 
   return (
     <div>

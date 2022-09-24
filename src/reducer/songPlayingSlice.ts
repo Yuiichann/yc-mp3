@@ -43,6 +43,7 @@ const songPlayingSlice = createSlice({
     builder.addCase(fetchDataMp3.pending, (state, action) => {
       return {
         ...state,
+        currentSong: '',
         loading: 'pending',
       };
     });
