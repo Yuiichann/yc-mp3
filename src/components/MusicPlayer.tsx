@@ -1,17 +1,39 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../config/store';
-import { memo, useEffect, useState } from 'react';
-import Audio from './Audio';
-import { Link } from 'react-router-dom';
-import { SkeletonSongPlaying } from './Skeleton';
-import { AiOutlineQuestion } from 'react-icons/ai';
-import { toast } from 'react-toastify';
+import { memo, useEffect } from 'react';
 import Marquee from 'react-fast-marquee';
+import { AiOutlineQuestion } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { AppDispatch, RootState } from '../config/store';
+import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
+import { SongPlaying } from '../types';
+import Audio from './Audio';
+import { SkeletonSongPlaying } from './Skeleton';
 
 const MusicPlayer = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { currentSong, currentDetails, loading } = useSelector(
     (state: RootState) => state.songPlaying
   );
+  const { playlistDetail, song } = useSelector((state: RootState) => state.playlist);
+
+  // play first song when add new List
+  useEffect(() => {
+    if (!playlistDetail.encodeId) return;
+
+    const firstSong = song.items[0];
+
+    const firstSongInfo: SongPlaying['currentDetails'] = {
+      title: firstSong.title,
+      artistsNames: firstSong.artistsNames,
+      thumbnail: firstSong.thumbnailM,
+      encodeId: firstSong.encodeId,
+    };
+
+    // dispatch event
+    dispatch(setInfoSongPlaying(firstSongInfo));
+    dispatch(fetchDataMp3(firstSong.encodeId));
+  }, [playlistDetail.encodeId]);
 
   // alert when data fetch dont have
   useEffect(() => {

@@ -1,4 +1,4 @@
-import AlbumInfo from '../pages/AlbumInfo';
+import Album from '../pages/Album';
 import Home from '../pages/Home';
 import Latest from '../pages/Latest';
 import NotFound from '../pages/NotFound';
@@ -21,9 +21,19 @@ const routes: RoutesProps[] = [
     component: Latest,
   },
   {
+    title: 'Album mới nhất(Latest)',
+    path: '/album-moi-nhat',
+    component: Latest,
+  },
+  {
     title: 'Cá Nhân',
     path: '/ca-nhan',
     component: Private,
+  },
+  {
+    title: 'playlists',
+    path: '/playlist',
+    component: Album,
   },
   {
     title: 'Tìm kiếm',
@@ -43,7 +53,7 @@ const routes: RoutesProps[] = [
   {
     title: 'Thông tin Album',
     path: '/album',
-    component: AlbumInfo,
+    component: Album,
   },
   {
     title: 'Không tìm thấy',

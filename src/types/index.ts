@@ -35,12 +35,15 @@ interface SearchItems {
   artists: any;
 }
 
-// playlist Slice
+// playlist using in playlistSlice
 interface PlayList {
-  title: string;
-  artistsNames?: string;
-  thumbnail: string;
-  thumbnailM: string;
+  playlistDetail: {
+    encodeId: string;
+    title: string;
+    artistsNames?: string;
+    thumbnail: string;
+  };
+  song: PlaylistItem['song'];
 }
 
 // Main Infomation of app include banner,playlist,... ==> use in rudux
@@ -86,7 +89,7 @@ interface SongApi {
   genres: [];
 }
 
-// Album API
+// Album API --> using on Home
 interface AlbumApi {
   encodeId: string;
   artistNames: string;
@@ -97,6 +100,18 @@ interface AlbumApi {
   thumbnail: string;
   thumbnailM: string;
   title: string;
+  isAlbum: boolean;
+}
+
+// using for page album and playlist
+interface PlaylistItem extends AlbumApi {
+  song: {
+    total: number;
+    totalDuration: number;
+    items: SongApi[];
+  };
+  subType: number;
+  textType: string;
 }
 
 // Interface params API
@@ -131,5 +146,6 @@ export type {
   NewReleaseApi,
   SongPlaying,
   PlayList,
+  PlaylistItem,
   SearchItems,
 };

@@ -1,27 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PlayList, SongApi } from '../types';
 
-const initialState: PlayList[] = [];
+const initialState: PlayList = {
+  playlistDetail: {
+    encodeId: '',
+    title: '',
+    thumbnail: '',
+    artistsNames: '',
+  },
+  song: {
+    total: 0,
+    totalDuration: 0,
+    items: [],
+  },
+};
 
 const playlistSlice = createSlice({
   name: 'playlist',
   initialState,
   reducers: {
     // init a new playlist ---> click start a playlist
-    initNewPlaylist: (state, action: PayloadAction<PlayList[]>) => {
+    initNewPlaylist: (state, action: PayloadAction<PlayList>) => {
       return action.payload;
-    },
-    // add a song to playlist now
-    addNewSongToPlaylist: (state, action: PayloadAction<PlayList>) => {
-      return [...state, action.payload];
-    },
-    // remove 1 song in playlist
-    removeSong: (state, action: PayloadAction<number>) => {
-      state.splice(action.payload, 1);
-      return state;
     },
   },
 });
 
-export const { initNewPlaylist, addNewSongToPlaylist, removeSong } = playlistSlice.actions;
+export const { initNewPlaylist } = playlistSlice.actions;
 export default playlistSlice.reducer;

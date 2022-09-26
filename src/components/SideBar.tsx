@@ -21,7 +21,7 @@ export const sideBarItem: SideBarItem[] = [
   },
   {
     Icon: AlbumSvg,
-    path: '/album',
+    path: '/album-moi-nhat',
     title: 'Album',
   },
   {

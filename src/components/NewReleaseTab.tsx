@@ -10,7 +10,7 @@ import { SkeletonNewRelease } from './Skeleton';
 
 interface Props {
   data: SongApi[] | AlbumApi[];
-  type: 'song' | 'album';
+  type: 'song' | 'album' | 'playlist';
 }
 
 // use page search && home
@@ -60,15 +60,14 @@ const NewReleaseTab = ({ data, type }: Props) => {
         {data.map((item, index) => (
           <div className="p-1" key={item.encodeId}>
             <Link
-              to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}
+              to={`/${type === 'song' ? 'bai-hat' : type === 'album' ? 'album' : 'playlist'}?id=${
+                item.encodeId
+              }`}
               className="relative"
             >
-              <img
-                src={item.thumbnailM}
-                alt=""
-                loading="lazy"
-                className="rounded-md mx-auto w-full"
-              />
+              <div className="min-h-[150px]">
+                <img src={item.thumbnailM} alt="" loading="lazy" className="rounded-md w-full" />
+              </div>
               <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
                 <div
                   className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
@@ -87,7 +86,11 @@ const NewReleaseTab = ({ data, type }: Props) => {
             </Link>
             <div className="mt-1 text-center lg:text-left">
               <div className="w-full min-w-0 truncate my-1">
-                <Link to={`/${type === 'song' ? 'bai-hat' : 'album'}?id=${item.encodeId}`}>
+                <Link
+                  to={`/${
+                    type === 'song' ? 'bai-hat' : type === 'album' ? 'album' : 'playlist'
+                  }?id=${item.encodeId}`}
+                >
                   <h2 className="font-medium text-16 md:text-18 cursor-pointer hover:opacity-60">
                     {item.title}
                   </h2>

@@ -58,7 +58,12 @@ const songPlayingSlice = createSlice({
 
     builder.addCase(fetchDataMp3.rejected, (state, action) => {
       return {
-        ...state,
+        currentDetails: {
+          artistsNames: '',
+          encodeId: '',
+          thumbnail: '',
+          title: '',
+        },
         currentSong: '',
         loading: 'failed',
       };

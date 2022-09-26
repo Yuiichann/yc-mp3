@@ -28,7 +28,11 @@ body {
   }
 
   .button {
-    @apply flex justify-center bg-main text-white rounded-sm items-center border-none outline-none cursor-pointer px-[8px] py-[4px] min-w-[105px] max-w-[120px] ;
+    @apply flex justify-center bg-main text-white rounded-sm items-center border-none outline-none cursor-pointer px-[8px] py-[4px] min-w-[105px] max-w-[120px];
+  }
+
+  .button-lg {
+    @apply flex justify-center bg-main text-white rounded-sm items-center border-none outline-none cursor-pointer px-[8px] py-[4px] min-w-[150px] max-w-[250px];
   }
 
   .button-none {

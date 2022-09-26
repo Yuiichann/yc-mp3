@@ -7,11 +7,9 @@ import ycMp3 from './api/ycmp3Api';
 import Footer from './components/Footer';
 import MusicPlayer from './components/MusicPlayer';
 import NavBar from './components/NavBar';
-import ScrollTopButton from './components/ScrollTopButton';
 import SideBar from './components/SideBar';
 import { AppDispatch } from './config/store';
 import { setDataOfMainInfo } from './reducer/mainInfoSlice';
-import { fetchDataMp3 } from './reducer/songPlayingSlice';
 import routes from './routes';
 import { BannerApi, NewReleaseApi, RoutesProps } from './types';
 
@@ -80,9 +78,6 @@ const App = () => {
 
       {/* Music Player */}
       <MusicPlayer />
-
-      {/* Button Scroll Top */}
-      {/* <ScrollTopButton /> */}
     </BrowserRouter>
   );
 };
