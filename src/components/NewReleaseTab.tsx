@@ -68,21 +68,23 @@ const NewReleaseTab = ({ data, type }: Props) => {
               <div className="min-h-[150px]">
                 <img src={item.thumbnailM} alt="" loading="lazy" className="rounded-md w-full" />
               </div>
-              <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
-                <div
-                  className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
-                  onClick={(e) =>
-                    handlePlayCurrentMusic(e, item.encodeId, {
-                      title: item.title,
-                      artistsNames: item.artistsNames,
-                      thumbnail: item.thumbnail,
-                      encodeId: item.encodeId,
-                    })
-                  }
-                >
-                  <MdPlayCircleFilled />
+              {type === 'song' && (
+                <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
+                  <div
+                    className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
+                    onClick={(e) =>
+                      handlePlayCurrentMusic(e, item.encodeId, {
+                        title: item.title,
+                        artistsNames: item.artistsNames,
+                        thumbnail: item.thumbnail,
+                        encodeId: item.encodeId,
+                      })
+                    }
+                  >
+                    <MdPlayCircleFilled />
+                  </div>
                 </div>
-              </div>
+              )}
             </Link>
             <div className="mt-1 text-center lg:text-left">
               <div className="w-full min-w-0 truncate my-1">

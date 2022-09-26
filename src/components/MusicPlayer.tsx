@@ -10,6 +10,7 @@ import { SongPlaying } from '../types';
 import Audio from './Audio';
 import { SkeletonSongPlaying } from './Skeleton';
 
+// handle music, playlist is here
 const MusicPlayer = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { currentSong, currentDetails, loading } = useSelector(

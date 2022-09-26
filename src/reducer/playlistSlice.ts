@@ -23,8 +23,23 @@ const playlistSlice = createSlice({
     initNewPlaylist: (state, action: PayloadAction<PlayList>) => {
       return action.payload;
     },
+    removePlaylist: () => {
+      return {
+        playlistDetail: {
+          encodeId: '',
+          title: '',
+          thumbnail: '',
+          artistsNames: '',
+        },
+        song: {
+          total: 0,
+          totalDuration: 0,
+          items: [],
+        },
+      };
+    },
   },
 });
 
-export const { initNewPlaylist } = playlistSlice.actions;
+export const { initNewPlaylist, removePlaylist } = playlistSlice.actions;
 export default playlistSlice.reducer;
