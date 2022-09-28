@@ -54,6 +54,11 @@ const ycMp3 = {
     const url = 'search';
     return axiosClient.get(url, { params } as AxiosRequestConfig);
   },
+  // getVideo
+  getVideo: (params: IDParams) => {
+    const url = 'video';
+    return axiosClient.get(url, { params } as AxiosRequestConfig);
+  },
 };
 
 export default ycMp3;

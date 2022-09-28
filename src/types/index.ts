@@ -31,8 +31,9 @@ interface SongPlaying {
 interface SearchItems {
   song: SongApi[];
   playlists: AlbumApi[];
-  top: any;
+  top?: SongApi;
   artists: any;
+  videos?: VideoSearchItems[];
 }
 
 // playlist using in playlistSlice
@@ -103,6 +104,28 @@ interface AlbumApi {
   isAlbum: boolean;
 }
 
+// using for search data
+interface VideoSearchItems {
+  title: string;
+  artistsNames: string;
+  alias: string;
+  duration: number;
+  encodeId: string;
+  thumbnail: string;
+  thumbnailM: string;
+  artist: {};
+  artists: [];
+}
+
+// Using page Video
+interface VideoItems extends VideoSearchItems {
+  streamingStatus: number;
+  privacy: string;
+  streaming: {
+    mp4: any;
+  };
+}
+
 // using for page album and playlist
 interface PlaylistItem extends AlbumApi {
   song: {
@@ -148,4 +171,5 @@ export type {
   PlayList,
   PlaylistItem,
   SearchItems,
+  VideoItems,
 };

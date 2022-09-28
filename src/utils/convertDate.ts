@@ -5,6 +5,14 @@ const convertDate = (date: string | number) => {
     return date;
   }
 
+  if (typeof date === 'string' && date === '0') {
+    return '';
+  }
+
+  if (typeof date === 'number' && date === 0) {
+    return '';
+  }
+
   const newDate = new Date(date * 1000);
 
   const dateFormat = newDate.getDate() > 9 ? newDate.getDate() : `0${newDate.getDate()}`;

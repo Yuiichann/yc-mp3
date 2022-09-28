@@ -6,6 +6,7 @@ import Private from '../pages/Private';
 import Ranking from '../pages/Ranking';
 import Search from '../pages/Search';
 import SongInfo from '../pages/SongInfo';
+import Video from '../pages/Video';
 import { RoutesProps } from '../types';
 
 const routes: RoutesProps[] = [
@@ -54,6 +55,11 @@ const routes: RoutesProps[] = [
     title: 'Thông tin Album',
     path: '/album',
     component: Album,
+  },
+  {
+    title: 'Thông tin & Xem Album',
+    path: '/video',
+    component: Video,
   },
   {
     title: 'Không tìm thấy',

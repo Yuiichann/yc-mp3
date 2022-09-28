@@ -63,10 +63,17 @@ const NewReleaseTab = ({ data, type }: Props) => {
               to={`/${type === 'song' ? 'bai-hat' : type === 'album' ? 'album' : 'playlist'}?id=${
                 item.encodeId
               }`}
-              className="relative"
+              className="relative block"
             >
               <div className="min-h-[150px]">
-                <img src={item.thumbnailM} alt="" loading="lazy" className="rounded-md w-full" />
+                <img
+                  src={item.thumbnailM}
+                  alt=""
+                  loading="lazy"
+                  className="rounded-md w-full min-w-[100px] min-h-[150px]"
+                  width={150}
+                  height={150}
+                />
               </div>
               {type === 'song' && (
                 <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">

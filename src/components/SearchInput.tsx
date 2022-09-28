@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useRef } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ interface Props {
 const SearchInput = ({ isMobile, handleCloseMenu }: Props) => {
   const navigate = useNavigate();
   const [searchInput, setSearchInput] = useState('');
+  const searchRef = useRef<HTMLInputElement | null>(null);
 
   //    handle Search
   const handleSearch = () => {
@@ -21,7 +22,8 @@ const SearchInput = ({ isMobile, handleCloseMenu }: Props) => {
 
     navigate(`/tim-kiem?keyword=${encodeURI(searchInput)}`);
     setSearchInput('');
-
+    searchRef.current?.blur();
+    
     // if in mobile, after enter keyword in field search, this will close menu
     if (isMobile && handleCloseMenu) {
       handleCloseMenu();
@@ -43,6 +45,7 @@ const SearchInput = ({ isMobile, handleCloseMenu }: Props) => {
       />
       <input
         type="text"
+        ref={searchRef}
         className="outline-none bg-transparent text-primary flex-grow"
         placeholder="Tìm kiếm"
         value={searchInput}
