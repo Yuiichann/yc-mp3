@@ -36,6 +36,9 @@ module.exports = {
         42: '42px',
         48: '48px',
       },
+      boxShadow: {
+        musicplayer: '0 25px 50px -12px #2f80ed',
+      },
     },
     fontFamily: {
       inter: 'Inter, sans-serif',
@@ -49,6 +52,10 @@ module.exports = {
     backgroundImage: {
       main: 'linear-gradient(45deg, #2f80ed 0%, #00aeef 100%)',
       overlay: 'linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.4) 100%)',
+    },
+    animation: {
+      'spin-slow': 'spin 8s linear infinite',
+      spin: 'spin 1s linear infinite',
     },
   },
   plugins: [require('tailwind-scrollbar')],

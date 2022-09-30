@@ -5,13 +5,15 @@ import { Link } from 'react-router-dom';
 import { AppDispatch, RootState } from '../config/store';
 import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
 import { PlaylistItem, SongPlaying } from '../types';
+import { GiMusicalNotes } from 'react-icons/gi';
 
 interface Props {
   dataSong: PlaylistItem['song']; // list song array
   type: string;
+  enbleIndex: boolean;
 }
 
-const ListSong = ({ dataSong }: Props) => {
+const ListSong = ({ dataSong, enbleIndex }: Props) => {
   const { currentDetails } = useSelector((state: RootState) => state.songPlaying);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -33,9 +35,15 @@ const ListSong = ({ dataSong }: Props) => {
           key={song.encodeId}
         >
           {/* STT */}
-          <div className="min-w-[80px] text-xl font-extrabold">
-            <p className="text-center">{index + 1}</p>
-          </div>
+          {enbleIndex ? (
+            <div className="min-w-[80px] text-xl font-extrabold">
+              <p className="text-center">{index + 1}</p>
+            </div>
+          ) : (
+            <div className="min-w-[50px] text-xl font-extrabold">
+              <GiMusicalNotes className="mx-auto" />
+            </div>
+          )}
 
           {/* Info include name and artist name */}
           <div className="flex-grow flex flex-col space-y-1">
@@ -52,7 +60,7 @@ const ListSong = ({ dataSong }: Props) => {
 
           {/* Button Play current Music */}
           <div
-            className={`text-3xl py-2 px-4 cursor-pointer hover:opacity-70 hover:text-secondary ${
+            className={`text-3xl py-2 min-w-[60px] px-4 cursor-pointer hover:opacity-70 hover:text-secondary ${
               currentDetails.encodeId === song.encodeId ? 'text-secondary' : 'text-black'
             }`}
             onClick={() =>
@@ -61,6 +69,7 @@ const ListSong = ({ dataSong }: Props) => {
                 title: song.title,
                 artistsNames: song.artistsNames,
                 thumbnail: song.thumbnail,
+                thumbnailM: song.thumbnailM,
               })
             }
           >

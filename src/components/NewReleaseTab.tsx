@@ -85,6 +85,7 @@ const NewReleaseTab = ({ data, type }: Props) => {
                         artistsNames: item.artistsNames,
                         thumbnail: item.thumbnail,
                         encodeId: item.encodeId,
+                        thumbnailM: item.thumbnailM,
                       })
                     }
                   >

@@ -9,6 +9,8 @@ import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
 import { SongPlaying } from '../types';
 import Audio from './Audio';
 import { SkeletonSongPlaying } from './Skeleton';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { setIsHiddenMusicPlayer } from '../reducer/audioStatus';
 
 // handle music, playlist is here
 const MusicPlayer = () => {
@@ -17,6 +19,7 @@ const MusicPlayer = () => {
     (state: RootState) => state.songPlaying
   );
   const { playlistDetail, song } = useSelector((state: RootState) => state.playlist);
+  const { isHiddenMusicPlayer, statusAudio } = useSelector((state: RootState) => state.audioStatus);
 
   // play first song when add new List
   useEffect(() => {
@@ -29,6 +32,7 @@ const MusicPlayer = () => {
       artistsNames: firstSong.artistsNames,
       thumbnail: firstSong.thumbnailM,
       encodeId: firstSong.encodeId,
+      thumbnailM: firstSong.thumbnailM,
     };
 
     // dispatch event
@@ -43,16 +47,23 @@ const MusicPlayer = () => {
     }
   }, [loading]);
 
+  const handleHiddenMusicPlayer = () => {
+    dispatch(setIsHiddenMusicPlayer(!isHiddenMusicPlayer));
+  };
+
   return (
     <>
       <div
-        className={`fixed h-player effect ${
-          loading === 'idle' || loading === 'failed' ? '-bottom-[90px]' : 'bottom-0'
-        } left-0 w-screen bg-tertiary bg-main text-white select-none overflow-hidden`}
+        className={`fixed z-10 h-player effect left-0 w-screen bg-tertiary bg-main text-white select-none shadow-musicplayer ${
+          loading === 'idle' || loading === 'failed' || isHiddenMusicPlayer
+            ? '-bottom-[90px]'
+            : 'bottom-0'
+        }`}
       >
         <div className="h-full px-1 py-2 lg:px-8 flex justify-center lg:justify-between">
           {/* Current Song Playing Infomation */}
-          <div className="flex items-center w-6/12">
+          <div className="flex items-center flex-grow lg:flex-grow-0">
+            {/* check loading to render */}
             {loading === 'idle' ? (
               <>
                 <h1>Rỗng</h1>
@@ -63,18 +74,22 @@ const MusicPlayer = () => {
               </>
             ) : loading === 'successed' ? (
               <>
+                {/* Image */}
                 <div className="px-1 min-w-max">
-                  <Link to="/">
+                  <Link to="/ca-nhan">
                     <img
                       src={currentDetails.thumbnail}
                       alt=""
-                      className="w-full h-full max-w-[60px] max-h-[60px] rounded-md"
+                      className={`w-full h-full max-w-[65px] block max-h-[65px] rounded-full effect ${
+                        statusAudio === 'playing' ? 'animate-spin-slow' : ''
+                      }`}
                     />
                   </Link>
                 </div>
+                {/* title */}
                 <div className="px-1 text-14">
-                  <Link to="/">
-                    <Marquee gradient={false}>
+                  <Link to="/ca-nhan">
+                    <Marquee gradient={false} speed={30} pauseOnHover={true} direction="right">
                       <h1>{currentDetails.title}</h1>
                     </Marquee>
                   </Link>
@@ -82,6 +97,7 @@ const MusicPlayer = () => {
               </>
             ) : (
               <>
+                {/* when faied */}
                 <div className="text-4xl flex items-center justify-center flex-grow gap-2">
                   <AiOutlineQuestion />
                 </div>
@@ -90,10 +106,22 @@ const MusicPlayer = () => {
           </div>
 
           {/* Audio Component */}
-          <div className="text-32 w-6/12">
+          <div className="text-36 mr-2 sm:mr-4 lg:mr-0 lg:flex-grow">
             <Audio linkMp3={currentSong} lazyLoading={loading} />
           </div>
         </div>
+
+        {/* Button hidden music player */}
+        {loading !== 'idle' && loading !== 'failed' && (
+          <div className="absolute left-0 top-0 -translate-y-[calc(100%-1px)] bg-primary rounded-tr-xl border-b-2">
+            <div
+              className="text-[20px] lg:text-24 p-2 cursor-pointer"
+              onClick={handleHiddenMusicPlayer}
+            >
+              {isHiddenMusicPlayer ? <AiFillEye /> : <AiFillEyeInvisible />}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

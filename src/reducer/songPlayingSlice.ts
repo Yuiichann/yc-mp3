@@ -23,7 +23,9 @@ const initialState: SongPlaying = {
     title: '',
     artistsNames: '',
     encodeId: '',
+    thumbnailM: '',
   },
+  isPlaylist: false,
   loading: 'idle',
 };
 
@@ -63,7 +65,9 @@ const songPlayingSlice = createSlice({
           encodeId: '',
           thumbnail: '',
           title: '',
+          thumbnailM: '',
         },
+        isPlaylist: false,
         currentSong: '',
         loading: 'failed',
       };

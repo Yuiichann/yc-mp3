@@ -1,4 +1,7 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../config/store';
+import { setStatusAudio } from '../reducer/audioStatus';
 
 interface Props {
   linkVideo: string;

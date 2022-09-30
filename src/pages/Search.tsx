@@ -81,7 +81,7 @@ const Search = () => {
                       className="w-[230px] h-[230px] rounded-lg"
                     />
                   </Link>
-                  <div className="flex flex-col items-center justify-center space-y-2">
+                  <div className="flex flex-col items-center justify-center space-y-2 text-center">
                     <Link
                       to={`/bai-hat?id=${searchData.top.encodeId}`}
                       className="text-2xl font-semibold tracking-wider"
@@ -164,7 +164,7 @@ const Search = () => {
                 </>
               ) : (
                 <>
-                  <h1>Không có dữ liệu</h1>
+                  <h1 className="text-center text-xl mt-3">Không có dữ liệu</h1>
                 </>
               )}
             </div>

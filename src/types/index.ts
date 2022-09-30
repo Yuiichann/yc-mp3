@@ -9,6 +9,12 @@ interface RoutesProps {
   component: () => JSX.Element;
 }
 
+interface AudioStatus {
+  statusAudio: 'playing' | 'pause';
+  isLoop: boolean;
+  isHiddenMusicPlayer: boolean;
+}
+
 interface SideBarItem {
   Icon: any;
   path: string;
@@ -21,9 +27,11 @@ interface SongPlaying {
   currentDetails: {
     title: string;
     thumbnail: string;
+    thumbnailM: string;
     artistsNames: string;
     encodeId: string;
   };
+  isPlaylist: boolean;
   loading: 'idle' | 'pending' | 'successed' | 'failed';
 }
 
@@ -172,4 +180,5 @@ export type {
   PlaylistItem,
   SearchItems,
   VideoItems,
+  AudioStatus,
 };

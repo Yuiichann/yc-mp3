@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import audioStatusReducer from '../reducer/audioStatus';
 import mainInfoReducer from '../reducer/mainInfoSlice';
 import playlistReducer from '../reducer/playlistSlice';
 import songPlayingReducer from '../reducer/songPlayingSlice';
@@ -8,6 +9,7 @@ export const store = configureStore({
     mainInfo: mainInfoReducer,
     songPlaying: songPlayingReducer,
     playlist: playlistReducer,
+    audioStatus: audioStatusReducer,
   },
 });
 

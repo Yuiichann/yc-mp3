@@ -77,7 +77,7 @@ const AlbumInfo = () => {
                   src={dataList.thumbnail}
                   alt={dataList.title}
                   loading="lazy"
-                  className="w-[200px] h-[200px] mx-auto"
+                  className="w-[200px] h-[200px] mx-auto rounded-full"
                 />
               </div>
               {/* Info include title and artist name */}
@@ -103,7 +103,7 @@ const AlbumInfo = () => {
                 Danh sách: {dataList.song.total} Bài
               </h1>
 
-              <ListSong dataSong={dataList.song} type={dataList.textType} />
+              <ListSong dataSong={dataList.song} type={dataList.textType} enbleIndex={true} />
             </div>
           </>
         )

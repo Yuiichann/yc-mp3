@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ycMp3 from '../api/ycmp3Api';
 import Loading from '../components/Loading';
@@ -48,7 +48,7 @@ const Video = () => {
     </div>
   ) : (
     <div>
-      <h1>Không có dữ liệu!!!</h1>
+      <h1 className="text-center text-xl mt-3">Không có dữ liệu!!!</h1>
     </div>
   );
 };
