@@ -3,12 +3,15 @@ import { AudioStatus } from '../types';
 
 // get data from local storage
 const isLoopLocal = JSON.parse(localStorage.getItem('__isLoop') || 'false') as boolean;
+const volumnLocal = JSON.parse(localStorage.getItem('__volumn') || '1') as number;
+
+console.log(volumnLocal);
 
 const initialState: AudioStatus = {
   statusAudio: 'pause',
   isLoop: isLoopLocal,
   isHiddenMusicPlayer: false,
-  volumn: 1,
+  volumn: volumnLocal,
 };
 
 const audioStatusSlice = createSlice({
@@ -37,6 +40,13 @@ const audioStatusSlice = createSlice({
       };
     },
     setVolumnAudio: (state, action: PayloadAction<AudioStatus['volumn']>) => {
+      if (action.payload < 0 || action.payload > 1) {
+        console.error('Redux Error:', 'State invalid');
+        return state;
+      }
+
+      localStorage.setItem('__volumn', JSON.stringify(action.payload));
+
       return {
         ...state,
         volumn: action.payload,

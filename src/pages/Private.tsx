@@ -116,6 +116,13 @@ const Private = () => {
           <div className="lg:w-8/12"></div>
         </div>
       )}
+
+      {/* when current song underfined */}
+      {!currentSong && (
+        <div className="text-center h-screen">
+          <h1 className="mt-12 text-24 font-bold tracking-widest">Trình phát chưa sẵn sàng !!!</h1>
+        </div>
+      )}
     </section>
   );
 };
