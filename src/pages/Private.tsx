@@ -2,10 +2,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../config/store';
 import IconPlaying from '../assets/gif/icon-playing.gif';
 import { BsPlayCircleFill } from 'react-icons/bs';
-import { setStatusAudio } from '../reducer/audioStatus';
+import { setLoopAudio, setStatusAudio, setVolumnAudio } from '../reducer/audioStatus';
+import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
 
 const Private = () => {
-  const { statusAudio, isLoop, isHiddenMusicPlayer } = useSelector(
+  const { statusAudio, isLoop, isHiddenMusicPlayer, volumn } = useSelector(
     (state: RootState) => state.audioStatus
   );
   const { currentDetails, isPlaylist, currentSong, loading } = useSelector(
@@ -15,6 +16,24 @@ const Private = () => {
 
   const handleSetStatusAudio = () => {
     dispatch(setStatusAudio(statusAudio === 'pause' ? 'playing' : 'pause'));
+  };
+
+  const handleChangeVolumn = (volumnString: string) => {
+    const volumnNumber = Number(volumnString);
+
+    dispatch(setVolumnAudio(volumnNumber));
+  };
+
+  const handleToggleMuteSong = () => {
+    if (volumn != 0) {
+      dispatch(setVolumnAudio(0));
+    } else {
+      dispatch(setVolumnAudio(1));
+    }
+  };
+
+  const handleSetLoop = () => {
+    dispatch(setLoopAudio(!isLoop));
   };
 
   return (
@@ -51,8 +70,45 @@ const Private = () => {
             </div>
             {/* Song info */}
             <div className="flex flex-col items-center space-y-2">
-              <h2 className="text-2xl font-semibold tracking-wider">{currentDetails.title}</h2>
-              <h6 className="text-14 font-normal tracking-normal">{currentDetails.artistsNames}</h6>
+              <h2 className="text-2xl font-semibold tracking-wider text-center">
+                {currentDetails.title}
+              </h2>
+              <h6 className="text-14 font-normal tracking-normal text-center">
+                {currentDetails.artistsNames}
+              </h6>
+            </div>
+
+            {/* Handle with audio */}
+            <div className="flex items-center justify-evenly space-x-2 w-full">
+              {/* change volumn */}
+              <div className="flex space-x-1 items-center justify-center">
+                <div className="text-24 icon-player" onClick={handleToggleMuteSong}>
+                  {volumn != 0 ? <ImVolumeHigh /> : <ImVolumeMute2 />}
+                </div>
+                <div className="flex items-center justify-center">
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.1}
+                    className="w-[150px]"
+                    value={volumn}
+                    onChange={(e) => handleChangeVolumn(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {/* Icon Loop */}
+              <div className="flex items-center">
+                <div
+                  className={`text-24 icon-player${
+                    isLoop ? ' text-red-500 bg-[rgb(0,0,0,0.1)]' : ''
+                  }`}
+                  onClick={handleSetLoop}
+                >
+                  <ImLoop />
+                </div>
+              </div>
             </div>
           </div>
 

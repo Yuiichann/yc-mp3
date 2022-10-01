@@ -80,7 +80,7 @@ const MusicPlayer = () => {
                     <img
                       src={currentDetails.thumbnail}
                       alt=""
-                      className={`w-full h-full max-w-[65px] block max-h-[65px] rounded-full effect ${
+                      className={`w-[65px] h-[65px] max-w-[65px] block max-h-[65px] rounded-full effect ${
                         statusAudio === 'playing' ? 'animate-spin-slow' : ''
                       }`}
                     />

@@ -6,6 +6,39 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+.slider {
+  -webkit-appearance: none;
+  width: 80%;
+  height: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  background: #fff;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  background: #fff;
+  cursor: pointer;
+}
+
 @layer base {
   body {
     @apply font-inter text-black text-16 scrollbar-thin scrollbar-track-[whitesmoke] scrollbar-thumb-secondary;

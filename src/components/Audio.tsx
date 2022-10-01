@@ -1,9 +1,9 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { RiPauseCircleFill, RiPlayFill, RiSkipBackFill, RiSkipForwardFill } from 'react-icons/ri';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../config/store';
-import { setLoopAudio, setStatusAudio } from '../reducer/audioStatus';
+import { setLoopAudio, setStatusAudio, setVolumnAudio } from '../reducer/audioStatus';
 
 interface Props {
   linkMp3?: string;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Audio = ({ linkMp3, lazyLoading }: Props) => {
-  const { statusAudio, isLoop } = useSelector((state: RootState) => state.audioStatus);
+  const { statusAudio, isLoop, volumn } = useSelector((state: RootState) => state.audioStatus);
   const [duration, setDuration] = useState(0); // duration of current song
   const [currentTime, setCurrentTime] = useState(0); // current time now of song
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -43,6 +43,14 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
     }
   }, [statusAudio]);
 
+  // handle when state volumn change will set state to audio volumn
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    audioRef.current.volume = volumn;
+  }, [volumn]);
+
+  // set loop true or false
   const handleSetLoop = () => {
     if (!audioRef.current) return;
 
@@ -106,6 +114,21 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
     setCurrentTime(audioRef.current.currentTime);
   };
 
+  const handleChangeVolumn = (volumnString: string) => {
+    const volumnNumber = Number(volumnString);
+
+    dispatch(setVolumnAudio(volumnNumber));
+  };
+
+  // click to mute song, if song is mute now, delete mute
+  const handleClickToggleMuteSong = () => {
+    if (volumn != 0) {
+      dispatch(setVolumnAudio(0));
+    } else {
+      dispatch(setVolumnAudio(1));
+    }
+  };
+
   return (
     <>
       {/* time progress in mobile */}
@@ -140,12 +163,28 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
         <div className="hidden lg:flex text-18 space-x-2">
           {/* volumn button */}
           <div className="icon-player relative group">
-            <ImVolumeHigh />
-            {/* <div className="absolute left-0 top-0 w-[30px] h-[50px] bg-black -translate-y-full hidden group-hover:block"></div> */}
+            {volumn > 0 ? (
+              <ImVolumeHigh onClick={handleClickToggleMuteSong} />
+            ) : (
+              <ImVolumeMute2 onClick={handleClickToggleMuteSong} />
+            )}
+
+            {/* input range to increase/decrease volumn */}
+            <div className="absolute hidden group-hover:flex left-1/2 top-0 w-[80px] h-[30px] bg-primary -translate-y-full -translate-x-1/2  items-center justify-center rounded-xl">
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.1}
+                className="w-11/12 slider"
+                value={volumn}
+                onChange={(e) => handleChangeVolumn(e.target.value)}
+              />
+            </div>
           </div>
           {/* loop button */}
           <div
-            className={`icon-player${isLoop ? ' after:text-yellow-500 bg-[rgb(0,0,0,0.3)]' : ''}`}
+            className={`icon-player${isLoop ? ' text-yellow-500 bg-[rgb(0,0,0,0.3)]' : ''}`}
             onClick={handleSetLoop}
           >
             <ImLoop />

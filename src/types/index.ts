@@ -13,6 +13,7 @@ interface AudioStatus {
   statusAudio: 'playing' | 'pause';
   isLoop: boolean;
   isHiddenMusicPlayer: boolean;
+  volumn: number;
 }
 
 interface SideBarItem {
