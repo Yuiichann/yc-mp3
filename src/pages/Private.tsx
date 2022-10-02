@@ -37,7 +37,7 @@ const Private = () => {
   };
 
   return (
-    <section className="pt-1 lg:px-2">
+    <section className="pt-1 lg:px-2 min-h-[calc(100vh-180px)]">
       {currentSong && (
         <div className="flex flex-col lg:flex-row">
           {/* Current Play song */}
@@ -90,7 +90,7 @@ const Private = () => {
                     type="range"
                     min={0}
                     max={1}
-                    step={0.1}
+                    step={0.05}
                     className="w-[150px]"
                     value={volumn}
                     onChange={(e) => handleChangeVolumn(e.target.value)}
@@ -119,7 +119,7 @@ const Private = () => {
 
       {/* when current song underfined */}
       {!currentSong && (
-        <div className="text-center h-screen">
+        <div className="text-center">
           <h1 className="mt-12 text-24 font-bold tracking-widest">Trình phát chưa sẵn sàng !!!</h1>
         </div>
       )}

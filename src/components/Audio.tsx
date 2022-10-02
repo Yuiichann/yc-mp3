@@ -17,6 +17,7 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
+
   //when fetch data mp3 to change music, in status pending ==> stop music now and wait new linkMp3
   useEffect(() => {
     if (lazyLoading === 'pending' && linkMp3) {
@@ -175,7 +176,7 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
                 type="range"
                 min={0}
                 max={1}
-                step={0.1}
+                step={0.05}
                 className="w-11/12 slider"
                 value={volumn}
                 onChange={(e) => handleChangeVolumn(e.target.value)}

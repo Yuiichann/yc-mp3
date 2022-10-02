@@ -58,7 +58,7 @@ const Search = () => {
   }
 
   return (
-    <section className="px-1 lg:px-2">
+    <section className="px-1 lg:px-2 min-h-[calc(100vh-180px)]">
       {loading ? (
         <Loading />
       ) : (
@@ -102,7 +102,7 @@ const Search = () => {
               {searchData.song ? (
                 <NewReleaseTab data={searchData.song} type="song" />
               ) : (
-                <h1 className="text-center text-xl mt-3">Không có dữ liệu</h1>
+                <h1 className="text-center text-xl my-6">Không có dữ liệu</h1>
               )}
             </div>
 
@@ -114,7 +114,7 @@ const Search = () => {
               {searchData.playlists ? (
                 <NewReleaseTab data={searchData.playlists} type="album" />
               ) : (
-                <h1 className="text-center text-xl mt-3">Không có dữ liệu</h1>
+                <h1 className="text-center text-xl my-6">Không có dữ liệu</h1>
               )}
             </div>
 
@@ -164,7 +164,7 @@ const Search = () => {
                 </>
               ) : (
                 <>
-                  <h1 className="text-center text-xl mt-3">Không có dữ liệu</h1>
+                  <h1 className="text-center text-xl my-6">Không có dữ liệu</h1>
                 </>
               )}
             </div>
