@@ -14,6 +14,7 @@ interface AudioStatus {
   isLoop: boolean;
   isHiddenMusicPlayer: boolean;
   volumn: number;
+  isPlaylist: boolean;
 }
 
 interface SideBarItem {
@@ -32,7 +33,6 @@ interface SongPlaying {
     artistsNames: string;
     encodeId: string;
   };
-  isPlaylist: boolean;
   loading: 'idle' | 'pending' | 'successed' | 'failed';
 }
 
@@ -53,7 +53,8 @@ interface PlayList {
     artistsNames?: string;
     thumbnail: string;
   };
-  song: PlaylistItem['song'];
+  songs: PlaylistItem['song'];
+  currentSongIndex: number;
 }
 
 // Main Infomation of app include banner,playlist,... ==> use in rudux

@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AppDispatch, RootState } from '../config/store';
+import { setIsHiddenMusicPlayer } from '../reducer/audioStatus';
+import { setPlayBySongIndex } from '../reducer/playlistSlice';
 import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
 import { SongPlaying } from '../types';
 import Audio from './Audio';
 import { SkeletonSongPlaying } from './Skeleton';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { setIsHiddenMusicPlayer } from '../reducer/audioStatus';
 
 // handle music, playlist is here
 const MusicPlayer = () => {
@@ -18,14 +18,18 @@ const MusicPlayer = () => {
   const { currentSong, currentDetails, loading } = useSelector(
     (state: RootState) => state.songPlaying
   );
-  const { playlistDetail, song } = useSelector((state: RootState) => state.playlist);
-  const { isHiddenMusicPlayer, statusAudio } = useSelector((state: RootState) => state.audioStatus);
+  const { playlistDetail, songs, currentSongIndex } = useSelector(
+    (state: RootState) => state.playlist
+  );
+  const { isHiddenMusicPlayer, statusAudio, isPlaylist } = useSelector(
+    (state: RootState) => state.audioStatus
+  );
 
   // play first song when add new List
   useEffect(() => {
     if (!playlistDetail.encodeId) return;
 
-    const firstSong = song.items[0];
+    const firstSong = songs.items[currentSongIndex];
 
     const firstSongInfo: SongPlaying['currentDetails'] = {
       title: firstSong.title,
@@ -38,7 +42,7 @@ const MusicPlayer = () => {
     // dispatch event
     dispatch(setInfoSongPlaying(firstSongInfo));
     dispatch(fetchDataMp3(firstSong.encodeId));
-  }, [playlistDetail.encodeId]);
+  }, [playlistDetail.encodeId, currentSongIndex]);
 
   // alert when data fetch dont have
   useEffect(() => {
@@ -46,10 +50,6 @@ const MusicPlayer = () => {
       toast.error('Không có dữ liệu nhạc!!!');
     }
   }, [loading]);
-
-  const handleHiddenMusicPlayer = () => {
-    dispatch(setIsHiddenMusicPlayer(!isHiddenMusicPlayer));
-  };
 
   return (
     <>
@@ -107,12 +107,12 @@ const MusicPlayer = () => {
 
           {/* Audio Component */}
           <div className="text-36 mr-2 sm:mr-4 lg:mr-0 lg:flex-grow">
-            <Audio linkMp3={currentSong} lazyLoading={loading} />
+            <Audio linkMp3={currentSong} />
           </div>
         </div>
 
         {/* Button hidden music player */}
-        {loading !== 'idle' && loading !== 'failed' && (
+        {/* {loading !== 'idle' && loading !== 'failed' && (
           <div className="absolute left-0 top-0 -translate-y-[calc(100%-1px)] bg-primary rounded-tr-xl border-b-2">
             <div
               className="text-[20px] lg:text-24 p-2 cursor-pointer"
@@ -121,7 +121,7 @@ const MusicPlayer = () => {
               {isHiddenMusicPlayer ? <AiFillEye /> : <AiFillEyeInvisible />}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

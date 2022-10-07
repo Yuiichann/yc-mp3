@@ -22,6 +22,7 @@ const Slide = ({ data }: Props) => {
       <div className="hidden lg:block">
         <Swiper
           modules={[Navigation, Scrollbar, A11y, Autoplay]}
+          grabCursor={true}
           autoplay={{
             delay: 4000,
           }}

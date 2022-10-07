@@ -16,7 +16,9 @@ const convertDate = (date: string | number) => {
   const newDate = new Date(date * 1000);
 
   const dateFormat = newDate.getDate() > 9 ? newDate.getDate() : `0${newDate.getDate()}`;
-  const monthFormat = newDate.getMonth() > 9 ? newDate.getMonth() : `0${newDate.getMonth()}`;
+  const monthFormat =
+    newDate.getMonth() > 8 ? newDate.getMonth() + 1 : `0${newDate.getMonth() + 1}`;
+
 
   return `${dateFormat}/${monthFormat}/${newDate.getFullYear()}`;
 };

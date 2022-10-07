@@ -56,4 +56,15 @@ const SkeletonSongPlaying = () => {
   );
 };
 
-export { SkeletonNewRelease, SkeletonSongPlaying };
+const SkeletionPrivateAudio = () => {
+  return (
+    <div className="lg:w-4/12 flex flex-col items-center space-y-4 animate-pulse h-[263px] lg:mt-[65px]">
+      <div className="w-[150px] h-[150px] bg-[rgb(0,0,0,0.3)] rounded-full"></div>
+
+      <div className="w-5/12 h-[20px] rounded-md bg-[rgb(0,0,0,0.3)]"></div>
+      <div className="w-3/12 h-[16px] rounded-md bg-[rgb(0,0,0,0.3)]"></div>
+    </div>
+  );
+};
+
+export { SkeletonNewRelease, SkeletonSongPlaying, SkeletionPrivateAudio };

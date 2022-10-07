@@ -5,6 +5,7 @@ import ycMp3 from '../api/ycmp3Api';
 import ListSong from '../components/ListSong';
 import Loading from '../components/Loading';
 import { AppDispatch } from '../config/store';
+import { setIsPlaylist } from '../reducer/audioStatus';
 import { initNewPlaylist } from '../reducer/playlistSlice';
 import { PlaylistItem } from '../types';
 import NotFound from './NotFound';
@@ -22,17 +23,21 @@ const AlbumInfo = () => {
   // handle when click play playlist or album
   const handleClickPlayList = () => {
     if (dataList) {
+      // init playlist
       dispatch(
         initNewPlaylist({
-          song: dataList.song,
+          songs: dataList.song,
           playlistDetail: {
             encodeId: dataList.encodeId,
             thumbnail: dataList.thumbnail,
             title: dataList.title,
             artistsNames: dataList.artistNames,
           },
+          currentSongIndex: 0,
         })
       );
+      // set state isPlaylist of state songPlay ==> true
+      dispatch(setIsPlaylist(true));
     }
   };
 

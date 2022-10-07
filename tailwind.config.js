@@ -56,7 +56,7 @@ module.exports = {
     animation: {
       'spin-slow': 'spin 8s linear infinite',
       spin: 'spin 1s linear infinite',
-      pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      pulse: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
     },
   },
   plugins: [require('tailwind-scrollbar')],

@@ -8,11 +8,12 @@ const initialState: PlayList = {
     thumbnail: '',
     artistsNames: '',
   },
-  song: {
+  songs: {
     total: 0,
     totalDuration: 0,
     items: [],
   },
+  currentSongIndex: 0,
 };
 
 const playlistSlice = createSlice({
@@ -23,23 +24,18 @@ const playlistSlice = createSlice({
     initNewPlaylist: (state, action: PayloadAction<PlayList>) => {
       return action.payload;
     },
-    removePlaylist: () => {
+    // change currentSongIndex ==> dispatch new song in playlist
+    setPlayBySongIndex: (state, action: PayloadAction<PlayList['currentSongIndex']>) => {
       return {
-        playlistDetail: {
-          encodeId: '',
-          title: '',
-          thumbnail: '',
-          artistsNames: '',
-        },
-        song: {
-          total: 0,
-          totalDuration: 0,
-          items: [],
-        },
+        ...state,
+        currentSongIndex: action.payload,
       };
+    },
+    removePlaylist: () => {
+      return initialState;
     },
   },
 });
 
-export const { initNewPlaylist, removePlaylist } = playlistSlice.actions;
+export const { initNewPlaylist, removePlaylist, setPlayBySongIndex } = playlistSlice.actions;
 export default playlistSlice.reducer;

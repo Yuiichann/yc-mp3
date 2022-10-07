@@ -1,29 +1,32 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { RiPauseCircleFill, RiPlayFill, RiSkipBackFill, RiSkipForwardFill } from 'react-icons/ri';
+import { memo, useEffect, useRef } from 'react';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
+import { RiPauseCircleFill, RiPlayFill, RiSkipBackFill, RiSkipForwardFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { AppDispatch, RootState } from '../config/store';
 import { setLoopAudio, setStatusAudio, setVolumnAudio } from '../reducer/audioStatus';
+import { setPlayBySongIndex } from '../reducer/playlistSlice';
+import InputRangeVolumn from './InputRangeVolumn';
 
 interface Props {
   linkMp3?: string;
-  lazyLoading: 'idle' | 'pending' | 'successed' | 'failed';
 }
 
-const Audio = ({ linkMp3, lazyLoading }: Props) => {
-  const { statusAudio, isLoop, volumn } = useSelector((state: RootState) => state.audioStatus);
-  const [duration, setDuration] = useState(0); // duration of current song
-  const [currentTime, setCurrentTime] = useState(0); // current time now of song
+const Audio = ({ linkMp3 }: Props) => {
+  const { statusAudio, isLoop, volumn, isPlaylist } = useSelector(
+    (state: RootState) => state.audioStatus
+  );
+  const { currentSongIndex, songs } = useSelector((state: RootState) => state.playlist);
+  const { loading } = useSelector((state: RootState) => state.songPlaying);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
-
   //when fetch data mp3 to change music, in status pending ==> stop music now and wait new linkMp3
   useEffect(() => {
-    if (lazyLoading === 'pending' && linkMp3) {
+    if (loading === 'pending' && linkMp3) {
       handlePauseMusic(true);
     }
-  }, [lazyLoading]);
+  }, [loading]);
 
   //handle when change props: linkmp3 ==> re load audio
   useEffect(() => {
@@ -33,7 +36,15 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
     }
 
     handleReloadMusic();
+
+    // gan lai volumn to new Song current
+    if (audioRef.current) {
+      audioRef.current.volume = volumn;
+    }
   }, [linkMp3]);
+
+  // active when isPlaylist === true
+  // handle when fetch data failed ==> will fetch next song in play list
 
   // handle when dispath statusAudio in out audio component
   useEffect(() => {
@@ -87,16 +98,70 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
     }
   };
 
-  // handle Ended Music
-  const handleEndedMusic = () => {
-    // if loop is active
-    if (isLoop) {
-      handlePauseMusic(true);
-      setTimeout(() => {
-        handlePlayMusic(true);
-      }, 50);
+  // handle when click prev song
+  const handleSkipBackSong = () => {
+    if (!isPlaylist) {
+      toast.warning('Danh sách phát rỗng!');
+      return;
+    }
+    if (loading === 'pending') {
+      return;
+    }
+
+    // check if === 0, stop func
+    if (currentSongIndex === 0) {
+      const songInEndList = songs.items.length - 1;
+      dispatch(setPlayBySongIndex(songInEndList));
+      return;
+    }
+
+    const newCurrentSongIndex = currentSongIndex - 1; // calculator index of prev song
+    dispatch(setPlayBySongIndex(newCurrentSongIndex));
+  };
+
+  // handle when click next song or when end song and next new song
+  const handleSkipForwardSong = (isClickSkip?: boolean) => {
+    if (!isPlaylist) {
+      toast.warning('Danh sách phát rỗng!');
+      return;
+    }
+    // disable click when fetch data
+    if (loading === 'pending') {
+      return;
+    }
+
+    const songsLength = songs.items.length; // get length of list song playlist
+    const newCurrentSongIndex = currentSongIndex + 1; // calculator index of next song
+
+    // if true, we is end playlist now
+    if (newCurrentSongIndex === songsLength) {
+      // check if loop is true or isClickSkip true, restart playlist ---- and false ==> pause music
+      if (isLoop || isClickSkip) {
+        dispatch(setPlayBySongIndex(0));
+      } else {
+        handlePauseMusic(true);
+      }
     } else {
-      handlePauseMusic(true);
+      // when not end list ==> play next song
+      dispatch(setPlayBySongIndex(newCurrentSongIndex));
+    }
+  };
+
+  // handle when Ended Music
+  const handleEndedMusic = () => {
+    // check isPlaylist or not
+    if (isPlaylist) {
+      handleSkipForwardSong();
+    } else {
+      // if loop is active with simple song
+      if (isLoop) {
+        handlePauseMusic(true);
+        setTimeout(() => {
+          handlePlayMusic(true);
+        }, 50);
+      } else {
+        handlePauseMusic(true);
+      }
     }
   };
 
@@ -105,16 +170,9 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
     if (!audioRef.current) return;
 
     handlePlayMusic(true);
-    setDuration(audioRef.current.duration);
   };
 
-  // when current time change, set currentTime now
-  const handleUpdateTime = () => {
-    if (!audioRef.current) return;
-
-    setCurrentTime(audioRef.current.currentTime);
-  };
-
+  // handle when change input volumn
   const handleChangeVolumn = (volumnString: string) => {
     const volumnNumber = Number(volumnString);
 
@@ -132,19 +190,20 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
 
   return (
     <>
+      {/* Audio */}
+      {linkMp3 && (
+        <audio hidden ref={audioRef} onEnded={handleEndedMusic} onCanPlay={handleCanPlay}>
+          <source src={linkMp3} />
+        </audio>
+      )}
+
       {/* time progress in mobile */}
-      {/* <div className="absolute left-0 top-0 w-[calc(100%-5px)] h-[5px]">
-        <input
-          type="range"
-          id=""
-          className="absolute left-0 top-0 w-full h-full bg-amber-400 appearance-none"
-        />
-      </div> */}
+      {/* <InputRangeTime /> */}
 
       {/* Media controls */}
       <div className="h-full flex space-x-1 items-center">
         <div className="flex-grow flex space-x-1 justify-center">
-          <div className="icon-player">
+          <div className="icon-player" onClick={handleSkipBackSong}>
             <RiSkipBackFill />
           </div>
           {statusAudio === 'playing' ? (
@@ -156,7 +215,7 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
               <RiPlayFill />
             </div>
           )}
-          <div className="icon-player">
+          <div className="icon-player" onClick={() => handleSkipForwardSong(true)}>
             <RiSkipForwardFill />
           </div>
         </div>
@@ -171,15 +230,11 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
             )}
 
             {/* input range to increase/decrease volumn */}
-            <div className="absolute hidden group-hover:flex left-1/2 top-0 w-[80px] h-[30px] bg-primary -translate-y-full -translate-x-1/2  items-center justify-center rounded-xl">
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.05}
-                className="w-11/12 slider"
-                value={volumn}
-                onChange={(e) => handleChangeVolumn(e.target.value)}
+            <div className="absolute hidden group-hover:flex left-1/2 top-0 w-[80px] h-[30px] bg-primary -translate-y-full -translate-x-1/2  items-center justify-center rounded-xl after:absolute after:bottom-0 after:left-0 after:w-full after:h-[15px] after:translate-y-full">
+              <InputRangeVolumn
+                volumnValue={volumn}
+                handleChangeVolumn={handleChangeVolumn}
+                isChildOfComponent="audio"
               />
             </div>
           </div>
@@ -192,19 +247,6 @@ const Audio = ({ linkMp3, lazyLoading }: Props) => {
           </div>
         </div>
       </div>
-
-      {/* Audio */}
-      {linkMp3 && (
-        <audio
-          hidden={true}
-          ref={audioRef}
-          onEnded={handleEndedMusic}
-          onCanPlay={handleCanPlay}
-          onTimeUpdate={handleUpdateTime}
-        >
-          <source src={linkMp3} />
-        </audio>
-      )}
     </>
   );
 };

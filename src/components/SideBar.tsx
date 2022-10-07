@@ -47,7 +47,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="m-1">
+    <div className="m-1 sticky top-[calc(56px+36px)] left-0">
       <ul className="flex flex-col font-normal space-y-4">
         {sideBarItem.map((item) => (
           <li

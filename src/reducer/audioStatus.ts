@@ -5,13 +5,12 @@ import { AudioStatus } from '../types';
 const isLoopLocal = JSON.parse(localStorage.getItem('__isLoop') || 'false') as boolean;
 const volumnLocal = JSON.parse(localStorage.getItem('__volumn') || '1') as number;
 
-console.log(volumnLocal);
-
 const initialState: AudioStatus = {
   statusAudio: 'pause',
   isLoop: isLoopLocal,
   isHiddenMusicPlayer: false,
   volumn: volumnLocal,
+  isPlaylist: false,
 };
 
 const audioStatusSlice = createSlice({
@@ -22,6 +21,12 @@ const audioStatusSlice = createSlice({
       return {
         ...state,
         statusAudio: action.payload,
+      };
+    },
+    setIsPlaylist: (state, action: PayloadAction<AudioStatus['isPlaylist']>) => {
+      return {
+        ...state,
+        isPlaylist: action.payload,
       };
     },
     setLoopAudio: (state, action: PayloadAction<AudioStatus['isLoop']>) => {
@@ -55,6 +60,11 @@ const audioStatusSlice = createSlice({
   },
 });
 
-export const { setStatusAudio, setLoopAudio, setIsHiddenMusicPlayer, setVolumnAudio } =
-  audioStatusSlice.actions;
+export const {
+  setStatusAudio,
+  setLoopAudio,
+  setIsHiddenMusicPlayer,
+  setVolumnAudio,
+  setIsPlaylist,
+} = audioStatusSlice.actions;
 export default audioStatusSlice.reducer;

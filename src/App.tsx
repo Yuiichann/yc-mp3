@@ -55,10 +55,10 @@ const App = () => {
       <NavBar />
 
       {/* main section */}
-      <div className="mt-navbar py-8">
+      <div className="mt-navbar py-[32px]">
         <div className="container flex gap-2">
           {/* side bar on left screen */}
-          <div className="hidden lg:block min-w-[200px] max-w-[200px]">
+          <div className="hidden lg:block min-w-[200px] max-w-[200px] relative">
             <SideBar />
           </div>
 

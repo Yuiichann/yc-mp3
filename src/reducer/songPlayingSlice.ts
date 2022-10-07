@@ -25,7 +25,6 @@ const initialState: SongPlaying = {
     encodeId: '',
     thumbnailM: '',
   },
-  isPlaylist: false,
   loading: 'idle',
 };
 
