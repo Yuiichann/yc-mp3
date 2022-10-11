@@ -1,6 +1,7 @@
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
 import { RiPauseCircleFill, RiPlayFill, RiSkipBackFill, RiSkipForwardFill } from 'react-icons/ri';
+import { AiOutlineLoading } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { AppDispatch, RootState } from '../config/store';
@@ -19,12 +20,17 @@ const Audio = ({ linkMp3 }: Props) => {
   const { currentSongIndex, songs } = useSelector((state: RootState) => state.playlist);
   const { loading } = useSelector((state: RootState) => state.songPlaying);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioCanPlay, setAudioCanPlay] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
 
   //when fetch data mp3 to change music, in status pending ==> stop music now and wait new linkMp3
   useEffect(() => {
     if (loading === 'pending' && linkMp3) {
       handlePauseMusic(true);
+    }
+
+    if (loading === 'successed') {
+      setAudioCanPlay(false);
     }
   }, [loading]);
 
@@ -169,6 +175,7 @@ const Audio = ({ linkMp3 }: Props) => {
   const handleCanPlay = () => {
     if (!audioRef.current) return;
 
+    setAudioCanPlay(true);
     handlePlayMusic(true);
   };
 
@@ -206,7 +213,11 @@ const Audio = ({ linkMp3 }: Props) => {
           <div className="icon-player" onClick={handleSkipBackSong}>
             <RiSkipBackFill />
           </div>
-          {statusAudio === 'playing' ? (
+          {!audioCanPlay ? (
+            <div className="icon-player animate-spin">
+              <AiOutlineLoading />
+            </div>
+          ) : statusAudio === 'playing' ? (
             <div className="icon-player" onClick={() => handlePauseMusic(true)}>
               <RiPauseCircleFill />
             </div>

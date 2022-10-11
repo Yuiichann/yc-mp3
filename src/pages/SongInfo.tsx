@@ -29,6 +29,7 @@ const SongInfo = () => {
         // if call api sucess, render UI
         if (res.msg === 'Success') {
           setSong(res.data as SongApi);
+          console.log(res);
           setLoading(false);
         } else {
           // call fail...

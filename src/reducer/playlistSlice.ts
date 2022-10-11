@@ -22,6 +22,12 @@ const playlistSlice = createSlice({
   reducers: {
     // init a new playlist ---> click start a playlist
     initNewPlaylist: (state, action: PayloadAction<PlayList>) => {
+      // save encodeId of list to local
+      localStorage.setItem(
+        '__currentPlaylist',
+        JSON.stringify(action.payload.playlistDetail.encodeId)
+      );
+
       return action.payload;
     },
     // change currentSongIndex ==> dispatch new song in playlist

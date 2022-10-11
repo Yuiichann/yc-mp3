@@ -62,7 +62,7 @@ const MusicPlayer = () => {
       >
         <div className="h-full px-1 py-2 lg:px-8 flex justify-center lg:justify-between">
           {/* Current Song Playing Infomation */}
-          <div className="flex items-center flex-grow lg:flex-grow-0">
+          <div className="flex items-center flex-grow lg:flex-grow-0 lg:w-[350px]">
             {/* check loading to render */}
             {loading === 'idle' ? (
               <>
@@ -110,18 +110,6 @@ const MusicPlayer = () => {
             <Audio linkMp3={currentSong} />
           </div>
         </div>
-
-        {/* Button hidden music player */}
-        {/* {loading !== 'idle' && loading !== 'failed' && (
-          <div className="absolute left-0 top-0 -translate-y-[calc(100%-1px)] bg-primary rounded-tr-xl border-b-2">
-            <div
-              className="text-[20px] lg:text-24 p-2 cursor-pointer"
-              onClick={handleHiddenMusicPlayer}
-            >
-              {isHiddenMusicPlayer ? <AiFillEye /> : <AiFillEyeInvisible />}
-            </div>
-          </div>
-        )} */}
       </div>
     </>
   );
