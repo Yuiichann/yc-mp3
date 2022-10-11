@@ -7,6 +7,7 @@ import Ranking from '../pages/Ranking';
 import Search from '../pages/Search';
 import SongInfo from '../pages/SongInfo';
 import Video from '../pages/Video';
+import YCCollection from '../pages/YCCollection';
 import { RoutesProps } from '../types';
 
 const routes: RoutesProps[] = [
@@ -45,6 +46,11 @@ const routes: RoutesProps[] = [
     title: 'Bảng xếp hạng',
     path: '/bxh',
     component: Ranking,
+  },
+  {
+    title: 'Bộ sưu tập của Yc',
+    path: '/album-yc',
+    component: YCCollection,
   },
   {
     title: 'Thông tin bài hát',

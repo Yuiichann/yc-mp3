@@ -59,6 +59,10 @@ const ycMp3 = {
     const url = 'video';
     return axiosClient.get(url, { params } as AxiosRequestConfig);
   },
+  getYcAlbum: () => {
+    const url = 'album-yc';
+    return axiosClient.get(url);
+  },
 };
 
 export default ycMp3;

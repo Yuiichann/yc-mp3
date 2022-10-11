@@ -39,6 +39,9 @@ const songPlayingSlice = createSlice({
         currentDetails: { ...action.payload },
       };
     },
+    initSong: (state, action: PayloadAction<SongPlaying>) => {
+      return action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchDataMp3.pending, (state, action) => {
@@ -74,5 +77,5 @@ const songPlayingSlice = createSlice({
   },
 });
 
-export const { setInfoSongPlaying } = songPlayingSlice.actions;
+export const { setInfoSongPlaying, initSong } = songPlayingSlice.actions;
 export default songPlayingSlice.reducer;

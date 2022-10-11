@@ -89,7 +89,12 @@ const MusicPlayer = () => {
                 {/* title */}
                 <div className="px-1 text-14">
                   <Link to="/ca-nhan">
-                    <Marquee gradient={false} speed={30} pauseOnHover={true} direction="right">
+                    <Marquee
+                      gradient={false}
+                      speed={30}
+                      pauseOnHover={true}
+                      className="lg:min-w-[150px]"
+                    >
                       <h1>{currentDetails.title}</h1>
                     </Marquee>
                   </Link>

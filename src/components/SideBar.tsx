@@ -5,6 +5,7 @@ import { ReactComponent as Svg3 } from '../assets/icons/svg3.svg'; // ca nhan
 import { ReactComponent as Svg4 } from '../assets/icons/svg4.svg'; // nhac moi
 import { ReactComponent as Ranking } from '../assets/icons/ranking.svg'; // ranking
 import { ReactComponent as AlbumSvg } from '../assets/icons/album.svg';
+import { ReactComponent as AlbumYc } from '../assets/icons/album-yc.svg';
 import { SideBarItem } from '../types';
 
 // export for mobile menu
@@ -28,6 +29,11 @@ export const sideBarItem: SideBarItem[] = [
     Icon: Ranking,
     path: '/bxh',
     title: 'Bảng Xếp Hạng',
+  },
+  {
+    Icon: AlbumYc,
+    path: '/album-yc',
+    title: 'YC Collection',
   },
   {
     Icon: Svg3,
