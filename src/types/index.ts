@@ -57,6 +57,16 @@ interface PlayList {
   currentSongIndex: number;
 }
 
+// using for Artists
+interface Artist {
+  alias: string;
+  id: string;
+  spotlight: boolean;
+  thumbnail: string;
+  thumbnailM: string;
+  name: string;
+}
+
 // Main Infomation of app include banner,playlist,... ==> use in rudux
 interface MainInfo {
   banner: BannerApi[];
@@ -68,6 +78,15 @@ interface MainInfo {
   };
 }
 
+// using for page Bang Xep Hang (top100 Api)
+interface DataRanking {
+  title: string;
+  genre: {
+    name: string;
+  };
+  items: BannerApi[];
+}
+
 // Banner Api of main info
 interface BannerApi {
   banner: string;
@@ -76,6 +95,9 @@ interface BannerApi {
   encodeId: string;
   title: string;
   type: number;
+  thumbnail?: string;
+  thumbnailM?: string;
+  textType?: string;
 }
 
 // New Release Api of main info
@@ -94,17 +116,29 @@ interface SongApi {
   duration: number;
   alias: string;
   artistsNames: string;
-  artists: [];
+  artists: Artist[];
   encodeId: string;
   hasLyric: boolean;
   genres: [];
+}
+
+// using for Song Yc Collection
+interface SongYcAlbum {
+  thumbnail: string;
+  thumbnailM: string;
+  title: string;
+  releaseDate: number | string;
+  duration: number;
+  artistsNames: string;
+  encodeId: string;
+  link_mp3: string;
 }
 
 // Album API --> using on Home
 interface AlbumApi {
   encodeId: string;
   artistNames: string;
-  artists: [];
+  artists: Artist[];
   releaseDate: string | number;
   artistsNames: string;
   textType: string;
@@ -183,4 +217,7 @@ export type {
   SearchItems,
   VideoItems,
   AudioStatus,
+  DataRanking,
+  SongYcAlbum,
+  Artist,
 };

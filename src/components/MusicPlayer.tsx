@@ -93,7 +93,7 @@ const MusicPlayer = () => {
                       gradient={false}
                       speed={30}
                       pauseOnHover={true}
-                      className="lg:min-w-[150px]"
+                      className="md:min-w-[150px]"
                     >
                       <h1>{currentDetails.title}</h1>
                     </Marquee>

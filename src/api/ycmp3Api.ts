@@ -63,6 +63,10 @@ const ycMp3 = {
     const url = 'album-yc';
     return axiosClient.get(url);
   },
+  getOneSongInYcAlbum: (params: IDParams) => {
+    const url = 'album-yc/song';
+    return axiosClient.get(url, { params } as AxiosRequestConfig);
+  },
 };
 
 export default ycMp3;

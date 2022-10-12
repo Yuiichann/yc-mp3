@@ -1,75 +1,130 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
-import ycMp3 from '../api/ycmp3Api';
-import Loading from '../components/Loading';
-import { AppDispatch } from '../config/store';
-import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongApi } from '../types';
+import { useState, useEffect } from 'react';
+import ycMp3 from '../api/ycmp3Api';
+import { useSearchParams } from 'react-router-dom';
 import NotFound from './NotFound';
+import Loading from '../components/Loading';
+import { RiPauseCircleFill, RiPlayFill } from 'react-icons/ri';
+import { IoMdHeartEmpty, IoMdHeart, IoMdAddCircleOutline } from 'react-icons/io';
+import Lyric from '../components/Lyric';
+import { BiHide, BiShow } from 'react-icons/bi';
 
 const SongInfo = () => {
-  // get id song on url
-  const [song, setSong] = useState<SongApi>();
-  const [loading, setLoading] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const dispatch = useDispatch<AppDispatch>();
-  const songId = searchParams.get('id');
+  const [songInfo, setSongInfo] = useState<SongApi>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShowLyric, setIsShowLyric] = useState(false);
 
-  // handle call API
+  // get ID SONG
+  const [searchParams] = useSearchParams();
+  const songID = searchParams.get('id');
+
+  // fetch Data Song
   useEffect(() => {
-    // if songId is avaiable
-    if (songId) {
-      setLoading(true);
+    if (songID) {
+      setIsLoading(true);
+      const fetchData = async () => {
+        const res: any = await ycMp3.getInfoSong({ id: songID });
 
-      // call api info music
-      const getData = async () => {
-        const res: any = await ycMp3.getInfoSong({ id: songId });
-
-        // if call api sucess, render UI
         if (res.msg === 'Success') {
-          setSong(res.data as SongApi);
-          console.log(res);
-          setLoading(false);
-        } else {
-          // call fail...
-          setLoading(false);
+          setSongInfo(res.data);
         }
+        setIsLoading(false);
       };
-      getData();
+      fetchData();
     }
-  }, [songId]);
+  }, []);
 
-  const handlePlaySong = (encodeId?: string) => {
-    if (encodeId) {
-      dispatch(fetchDataMp3(encodeId));
-    }
-  };
-
-  // URL failed ==> page not found
-  if (!songId) {
+  if (!songID) {
     return <NotFound />;
   }
 
+  console.log(songInfo);
+
   return (
-    <div>
-      <div>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
-            <div className="w-56 h-5w-56">
-              <img src={song?.thumbnailM} width="100%" height="100%" alt="" />
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        songInfo && (
+          <section className="px-1 lg:px-2 mt-10 min-h-[calc(100vh-150px)]">
+            <div className="flex justify-center flex-col lg:flex-row space-y-4 lg:space-y-0 lg:justify-start lg:space-x-4">
+              {/* banner song */}
+              <div className="flex flex-col items-center space-y-4">
+                {/* image */}
+                <div className="min-w-max shadow-lg">
+                  <img
+                    src={songInfo.thumbnailM}
+                    alt={songInfo.alias}
+                    loading="lazy"
+                    className="w-[200px] h-[200px] rounded-md"
+                  />
+                </div>
+
+                {/* Icon */}
+                <div className="flex justify-center items-center gap-5 text-3xl">
+                  <div className="icon-player text-secondary relative group">
+                    <RiPlayFill />
+
+                    <div className="toolip-container">
+                      <p>Phát bài hát</p>
+                    </div>
+                  </div>
+
+                  <div className="icon-player text-secondary relative group">
+                    <IoMdAddCircleOutline />
+
+                    <div className="toolip-container">
+                      <p>Thêm vào danh sách phát</p>
+                    </div>
+                  </div>
+
+                  <div className="icon-player text-red-600 relative group">
+                    <IoMdHeartEmpty />
+
+                    <div className="toolip-container">
+                      <p>Thêm vào yêu thích</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Info details */}
+              <div className="flex-grow">
+                <div className="flex items-center text-xl font-normal tracking-wider gap-2 justify-center lg:justify-start mt-2">
+                  <h2 className="">{songInfo.title}</h2>
+                  <span> - </span>
+                  <p>{songInfo.artistsNames}</p>
+                </div>
+
+                {/* Lyric */}
+                <div
+                  className={`effect overflow-y-scroll scrollbar-none mt-6 ${
+                    isShowLyric ? 'h-[300px] border border-secondary' : 'h-fit'
+                  }`}
+                >
+                  <div className="flex items-center justify-center lg:justify-start gap-4 sticky top-0 left-0 w-full bg-white pl-4 py-1">
+                    {/* Lyric title */}
+                    <h2 className="text-center font-semibold text-xl tracking-wide my-2 text-secondar">
+                      Lời bài hát
+                    </h2>
+
+                    <div
+                      className="icon-player text-2xl text-secondary"
+                      onClick={() => setIsShowLyric((prev) => !prev)}
+                    >
+                      {isShowLyric ? <BiHide /> : <BiShow />}
+                    </div>
+                  </div>
+
+                  {/* Lyric show here */}
+                  {isShowLyric && <Lyric encodeId={songInfo.encodeId} />}
+                </div>
+              </div>
             </div>
-            <h1>{song?.title}</h1>
-            <h2>{song?.artistsNames}</h2>
-            <button className="button" onClick={() => handlePlaySong(song?.encodeId)}>
-              Phát
-            </button>
-          </>
-        )}
-      </div>
-    </div>
+          </section>
+        )
+      )}
+    </>
   );
 };
 

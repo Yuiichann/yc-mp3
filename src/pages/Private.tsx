@@ -51,7 +51,7 @@ const Private = () => {
         {loading === 'successed' && (
           <div
             className={`relative md:px-1 xl:px-2 ${
-              songs.items.length > 0 ? 'lg:w-4/12' : 'lg:w-full justify-center'
+              songs.items.length > 0 ? 'xl:w-4/12 lg:w-6/12' : 'lg:w-full justify-center'
             }`}
           >
             <div className="lg:sticky lg:top-[150px] lg:left-0 flex flex-col items-center space-y-4">
@@ -67,7 +67,7 @@ const Private = () => {
 
                 {/* overlay */}
                 <div
-                  className="absolute left-0 top-0 w-full h-full bg-[rgb(0,0,0,0.5)] cursor-pointer flex items-center justify-center"
+                  className="absolute left-0 top-0 w-full h-full bg-[rgb(0,0,0,0.3)] cursor-pointer flex items-center justify-center"
                   onClick={handleSetStatusAudio}
                 >
                   {statusAudio === 'playing' ? (
@@ -81,6 +81,7 @@ const Private = () => {
                   )}
                 </div>
               </div>
+
               {/* Song info */}
               <div className="flex flex-col items-center space-y-2">
                 <Link
@@ -153,7 +154,7 @@ const Private = () => {
 
         {/* Current Playlists */}
         {songs.items.length > 0 && (
-          <div className="lg:w-8/12">
+          <div className="xl:w-8/12 lg:w-6/12">
             {/* List Song Play Current */}
             <div className="flex items-center space-x-2 justify-center lg:justify-start mt-8 lg:mt-4 mb-4 border-b-2 border-secondary">
               <div className="text-28">

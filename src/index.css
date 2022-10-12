@@ -90,4 +90,11 @@ body {
   .sidebar-item--active {
     @apply before:absolute before:top-0 before:left-0 before:h-full before:w-[3px] border before:border-t before:border-b before:border-primary before:bg-primary border-secondary ;
   }
+
+
+
+  /* when using it, it add relative and group in tag father */
+  .toolip-container {
+    @apply absolute hidden group-hover:block top-0 left-1/2 -translate-x-1/2 -translate-y-[calc(100%+5px)] bg-gray-600 px-3 py-1 rounded-md text-14 leading-tight text-white min-w-max;
+  }
 }

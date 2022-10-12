@@ -12,6 +12,7 @@ import { AppDispatch } from './config/store';
 import { setDataOfMainInfo } from './reducer/mainInfoSlice';
 import routes from './routes';
 import { BannerApi, NewReleaseApi, RoutesProps } from './types';
+import ScrollTopAction from './utils/ScrollTopAction';
 
 const App = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,6 +47,8 @@ const App = () => {
     getData();
   }, []);
 
+  console.log('app render');
+
   return (
     <BrowserRouter>
       {/* Toastify */}
@@ -69,6 +72,8 @@ const App = () => {
                 <Route path={route.path} element={<route.component />} key={route.title} />
               ))}
             </Routes>
+            {/* Action when change route */}
+            <ScrollTopAction />
           </div>
         </div>
       </div>

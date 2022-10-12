@@ -63,7 +63,7 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
         {type === 'song' && (
           <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
             <div
-              className="absolute right-1 bottom-1 text-3xl lg:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
+              className="absolute right-1 bottom-1 text-3xl lg:text-3xl xl:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
               onClick={handlePlayCurrentMusic}
             >
               <MdPlayCircleFilled />

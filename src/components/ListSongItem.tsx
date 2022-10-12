@@ -49,7 +49,7 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
     >
       {/* STT */}
       {enbleIndex ? (
-        <div className="min-w-[80px] text-xl font-extrabold">
+        <div className="min-w-[80px] text-[16] lg:text-xl font-bold">
           <p className="text-center">{index + 1}</p>
         </div>
       ) : (

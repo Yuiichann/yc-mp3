@@ -12,28 +12,44 @@ import getUrlByType from '../utils/getUrlByType';
 
 interface Props {
   data: BannerApi[];
+  isRanking?: boolean;
 }
 
 // Slider using banner api in getHome zingmp3
-const Slide = ({ data }: Props) => {
+const Slide = ({ data, isRanking }: Props) => {
+  // chose type
+  const handleChooseType = (numType?: number, textType?: string) => {
+    let type: string = '';
+
+    if (typeof numType !== 'undefined') {
+      type = getUrlByType(numType);
+    }
+
+    if (typeof textType !== 'undefined') {
+      type = textType.toLowerCase();
+    }
+
+    return type;
+  };
+
   return (
     <>
       {/* Slider on Desktop */}
-      <div className="hidden lg:block">
+      <div className={`hidden md:block ${isRanking ? 'px-5' : ''}`}>
         <Swiper
           modules={[Navigation, Scrollbar, A11y, Autoplay]}
           grabCursor={true}
           autoplay={{
             delay: 4000,
           }}
-          spaceBetween={20}
-          slidesPerView={2}
+          spaceBetween={isRanking ? 10 : 20}
+          slidesPerView={isRanking ? 5 : 2}
           navigation
         >
           {data.map((item, index) => (
             <SwiperSlide key={index}>
-              <Link to={`/${getUrlByType(item.type)}?id=${item.encodeId}`}>
-                <img src={item.banner} alt={item.title} className="rounded-xl" />
+              <Link to={`/${handleChooseType(item.type, item.textType)}?id=${item.encodeId}`}>
+                <img src={item.banner || item.thumbnailM} alt={item.title} className="rounded-xl" />
               </Link>
             </SwiperSlide>
           ))}
@@ -41,21 +57,29 @@ const Slide = ({ data }: Props) => {
       </div>
 
       {/* Slider on Mobile */}
-      <div className="block lg:hidden">
+      <div className="block md:hidden">
         <Swiper
-          modules={[Scrollbar, A11y, EffectFade, Autoplay, Pagination]}
+          modules={
+            isRanking
+              ? [Scrollbar, A11y, Autoplay]
+              : [Scrollbar, A11y, EffectFade, Autoplay, Pagination]
+          }
           autoplay={{
             delay: 4000,
           }}
           pagination={{ clickable: true }}
-          effect="fade"
-          spaceBetween={10}
-          slidesPerView={1}
+          effect={!isRanking ? 'fade' : undefined}
+          spaceBetween={5}
+          slidesPerView={isRanking ? 3 : 1}
         >
           {data.map((item, index) => (
             <SwiperSlide key={index}>
-              <Link to={`/${getUrlByType(item.type)}?id=${item.encodeId}`}>
-                <img src={item.banner} alt={item.title} className="rounded-xl w-full" />
+              <Link to={`/${handleChooseType(item.type, item.textType)}?id=${item.encodeId}`}>
+                <img
+                  src={item.banner || item.thumbnailM}
+                  alt={item.title}
+                  className="rounded-md w-full"
+                />
               </Link>
             </SwiperSlide>
           ))}
