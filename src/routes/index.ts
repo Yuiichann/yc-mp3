@@ -1,3 +1,4 @@
+import AddSong from '../pages/AddSong';
 import Album from '../pages/Album';
 import Home from '../pages/Home';
 import Latest from '../pages/Latest';
@@ -36,6 +37,12 @@ const routes: RoutesProps[] = [
     title: 'playlists',
     path: '/playlist',
     component: Album,
+  },
+  // bun bun lmao
+  {
+    title: 'Thêm nhạc',
+    path: '/api/them-bai-hat',
+    component: AddSong,
   },
   {
     title: 'Tìm kiếm',

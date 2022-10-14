@@ -12,7 +12,7 @@ import { BiHide, BiShow } from 'react-icons/bi';
 const SongInfo = () => {
   const [songInfo, setSongInfo] = useState<SongApi>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isShowLyric, setIsShowLyric] = useState(false);
+  const [isShowLyric, setIsShowLyric] = useState(true);
 
   // get ID SONG
   const [searchParams] = useSearchParams();
@@ -90,10 +90,10 @@ const SongInfo = () => {
 
               {/* Info details */}
               <div className="flex-grow">
-                <div className="flex items-center text-xl font-normal tracking-wider gap-2 justify-center lg:justify-start mt-2">
-                  <h2 className="">{songInfo.title}</h2>
-                  <span> - </span>
-                  <p>{songInfo.artistsNames}</p>
+                <div className="flex items-center flex-col lg:flex-row text-xl font-normal tracking-wider gap-2 justify-center lg:justify-start mt-2">
+                  <h2 className="text-center lg:text-left">{songInfo.title}</h2>
+                  <span className="hidden lg:block"> - </span>
+                  <p className="text-center lg:text-left">{songInfo.artistsNames}</p>
                 </div>
 
                 {/* Lyric */}
