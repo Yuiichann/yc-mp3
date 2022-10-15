@@ -7,7 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { BannerApi } from '../types';
+import { AlbumApi, BannerApi } from '../types';
 import getUrlByType from '../utils/getUrlByType';
 
 interface Props {
@@ -90,3 +90,31 @@ const Slide = ({ data, isRanking }: Props) => {
 };
 
 export default memo(Slide);
+
+interface SliderProps {
+  data: AlbumApi[];
+  slidePerView?: number;
+}
+// slider for small slider
+export const Slider = ({ data, slidePerView }: SliderProps) => {
+  return (
+    <Swiper
+      modules={[Navigation, Scrollbar, A11y, Autoplay]}
+      grabCursor={true}
+      autoplay={{
+        delay: 4000,
+      }}
+      spaceBetween={10}
+      slidesPerView={slidePerView}
+      navigation
+    >
+      {data.map((item, index) => (
+        <SwiperSlide key={index}>
+          <Link to={`/${item.textType.toLowerCase()}?id=${item.encodeId}`}>
+            <img src={item.thumbnailM} alt={item.title} className="rounded-xl" />
+          </Link>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+};

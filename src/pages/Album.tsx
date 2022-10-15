@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import ycMp3 from '../api/ycmp3Api';
 import ListSong from '../components/ListSong';
 import Loading from '../components/Loading';
-import { AppDispatch } from '../config/store';
+import { AppDispatch, RootState } from '../config/store';
 import { setIsPlaylist } from '../reducer/audioStatus';
 import { initNewPlaylist } from '../reducer/playlistSlice';
+import { addTempPlaylist } from '../reducer/tempGlobalState';
 import { PlaylistItem } from '../types';
 import NotFound from './NotFound';
 
@@ -15,10 +16,13 @@ const AlbumInfo = () => {
   const [dataList, setDataList] = useState<PlaylistItem>();
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch<AppDispatch>();
+  const { temp_playlists } = useSelector((state: RootState) => state.tempGlobalState);
 
   // get id query on url - id may be playlistid or albumid
   let [searchParams] = useSearchParams();
   const paramsId = searchParams.get('id');
+
+  const tempPlaylistSaved = temp_playlists.find((pl) => pl.encodeId === paramsId);
 
   // handle when click play playlist or album
   const handleClickPlayList = () => {
@@ -44,22 +48,29 @@ const AlbumInfo = () => {
   // handle fetch data with paramsId
   useEffect(() => {
     if (!paramsId) return;
-
     setIsLoading(true);
 
-    const fetchData = async () => {
-      const res: any = await ycMp3.getDetailPlaylist({ id: paramsId });
+    if (!tempPlaylistSaved) {
+      const fetchData = async () => {
+        const res: any = await ycMp3.getDetailPlaylist({ id: paramsId });
 
-      // check success fetch data
-      if (res.msg === 'Success') {
-        setDataList(res.data as PlaylistItem);
-      } else {
-        console.error(res.msg);
-      }
+        // check success fetch data
+        if (res.msg === 'Success') {
+          dispatch(addTempPlaylist(res.data));
+          setDataList(res.data as PlaylistItem);
+        } else {
+          console.error(res.msg);
+        }
 
-      setIsLoading(false);
-    };
-    fetchData();
+        setIsLoading(false);
+      };
+      fetchData();
+    } else {
+      setDataList(tempPlaylistSaved);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 200);
+    }
   }, [paramsId]);
 
   // check paramsid not found

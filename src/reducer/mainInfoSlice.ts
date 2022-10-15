@@ -9,6 +9,19 @@ const initialState: MainInfo = {
     song: [],
     album: [],
   },
+  weekend: {
+    title: '',
+    items: [],
+  },
+  newSongSlider: {
+    title: '',
+    items: [],
+  },
+  top100: {
+    title: '',
+    items: [],
+  },
+
   isLoading: true,
 };
 

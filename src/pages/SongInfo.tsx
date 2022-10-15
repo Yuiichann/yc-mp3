@@ -4,41 +4,56 @@ import ycMp3 from '../api/ycmp3Api';
 import { useSearchParams } from 'react-router-dom';
 import NotFound from './NotFound';
 import Loading from '../components/Loading';
-import { RiPauseCircleFill, RiPlayFill } from 'react-icons/ri';
+import { RiPlayFill } from 'react-icons/ri';
 import { IoMdHeartEmpty, IoMdHeart, IoMdAddCircleOutline } from 'react-icons/io';
 import Lyric from '../components/Lyric';
-import { BiHide, BiShow } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../config/store';
+import { addTempSong } from '../reducer/tempGlobalState';
 
 const SongInfo = () => {
   const [songInfo, setSongInfo] = useState<SongApi>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isShowLyric, setIsShowLyric] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { temp_songs } = useSelector((state: RootState) => state.tempGlobalState);
 
   // get ID SONG
   const [searchParams] = useSearchParams();
   const songID = searchParams.get('id');
 
+  // check song maybe save in temp state
+  const tempSongSaved = temp_songs.find((song) => song.encodeId === songID);
+
   // fetch Data Song
   useEffect(() => {
     if (songID) {
       setIsLoading(true);
-      const fetchData = async () => {
-        const res: any = await ycMp3.getInfoSong({ id: songID });
 
-        if (res.msg === 'Success') {
-          setSongInfo(res.data);
-        }
-        setIsLoading(false);
-      };
-      fetchData();
+      // check in temp
+      if (!tempSongSaved) {
+        const fetchData = async () => {
+          const res: any = await ycMp3.getInfoSong({ id: songID });
+
+          if (res.msg === 'Success') {
+            dispatch(addTempSong(res.data));
+            setSongInfo(res.data);
+          }
+          setIsLoading(false);
+        };
+        fetchData();
+      } else {
+        setSongInfo(tempSongSaved);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 200);
+      }
     }
-  }, []);
+  }, [songID]);
 
   if (!songID) {
     return <NotFound />;
   }
-
-  console.log(songInfo);
 
   return (
     <>
@@ -98,26 +113,17 @@ const SongInfo = () => {
 
                 {/* Lyric */}
                 <div
-                  className={`effect overflow-y-scroll scrollbar-none mt-6 ${
-                    isShowLyric ? 'h-[300px] border border-secondary' : 'h-fit'
-                  }`}
+                  className={`effect overflow-y-scroll scrollbar-none mt-6 h-[300px] bg-slate-100`}
                 >
                   <div className="flex items-center justify-center lg:justify-start gap-4 sticky top-0 left-0 w-full bg-white pl-4 py-1">
                     {/* Lyric title */}
                     <h2 className="text-center font-semibold text-xl tracking-wide my-2 text-secondar">
                       Lời bài hát
                     </h2>
-
-                    <div
-                      className="icon-player text-2xl text-secondary"
-                      onClick={() => setIsShowLyric((prev) => !prev)}
-                    >
-                      {isShowLyric ? <BiHide /> : <BiShow />}
-                    </div>
                   </div>
 
                   {/* Lyric show here */}
-                  {isShowLyric && <Lyric encodeId={songInfo.encodeId} />}
+                  <Lyric encodeId={songInfo.encodeId} />
                 </div>
               </div>
             </div>

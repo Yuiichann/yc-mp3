@@ -11,7 +11,7 @@ import SideBar from './components/SideBar';
 import { AppDispatch } from './config/store';
 import { setDataOfMainInfo } from './reducer/mainInfoSlice';
 import routes from './routes';
-import { BannerApi, NewReleaseApi, RoutesProps } from './types';
+import { BannerApi, MainInfoSlider, NewReleaseApi, RoutesProps } from './types';
 import ScrollTopAction from './utils/ScrollTopAction';
 
 const App = () => {
@@ -24,9 +24,12 @@ const App = () => {
 
       if (res.msg === 'Success') {
         const resItems: any = res.data.items;
-        // console.log(resItems);
+        console.log(resItems);
         const banner = resItems.find((item: any) => item.sectionType === 'banner'); // banner api
-        const newRelease = resItems.find((item: any) => item.sectionType === 'new-release');
+        const newRelease = resItems.find((item: any) => item.sectionType === 'new-release'); // new release items
+        const weekend: MainInfoSlider = resItems[4]; // weekend items
+        const newSongSlider: MainInfoSlider = resItems[6]; // get new song slider
+        const top100: MainInfoSlider = resItems[10]; // get top 100
 
         dispatch(
           setDataOfMainInfo({
@@ -37,6 +40,10 @@ const App = () => {
               title: newRelease.title || '',
               ...newRelease.items[0],
             } as NewReleaseApi,
+
+            weekend: weekend,
+            newSongSlider: newSongSlider,
+            top100: top100,
 
             isLoading: false,
           })

@@ -67,15 +67,30 @@ interface Artist {
   name: string;
 }
 
+// state global save temp
+interface TempState {
+  temp_songs: SongApi[];
+  temp_playlists: PlaylistItem[];
+}
+
 // Main Infomation of app include banner,playlist,... ==> use in rudux
 interface MainInfo {
   banner: BannerApi[];
   newRelease: NewReleaseApi;
+  weekend: MainInfoSlider;
+  newSongSlider: MainInfoSlider;
+  top100: MainInfoSlider;
 
   isLoading: boolean;
   error?: {
     message: string;
   };
+}
+
+// weekend items in Maininfo
+interface MainInfoSlider {
+  title: string;
+  items: AlbumApi[];
 }
 
 // using for page Bang Xep Hang (top100 Api)
@@ -220,4 +235,6 @@ export type {
   DataRanking,
   SongYcAlbum,
   Artist,
+  MainInfoSlider,
+  TempState,
 };
