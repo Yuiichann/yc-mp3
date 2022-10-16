@@ -72,6 +72,7 @@ const Search = () => {
           <div className="self-start">
             <h2 className="font-medium text-xl md:font-2xl">Từ khóa nổi bật</h2>
 
+            {/* keyword hot */}
             <div className="flex flex-wrap">
               {hotKeyword.map((key) => (
                 <Link
@@ -86,6 +87,7 @@ const Search = () => {
 
             <h2 className="font-medium text-xl md:font-2xl mt-4">Nghệ sĩ nổi bật</h2>
 
+            {/* Artist hot */}
             <div className="flex flex-wrap">
               {hotArtistKey.map((key) => (
                 <Link
@@ -101,6 +103,7 @@ const Search = () => {
         )}
       </div>
 
+      {/* Data Search here */}
       {loading ? (
         <Loading />
       ) : (

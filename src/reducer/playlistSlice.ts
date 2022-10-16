@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
-import { RootState } from '../config/store';
 import { PlayList, SongApi } from '../types';
 
 const initialState: PlayList = {
@@ -15,7 +13,7 @@ const initialState: PlayList = {
     totalDuration: 0,
     items: [],
   },
-  currentSongIndex: -1,
+  currentSongIndex: 0,
 };
 
 const playlistSlice = createSlice({
@@ -32,13 +30,19 @@ const playlistSlice = createSlice({
 
       return action.payload;
     },
+    // init new Playlist with one song
     initPrivatePlaylist: (state, action: PayloadAction<SongApi>) => {
       return {
         ...state,
+        playlistDetail: {
+          ...state.playlistDetail,
+          encodeId: action.payload.encodeId,
+        },
         songs: {
           ...state.songs,
           items: [action.payload],
         },
+        currentSongIndex: 0,
       };
     },
     // change currentSongIndex ==> dispatch new song in playlist
@@ -48,12 +52,14 @@ const playlistSlice = createSlice({
         currentSongIndex: action.payload,
       };
     },
+    // add one song to current Playlist
     addSongToPlaylist: (state, action: PayloadAction<SongApi>) => {
       return {
         ...state,
         songs: { ...state.songs, items: [...state.songs.items, action.payload] },
       };
     },
+    // remove playlist
     removePlaylist: () => {
       return initialState;
     },

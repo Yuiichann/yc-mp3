@@ -1,23 +1,24 @@
-import { SongApi } from '../types';
-import { useState, useEffect } from 'react';
-import ycMp3 from '../api/ycmp3Api';
-import { useSearchParams } from 'react-router-dom';
-import NotFound from './NotFound';
-import Loading from '../components/Loading';
+import { useEffect, useState } from 'react';
+import { IoMdAddCircleOutline, IoMdHeartEmpty } from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
-import { IoMdHeartEmpty, IoMdHeart, IoMdAddCircleOutline } from 'react-icons/io';
-import Lyric from '../components/Lyric';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../config/store';
-import { addTempSong } from '../reducer/tempGlobalState';
-import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import ycMp3 from '../api/ycmp3Api';
+import Loading from '../components/Loading';
+import Lyric from '../components/Lyric';
+import { AppDispatch, RootState } from '../config/store';
+import { setIsPlaylist } from '../reducer/audioStatus';
 import {
   addSongToPlaylist,
   initPrivatePlaylist,
   setPlayBySongIndex,
 } from '../reducer/playlistSlice';
-import { setIsPlaylist } from '../reducer/audioStatus';
+import { fetchDataMp3 } from '../reducer/songPlayingSlice';
+import { addTempSong } from '../reducer/tempGlobalState';
+import { SongApi } from '../types';
+import checkSongInList from '../utils/checkSongInList';
+import NotFound from './NotFound';
 
 const SongInfo = () => {
   const [songInfo, setSongInfo] = useState<SongApi>();
@@ -63,24 +64,38 @@ const SongInfo = () => {
   // handle play song
   const handlePlayCurrentSong = () => {
     if (songInfo) {
-      dispatch(initPrivatePlaylist(songInfo));
-      dispatch(
-        setInfoSongPlaying({
-          title: songInfo.title,
-          artistsNames: songInfo.artistsNames,
-          encodeId: songInfo.encodeId,
-          thumbnail: songInfo.thumbnail,
-          thumbnailM: songInfo.thumbnailM,
-        })
-      );
+      // check if song already in playlist, dispatch index of song
+      const checkSongInPlaylist = checkSongInList(songInfo.encodeId, songs.items);
+      if (checkSongInPlaylist >= 0) {
+        dispatch(setPlayBySongIndex(checkSongInPlaylist));
+        return;
+      }
 
-      dispatch(fetchDataMp3(songInfo.encodeId));
+      // create const info song
+      const songDetail = {
+        title: songInfo.title,
+        artistsNames: songInfo.artistsNames,
+        encodeId: songInfo.encodeId,
+        thumbnail: songInfo.thumbnail,
+        thumbnailM: songInfo.thumbnailM,
+      };
+
+      // if playlist is none (when start app or change each song) ==> init new playlist with one uniqe song
+      if (songs.items.length <= 1) {
+        dispatch(initPrivatePlaylist(songInfo));
+      } else {
+        // else, when playlist is avaialbe, play this song
+        dispatch(setPlayBySongIndex(-1));
+        dispatch(fetchDataMp3(songDetail));
+      }
     }
   };
 
+  // Handle add song to playlist
   const handleAddToPlaylist = () => {
     if (!songInfo) return;
 
+    // check if song in playlist, alert and return
     const findSong = songs.items.find((song) => song.encodeId === songInfo.encodeId);
 
     if (findSong) {
@@ -88,10 +103,11 @@ const SongInfo = () => {
       return;
     }
 
-    dispatch(setIsPlaylist(true));
-    if (songs.items.length === 0) {
-      dispatch(setPlayBySongIndex(0));
+    // if playlist none, init playlist true
+    if (songs.items.length <= 1) {
+      dispatch(setIsPlaylist(true));
     }
+    // dispatch action add song to playlist
     dispatch(addSongToPlaylist(songInfo));
     toast.success('Đã thêm vào danh sách phát');
   };

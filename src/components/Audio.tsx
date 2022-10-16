@@ -29,6 +29,16 @@ const Audio = ({ linkMp3 }: Props) => {
       handlePauseMusic(true);
     }
 
+    if (loading === 'failed') {
+      if (isPlaylist) {
+        setTimeout(() => {
+          handleSkipForwardSong();
+        }, 1000);
+      } else {
+        dispatch(setPlayBySongIndex(-1));
+      }
+    }
+
     if (loading === 'successed') {
       setAudioCanPlay(false);
     }
@@ -51,7 +61,6 @@ const Audio = ({ linkMp3 }: Props) => {
 
   // active when isPlaylist === true
   // handle when fetch data failed ==> will fetch next song in play list
-
   // handle when dispath statusAudio in out audio component
   useEffect(() => {
     if (statusAudio === 'playing') {
@@ -114,8 +123,8 @@ const Audio = ({ linkMp3 }: Props) => {
       return;
     }
 
-    // check if === 0, stop func
-    if (currentSongIndex === 0) {
+    // check if <= 0, go to end list
+    if (currentSongIndex <= 0) {
       const songInEndList = songs.items.length - 1;
       dispatch(setPlayBySongIndex(songInEndList));
       return;

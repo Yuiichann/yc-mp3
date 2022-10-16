@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 interface Props {
   isChildOfComponent: 'audio' | 'private';
@@ -20,4 +20,4 @@ const InputRangeVolumn = ({ handleChangeVolumn, isChildOfComponent, volumnValue 
   );
 };
 
-export default InputRangeVolumn;
+export default memo(InputRangeVolumn);

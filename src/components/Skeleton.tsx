@@ -58,15 +58,15 @@ const SkeletonSongPlaying = () => {
 
 const SkeletionPrivateAudio = ({ center }: { center: boolean }) => {
   return (
-    <div
-      className={`${
-        center ? 'lg:w-full justify-center' : 'lg:w-4/12 '
-      } flex flex-col items-center space-y-4 animate-pulse h-[263px]`}
-    >
-      <div className="w-[130px] h-[130px] bg-[rgb(0,0,0,0.3)] rounded-full"></div>
+    <div className={`relative lg:w-6/12 xl:w-4/12 ${center ? 'lg:w-full justify-center' : ''}`}>
+      <div
+        className={`flex flex-col items-center space-y-4 animate-pulse h-[263px] mt-[65px] lg:sticky lg:top-[150px] left-0 w-full`}
+      >
+        <div className="w-[130px] h-[130px] bg-[rgb(0,0,0,0.3)] rounded-full"></div>
 
-      <div className="w-5/12 h-[20px] rounded-md bg-[rgb(0,0,0,0.3)]"></div>
-      <div className="w-3/12 h-[16px] rounded-md bg-[rgb(0,0,0,0.3)]"></div>
+        <div className="w-5/12 h-[20px] rounded-md bg-[rgb(0,0,0,0.3)]"></div>
+        <div className="w-3/12 h-[16px] rounded-md bg-[rgb(0,0,0,0.3)]"></div>
+      </div>
     </div>
   );
 };

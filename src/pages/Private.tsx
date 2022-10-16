@@ -49,11 +49,7 @@ const Private = () => {
         {/* Current Play song */}
         {/* UI when successed */}
         {loading === 'successed' && (
-          <div
-            className={`relative md:px-1 xl:px-2 ${
-              songs.items.length > 0 ? 'xl:w-4/12 lg:w-6/12' : 'lg:w-full justify-center'
-            }`}
-          >
+          <div className="relative md:px-1 xl:px-2 xl:w-4/12 lg:w-6/12">
             <div className="lg:sticky lg:top-[150px] lg:left-0 flex flex-col items-center space-y-4">
               {/* image */}
               <div className="relative w-fit rounded-full overflow-hidden">
@@ -129,11 +125,14 @@ const Private = () => {
 
         {/* UI when idle */}
         {loading === 'idle' && (
-          <div className="lg:w-full justify-center flex flex-col items-center space-y-4 h-full mt-12">
-            <div className="text-48">
-              <SiYoutubemusic />
+          <div className="lg:w-6/12 xl:w-4/12 justify-center flex flex-col items-center space-y-4 h-full mt-12">
+            <div className="min-w-max">
+              <img
+                src="https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/3/2/a/3/32a35f4d26ee56366397c09953f6c269.jpg"
+                alt="image-not-found-music"
+                className="w-[150px] h-[150px] max-w-[150px] block max-h-[150px] rounded-full"
+              />
             </div>
-            <h2 className="font-semibold">Trình phát nhạc rỗng</h2>
           </div>
         )}
 
@@ -144,19 +143,22 @@ const Private = () => {
 
         {/* UI when faied */}
         {loading === 'failed' && (
-          <div className="lg:w-4/12 flex flex-col items-center space-y-4 h-full mt-12">
-            <div className="text-48">
-              <SiYoutubemusic />
+          <div className="lg:w-6/12 xl:w-4/12 flex flex-col items-center space-y-4 h-full mt-12">
+            <div className="min-w-max">
+              <img
+                src="https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/3/2/a/3/32a35f4d26ee56366397c09953f6c269.jpg"
+                alt="image-not-found-music"
+                className="w-[150px] h-[150px] max-w-[150px] block max-h-[150px] rounded-full"
+              />
             </div>
-            <h2 className="font-semibold">Không tìm thấy dữ liệu nhạc</h2>
           </div>
         )}
 
         {/* Current Playlists */}
-        {songs.items.length > 0 && (
-          <div className="xl:w-8/12 lg:w-6/12">
-            {/* List Song Play Current */}
-            <div className="flex items-center space-x-2 justify-center lg:justify-start mt-8 lg:mt-4 mb-4 border-b-2 border-secondary">
+        <div className="xl:w-8/12 lg:w-6/12">
+          {/* List Song Play Current */}
+          <div className="mt-8 lg:mt-4 mb-4">
+            <div className="flex items-center space-x-2 justify-center lg:justify-start border-b-2 border-secondary">
               <div className="text-28">
                 <FcMusic />
               </div>
@@ -165,11 +167,15 @@ const Private = () => {
                 <FcMusic />
               </div>
             </div>
-
-            {/* List song */}
-            <ListSong enbleIndex={false} dataSong={songs} type="" />
           </div>
-        )}
+
+          {/* List song */}
+          {songs.items.length > 0 ? (
+            <ListSong enbleIndex={false} dataSong={songs} type="" />
+          ) : (
+            <h1 className="text-center text-xl font-normal">Danh sách phát rỗng</h1>
+          )}
+        </div>
       </div>
     </section>
   );

@@ -10,12 +10,7 @@ interface Props {
 const MenuMobile = ({ handleCloseMenu }: Props) => {
   return (
     <nav className="container">
-      <div className="flex flex-col space-y-6">
-        {/* Input Search */}
-        <div className="mt-4">
-          <SearchInput isMobile={true} handleCloseMenu={handleCloseMenu} />
-        </div>
-
+      <div className="flex flex-col space-y-6 mt-12">
         {/* Button Group Signin / Signup */}
         <div className="flex flex-row justify-around lg:justify-center items-center space-x-0 lg:space-x-3">
           <Link to="/dang-nhap" className="button-outline" onClick={handleCloseMenu}>

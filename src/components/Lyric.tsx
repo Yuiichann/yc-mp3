@@ -25,6 +25,8 @@ const Lyric = ({ encodeId }: Props) => {
             // covert file text to array on every line
             const arr = text.toString().replace(/\r\n/g, '\n').split('\n');
 
+            if (arr.length === 0) return;
+
             // remove timeline on each line
             const lyricConvert = arr.map((item) => item.split(']')[1].trim());
 
@@ -51,7 +53,7 @@ const Lyric = ({ encodeId }: Props) => {
             <p key={index}>{item}</p>
           ))}
 
-          {lyric.length === 0 && <h1 className="text center font-normal text-20">Không có lời</h1>}
+          {lyric.length === 0 && <h1 className="text-center font-normal text-xl">Không có lời</h1>}
         </div>
       )}
     </>

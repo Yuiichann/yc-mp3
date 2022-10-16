@@ -101,7 +101,7 @@ const AlbumInfo = () => {
                 <h2 className="text-2xl tracking-wider font-semibold text-center">
                   {dataList.title}
                 </h2>
-                <h6 className="text-xl tracking-wider font-semibold text-gray-500">
+                <h6 className="text-xl tracking-wider font-semibold text-gray-500 text-center">
                   {dataList.artistNames || dataList.artistsNames}
                 </h6>
               </div>

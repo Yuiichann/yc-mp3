@@ -1,11 +1,12 @@
 import React, { memo } from 'react';
 import { MdPlayCircleFilled } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AppDispatch } from '../config/store';
-import { initPrivatePlaylist } from '../reducer/playlistSlice';
-import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
+import { AppDispatch, RootState } from '../config/store';
+import { initPrivatePlaylist, setPlayBySongIndex } from '../reducer/playlistSlice';
+import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { AlbumApi, SongApi, SongPlaying } from '../types';
+import checkSongInList from '../utils/checkSongInList';
 import convertDate from '../utils/convertDate';
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 }
 
 const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
+  const { songs } = useSelector((state: RootState) => state.playlist);
   const dispatch = useDispatch<AppDispatch>();
 
   // handle play 1 song when click play this, after click, they will dispatch 2 actions: 1 actions set info song, the other will fetch link mp3
@@ -29,6 +31,14 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
 
     // with type === song
     if (type === 'song') {
+      // check if song already in playlist, dispatch index of song
+      const checkSongInPlaylist = checkSongInList(tabInfo.encodeId, songs.items);
+      if (checkSongInPlaylist >= 0) {
+        dispatch(setPlayBySongIndex(checkSongInPlaylist));
+        return;
+      }
+
+      // create const info song
       const detailSong: SongPlaying['currentDetails'] = {
         artistsNames: tabInfo.artistsNames,
         encodeId: tabInfo.encodeId,
@@ -37,10 +47,14 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
         title: tabInfo.title,
       };
 
-      //   dispatch actions
-      dispatch(initPrivatePlaylist(tabInfo as SongApi)); //init playlist with one song
-      dispatch(setInfoSongPlaying(detailSong));
-      dispatch(fetchDataMp3(tabInfo.encodeId));
+      // if playlist is none (when start app or change each song) ==> init new playlist with one uniqe song
+      if (songs.items.length <= 1) {
+        dispatch(initPrivatePlaylist(tabInfo as SongApi));
+      } else {
+        // else, when playlist is avaialbe, play this song
+        dispatch(setPlayBySongIndex(-1));
+        dispatch(fetchDataMp3(detailSong));
+      }
     }
   };
 
@@ -52,6 +66,7 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
         }`}
         className="relative block"
       >
+        {/* Image */}
         <div className="min-h-[150px]">
           <img
             src={tabInfo.thumbnailM}
@@ -62,6 +77,7 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
             height={150}
           />
         </div>
+        {/* overlay */}
         {type === 'song' && (
           <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
             <div
@@ -73,6 +89,8 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
           </div>
         )}
       </Link>
+
+      {/* Info iclude name and releaseDate */}
       <div className="mt-1 text-center lg:text-left">
         <div className="w-full min-w-0 truncate my-1">
           <Link

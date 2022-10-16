@@ -1,24 +1,27 @@
 import { memo } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../config/store';
+import { BsFacebook, BsGithub } from 'react-icons/bs';
 
 const Footer = () => {
-  const { loading } = useSelector((state: RootState) => state.songPlaying);
-  const { isHiddenMusicPlayer } = useSelector((state: RootState) => state.audioStatus);
   return (
-    <footer
-      className={`w-full text-center bg-[whitesmoke] shadow-sm effect ${
-        loading === 'idle' || loading === 'failed' || isHiddenMusicPlayer ? '' : 'pb-player'
-      }`}
-    >
-      <div className="container">
-        <div className="h-navbar flex items-center justify-center">
-          <p className="text-[12px] text-secondary tracking-widest">
-            Copyright © 2022 -{' '}
-            <a href="https://www.facebook.com/hiiradesu" target="_blank">
-              YC
-            </a>
-          </p>
+    <footer className="w-full bg-[whitesmoke] shadow-sm effect pb-player">
+      <div className="container text-[13px] text-secondary tracking-widest">
+        <div className="h-navbar flex flex-col items-center justify-center select-none">
+          <p>Copyright © 2022 - YC Entertainment</p>
+          <div className="flex items-center justify-center space-x-2">
+            <h2>Contact: </h2>
+            <ul className="flex items-center justify-center gap-3 text-xl text-black">
+              <li className="hover:opacity-60">
+                <a href="https://facebook.com/hiiradesu" target="_blank">
+                  <BsFacebook />
+                </a>
+              </li>
+              <li className="hover:opacity-60">
+                <a href="https://github.com/Yuiichann" target="_blank">
+                  <BsGithub />
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

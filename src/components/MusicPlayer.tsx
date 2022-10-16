@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AppDispatch, RootState } from '../config/store';
-import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
+import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongPlaying } from '../types';
 import Audio from './Audio';
 import { SkeletonSongPlaying } from './Skeleton';
@@ -22,8 +22,9 @@ const MusicPlayer = () => {
   const { isHiddenMusicPlayer, statusAudio } = useSelector((state: RootState) => state.audioStatus);
 
   // play first song when add new List
+  // and listen playlistDetail.encode and currentSongIndex changed ==> when play song with index current
   useEffect(() => {
-    if (songs.items.length === 0) return;
+    if (songs.items.length === 0 || currentSongIndex === -1) return;
 
     const songInPlaylist = songs.items[currentSongIndex];
 
@@ -36,8 +37,7 @@ const MusicPlayer = () => {
     };
 
     // dispatch event
-    dispatch(setInfoSongPlaying(songInPlaylistinfo));
-    dispatch(fetchDataMp3(songInPlaylist.encodeId));
+    dispatch(fetchDataMp3(songInPlaylistinfo));
   }, [playlistDetail.encodeId, currentSongIndex]);
 
   // alert when data fetch dont have
@@ -52,7 +52,7 @@ const MusicPlayer = () => {
       <div
         className={`fixed z-10 h-player effect left-0 w-screen bg-tertiary bg-main text-white select-none shadow-musicplayer ${
           loading === 'idle' || loading === 'failed' || isHiddenMusicPlayer
-            ? '-bottom-[90px]'
+            ? 'bottom-0'
             : 'bottom-0'
         }`}
       >
@@ -62,7 +62,15 @@ const MusicPlayer = () => {
             {/* check loading to render */}
             {loading === 'idle' ? (
               <>
-                <h1>Rỗng</h1>
+                <div className="px-1 min-w-max">
+                  <Link to="/ca-nhan">
+                    <img
+                      src="https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/3/2/a/3/32a35f4d26ee56366397c09953f6c269.jpg"
+                      alt="image-not-found-music"
+                      className="w-[65px] h-[65px] max-w-[65px] block max-h-[65px] rounded-full"
+                    />
+                  </Link>
+                </div>
               </>
             ) : loading === 'pending' ? (
               <>
@@ -85,12 +93,7 @@ const MusicPlayer = () => {
                 {/* title */}
                 <div className="px-1 text-14">
                   <Link to="/ca-nhan">
-                    <Marquee
-                      gradient={false}
-                      speed={30}
-                      pauseOnHover={true}
-                      className="md:min-w-[150px]"
-                    >
+                    <Marquee gradient={false} speed={30} className="md:min-w-[150px]">
                       <h1>{currentDetails.title}</h1>
                     </Marquee>
                   </Link>
@@ -99,8 +102,18 @@ const MusicPlayer = () => {
             ) : (
               <>
                 {/* when faied */}
-                <div className="text-4xl flex items-center justify-center flex-grow gap-2">
+                {/* <div className="text-4xl flex items-center justify-center flex-grow gap-2">
                   <AiOutlineQuestion />
+                </div> */}
+
+                <div className="px-1 min-w-max">
+                  <Link to="/ca-nhan">
+                    <img
+                      src="https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/3/2/a/3/32a35f4d26ee56366397c09953f6c269.jpg"
+                      alt="image-not-found-music"
+                      className="w-[65px] h-[65px] max-w-[65px] block max-h-[65px] rounded-full"
+                    />
+                  </Link>
                 </div>
               </>
             )}
