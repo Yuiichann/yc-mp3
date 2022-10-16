@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AppDispatch, RootState } from '../config/store';
-import { setIsHiddenMusicPlayer } from '../reducer/audioStatus';
-import { setPlayBySongIndex } from '../reducer/playlistSlice';
 import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
 import { SongPlaying } from '../types';
 import Audio from './Audio';
@@ -21,27 +19,25 @@ const MusicPlayer = () => {
   const { playlistDetail, songs, currentSongIndex } = useSelector(
     (state: RootState) => state.playlist
   );
-  const { isHiddenMusicPlayer, statusAudio, isPlaylist } = useSelector(
-    (state: RootState) => state.audioStatus
-  );
+  const { isHiddenMusicPlayer, statusAudio } = useSelector((state: RootState) => state.audioStatus);
 
   // play first song when add new List
   useEffect(() => {
-    if (!playlistDetail.encodeId) return;
+    if (songs.items.length === 0) return;
 
-    const firstSong = songs.items[currentSongIndex];
+    const songInPlaylist = songs.items[currentSongIndex];
 
-    const firstSongInfo: SongPlaying['currentDetails'] = {
-      title: firstSong.title,
-      artistsNames: firstSong.artistsNames,
-      thumbnail: firstSong.thumbnailM,
-      encodeId: firstSong.encodeId,
-      thumbnailM: firstSong.thumbnailM,
+    const songInPlaylistinfo: SongPlaying['currentDetails'] = {
+      title: songInPlaylist.title,
+      artistsNames: songInPlaylist.artistsNames,
+      thumbnail: songInPlaylist.thumbnailM,
+      encodeId: songInPlaylist.encodeId,
+      thumbnailM: songInPlaylist.thumbnailM,
     };
 
     // dispatch event
-    dispatch(setInfoSongPlaying(firstSongInfo));
-    dispatch(fetchDataMp3(firstSong.encodeId));
+    dispatch(setInfoSongPlaying(songInPlaylistinfo));
+    dispatch(fetchDataMp3(songInPlaylist.encodeId));
   }, [playlistDetail.encodeId, currentSongIndex]);
 
   // alert when data fetch dont have

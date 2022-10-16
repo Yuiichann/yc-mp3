@@ -10,12 +10,21 @@ import Lyric from '../components/Lyric';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../config/store';
 import { addTempSong } from '../reducer/tempGlobalState';
+import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
+import { toast } from 'react-toastify';
+import {
+  addSongToPlaylist,
+  initPrivatePlaylist,
+  setPlayBySongIndex,
+} from '../reducer/playlistSlice';
+import { setIsPlaylist } from '../reducer/audioStatus';
 
 const SongInfo = () => {
   const [songInfo, setSongInfo] = useState<SongApi>();
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
+  const { songs } = useSelector((state: RootState) => state.playlist);
   const { temp_songs } = useSelector((state: RootState) => state.tempGlobalState);
 
   // get ID SONG
@@ -51,6 +60,42 @@ const SongInfo = () => {
     }
   }, [songID]);
 
+  // handle play song
+  const handlePlayCurrentSong = () => {
+    if (songInfo) {
+      dispatch(initPrivatePlaylist(songInfo));
+      dispatch(
+        setInfoSongPlaying({
+          title: songInfo.title,
+          artistsNames: songInfo.artistsNames,
+          encodeId: songInfo.encodeId,
+          thumbnail: songInfo.thumbnail,
+          thumbnailM: songInfo.thumbnailM,
+        })
+      );
+
+      dispatch(fetchDataMp3(songInfo.encodeId));
+    }
+  };
+
+  const handleAddToPlaylist = () => {
+    if (!songInfo) return;
+
+    const findSong = songs.items.find((song) => song.encodeId === songInfo.encodeId);
+
+    if (findSong) {
+      toast.error('Bài hát đã trong playlist');
+      return;
+    }
+
+    dispatch(setIsPlaylist(true));
+    if (songs.items.length === 0) {
+      dispatch(setPlayBySongIndex(0));
+    }
+    dispatch(addSongToPlaylist(songInfo));
+    toast.success('Đã thêm vào danh sách phát');
+  };
+
   if (!songID) {
     return <NotFound />;
   }
@@ -77,7 +122,10 @@ const SongInfo = () => {
 
                 {/* Icon */}
                 <div className="flex justify-center items-center gap-5 text-3xl">
-                  <div className="icon-player text-secondary relative group">
+                  <div
+                    className="icon-player text-secondary relative group"
+                    onClick={handlePlayCurrentSong}
+                  >
                     <RiPlayFill />
 
                     <div className="toolip-container">
@@ -85,7 +133,10 @@ const SongInfo = () => {
                     </div>
                   </div>
 
-                  <div className="icon-player text-secondary relative group">
+                  <div
+                    className="icon-player text-secondary relative group"
+                    onClick={handleAddToPlaylist}
+                  >
                     <IoMdAddCircleOutline />
 
                     <div className="toolip-container">
@@ -105,27 +156,25 @@ const SongInfo = () => {
 
               {/* Info details */}
               <div className="flex-grow">
-                <div className="flex items-center flex-col lg:flex-row text-xl font-normal tracking-wider gap-2 justify-center lg:justify-start mt-2">
+                <div className="flex items-center flex-col lg:flex-row text-xl font-normal tracking-wider gap-2 justify-center flex-wrap lg:justify-start mt-2">
                   <h2 className="text-center lg:text-left">{songInfo.title}</h2>
                   <span className="hidden lg:block"> - </span>
                   <p className="text-center lg:text-left">{songInfo.artistsNames}</p>
                 </div>
-
-                {/* Lyric */}
-                <div
-                  className={`effect overflow-y-scroll scrollbar-none mt-6 h-[300px] bg-slate-100`}
-                >
-                  <div className="flex items-center justify-center lg:justify-start gap-4 sticky top-0 left-0 w-full bg-white pl-4 py-1">
-                    {/* Lyric title */}
-                    <h2 className="text-center font-semibold text-xl tracking-wide my-2 text-secondar">
-                      Lời bài hát
-                    </h2>
-                  </div>
-
-                  {/* Lyric show here */}
-                  <Lyric encodeId={songInfo.encodeId} />
-                </div>
               </div>
+            </div>
+
+            {/* Lyric */}
+            <div className={`effect overflow-y-scroll scrollbar-none mt-6 h-[300px] bg-slate-100`}>
+              <div className="flex items-center justify-center lg:justify-start gap-4 sticky top-0 left-0 w-full bg-white pl-4 py-1">
+                {/* Lyric title */}
+                <h2 className="text-center font-semibold text-xl tracking-wide my-2 text-secondar">
+                  Lời bài hát
+                </h2>
+              </div>
+
+              {/* Lyric show here */}
+              <Lyric encodeId={songInfo.encodeId} />
             </div>
           </section>
         )

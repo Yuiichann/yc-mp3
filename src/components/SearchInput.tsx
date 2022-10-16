@@ -16,14 +16,18 @@ const SearchInput = ({ isMobile, handleCloseMenu }: Props) => {
   //    handle Search
   const handleSearch = () => {
     if (!searchInput) {
-      toast.warning('Bạn chưa nhập gì cả!!');
+      navigate('/tim-kiem');
+
+      if (isMobile && handleCloseMenu) {
+        handleCloseMenu();
+      }
       return;
     }
 
     navigate(`/tim-kiem?keyword=${encodeURI(searchInput)}`);
     setSearchInput('');
     searchRef.current?.blur();
-    
+
     // if in mobile, after enter keyword in field search, this will close menu
     if (isMobile && handleCloseMenu) {
       handleCloseMenu();

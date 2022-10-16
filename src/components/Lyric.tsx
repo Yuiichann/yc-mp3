@@ -40,7 +40,7 @@ const Lyric = ({ encodeId }: Props) => {
   return (
     <>
       {isLoading ? (
-        <div className="flex items-center justify-center min-h-[200px]">
+        <div className="flex items-center justify-center min-h-[300px]">
           <div className="animate-spin text-3xl text-secondary">
             <AiOutlineLoading />
           </div>

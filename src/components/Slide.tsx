@@ -94,9 +94,11 @@ export default memo(Slide);
 interface SliderProps {
   data: AlbumApi[];
   slidePerView?: number;
+  space?: number;
+  navigate?: boolean;
 }
 // slider for small slider
-export const Slider = ({ data, slidePerView }: SliderProps) => {
+export const Slider = ({ data, slidePerView, space, navigate }: SliderProps) => {
   return (
     <Swiper
       modules={[Navigation, Scrollbar, A11y, Autoplay]}
@@ -104,9 +106,9 @@ export const Slider = ({ data, slidePerView }: SliderProps) => {
       autoplay={{
         delay: 4000,
       }}
-      spaceBetween={10}
+      spaceBetween={space || 10}
       slidesPerView={slidePerView}
-      navigation
+      navigation={navigate}
     >
       {data.map((item, index) => (
         <SwiperSlide key={index}>

@@ -61,9 +61,9 @@ const NavBar = () => {
           </div>
 
           {/* Search Icon Mobile */}
-          <div className="p-2 cursor-pointer lg:hidden icon-btn" onClick={handleToggleMenu}>
+          <Link className="p-2 cursor-pointer lg:hidden icon-btn" to="/tim-kiem">
             <BiSearchAlt className="text-[26px] text-secondary" />
-          </div>
+          </Link>
         </div>
       </div>
     </header>

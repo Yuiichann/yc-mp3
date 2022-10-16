@@ -76,7 +76,7 @@ const Home = () => {
               </h1>
 
               <div className="block lg:hidden">
-                <Slider data={weekend.items} slidePerView={4} />
+                <Slider data={weekend.items} slidePerView={4} space={4} navigate={false} />
               </div>
               <div className="hidden lg:block">
                 <Slider
@@ -93,7 +93,7 @@ const Home = () => {
               </h1>
 
               <div className="block lg:hidden">
-                <Slider data={newSongSlider.items} slidePerView={4} />
+                <Slider data={newSongSlider.items} slidePerView={4} space={4} navigate={false} />
               </div>
 
               <div className="hidden lg:block">
@@ -111,7 +111,7 @@ const Home = () => {
               </h1>
 
               <div className="block lg:hidden">
-                <Slider data={top100.items} slidePerView={4} />
+                <Slider data={top100.items} slidePerView={4} space={4} navigate={false} />
               </div>
 
               <div className="hidden lg:block">

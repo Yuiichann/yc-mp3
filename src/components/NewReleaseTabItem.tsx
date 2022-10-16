@@ -3,6 +3,7 @@ import { MdPlayCircleFilled } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppDispatch } from '../config/store';
+import { initPrivatePlaylist } from '../reducer/playlistSlice';
 import { fetchDataMp3, setInfoSongPlaying } from '../reducer/songPlayingSlice';
 import { AlbumApi, SongApi, SongPlaying } from '../types';
 import convertDate from '../utils/convertDate';
@@ -37,6 +38,7 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
       };
 
       //   dispatch actions
+      dispatch(initPrivatePlaylist(tabInfo as SongApi)); //init playlist with one song
       dispatch(setInfoSongPlaying(detailSong));
       dispatch(fetchDataMp3(tabInfo.encodeId));
     }
