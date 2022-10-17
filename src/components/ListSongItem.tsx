@@ -5,7 +5,7 @@ import { GiMusicalNotes } from 'react-icons/gi';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppDispatch, RootState } from '../config/store';
-import { setPlayBySongIndex } from '../reducer/playlistSlice';
+import { initPrivatePlaylist, setPlayBySongIndex } from '../reducer/playlistSlice';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongApi, SongPlaying } from '../types';
 import checkSongInList from '../utils/checkSongInList';
@@ -26,6 +26,24 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
     const checkSongInPlaylist = checkSongInList(song.encodeId, songs.items);
     if (checkSongInPlaylist >= 0) {
       dispatch(setPlayBySongIndex(checkSongInPlaylist));
+      return;
+    }
+
+    const detailSong: SongPlaying['currentDetails'] = {
+      artistsNames: song.artistsNames,
+      encodeId: song.encodeId,
+      thumbnail: song.thumbnail,
+      thumbnailM: song.thumbnailM,
+      title: song.title,
+    };
+
+    // if playlist is none (when start app or change each song) ==> init new playlist with one uniqe song
+    if (songs.items.length <= 1) {
+      dispatch(initPrivatePlaylist(song));
+    } else {
+      // else, when playlist is avaialbe, play this song
+      dispatch(setPlayBySongIndex(-1));
+      dispatch(fetchDataMp3(detailSong));
     }
   };
 

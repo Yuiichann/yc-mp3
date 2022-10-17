@@ -60,7 +60,7 @@ const SkeletionPrivateAudio = ({ center }: { center: boolean }) => {
   return (
     <div className={`relative lg:w-6/12 xl:w-4/12 ${center ? 'lg:w-full justify-center' : ''}`}>
       <div
-        className={`flex flex-col items-center space-y-4 animate-pulse h-[263px] mt-[65px] lg:sticky lg:top-[150px] left-0 w-full`}
+        className={`flex flex-col items-center space-y-4 animate-pulse h-[263px] lg:mt-[65px] lg:sticky lg:top-[150px] left-0 w-full`}
       >
         <div className="w-[130px] h-[130px] bg-[rgb(0,0,0,0.3)] rounded-full"></div>
 

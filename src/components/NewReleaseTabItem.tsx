@@ -1,13 +1,21 @@
 import React, { memo } from 'react';
 import { MdPlayCircleFilled } from 'react-icons/md';
+import { IoMdAddCircleOutline, IoMdHeartEmpty } from 'react-icons/io';
+import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppDispatch, RootState } from '../config/store';
-import { initPrivatePlaylist, setPlayBySongIndex } from '../reducer/playlistSlice';
+import {
+  addSongToPlaylist,
+  initPrivatePlaylist,
+  setPlayBySongIndex,
+} from '../reducer/playlistSlice';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { AlbumApi, SongApi, SongPlaying } from '../types';
 import checkSongInList from '../utils/checkSongInList';
 import convertDate from '../utils/convertDate';
+import { toast } from 'react-toastify';
+import { setIsPlaylist } from '../reducer/audioStatus';
 
 interface Props {
   type: 'song' | 'album' | 'playlist';
@@ -18,7 +26,7 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
   const { songs } = useSelector((state: RootState) => state.playlist);
   const dispatch = useDispatch<AppDispatch>();
 
-  // handle play 1 song when click play this, after click, they will dispatch 2 actions: 1 actions set info song, the other will fetch link mp3
+  // handle play 1 song when click play
   const handlePlayCurrentMusic = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -58,37 +66,55 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
     }
   };
 
+  const handleAddSongToPlaylist = () => {
+    const checkSong = checkSongInList(tabInfo.encodeId, songs.items);
+
+    if (checkSong !== -1) {
+      toast.error('Bài hát đã trong playlist');
+      return;
+    }
+
+    // if playlist none, init playlist true
+    if (songs.items.length <= 1) {
+      dispatch(setIsPlaylist(true));
+    }
+    // dispatch action add song to playlist
+    dispatch(addSongToPlaylist(tabInfo as SongApi));
+    toast.success('Đã thêm vào danh sách phát');
+  };
+
   return (
     <div className="p-1" key={tabInfo.encodeId}>
-      <Link
-        to={`/${type === 'song' ? 'bai-hat' : type === 'album' ? 'album' : 'playlist'}?id=${
-          tabInfo.encodeId
-        }`}
-        className="relative block"
-      >
-        {/* Image */}
-        <div className="min-h-[150px]">
-          <img
-            src={tabInfo.thumbnailM}
-            alt=""
-            loading="lazy"
-            className="rounded-md w-full min-w-[100px] min-h-[150px]"
-            width={150}
-            height={150}
-          />
-        </div>
-        {/* overlay */}
+      {/* Image component */}
+      <div className="relative overflow-hidden rounded-sm group">
+        {/* Image background */}
+        <div
+          className="pt-[100%] bg-center bg-no-repeat bg-cover scale-100 group-hover:scale-110 effect"
+          style={{ backgroundImage: `url(${tabInfo.thumbnailM})` }}
+        ></div>
+
+        {/* Overlay and action in this song */}
         {type === 'song' && (
-          <div className="absolute top-0 left-0 rounded-md bg-overlay w-full h-full">
-            <div
-              className="absolute right-1 bottom-1 text-3xl lg:text-3xl xl:text-4xl text-white cursor-pointer p-1 hover:scale-125 effect"
-              onClick={handlePlayCurrentMusic}
-            >
-              <MdPlayCircleFilled />
+          <div className="absolute bg-[rgb(0,0,0,0.5)] top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 effect flex items-center justify-center">
+            <div className="w-full flex items-center text-4xl justify-around">
+              {/* Button play music */}
+              <div
+                className="text-white p-2 hover:scale-110 cursor-pointer effect"
+                onClick={handlePlayCurrentMusic}
+              >
+                <RiPlayFill />
+              </div>
+              {/* Button add song to playlist */}
+              <div
+                className="text-white p-2 hover:scale-110 cursor-pointer effect"
+                onClick={handleAddSongToPlaylist}
+              >
+                <IoMdAddCircleOutline />
+              </div>
             </div>
           </div>
         )}
-      </Link>
+      </div>
 
       {/* Info iclude name and releaseDate */}
       <div className="mt-1 text-center lg:text-left">

@@ -18,6 +18,7 @@ import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { addTempSong } from '../reducer/tempGlobalState';
 import { SongApi } from '../types';
 import checkSongInList from '../utils/checkSongInList';
+import convertDate from '../utils/convertDate';
 import NotFound from './NotFound';
 
 const SongInfo = () => {
@@ -173,16 +174,24 @@ const SongInfo = () => {
               {/* Info details */}
               <div className="flex-grow">
                 <div className="flex items-center flex-col lg:flex-row text-xl font-normal tracking-wider gap-2 justify-center flex-wrap lg:justify-start mt-2">
-                  <h2 className="text-center lg:text-left">{songInfo.title}</h2>
+                  <h2 className="text-center lg:text-left font-medium">{songInfo.title}</h2>
                   <span className="hidden lg:block"> - </span>
-                  <p className="text-center lg:text-left">{songInfo.artistsNames}</p>
+                  <p className="text-center lg:text-left font-medium">{songInfo.artistsNames}</p>
                 </div>
+
+                {songInfo.releaseDate && (
+                  <div className="mt-4">
+                    <h5 className="text-center lg:text-left italic">
+                      Ngày phát hành: {convertDate(songInfo.releaseDate)}
+                    </h5>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Lyric */}
-            <div className={`effect overflow-y-scroll scrollbar-none mt-6 h-[300px] bg-slate-100`}>
-              <div className="flex items-center justify-center lg:justify-start gap-4 sticky top-0 left-0 w-full bg-white pl-4 py-1">
+            <div className={`effect overflow-y-scroll scrollbar-none mt-6 h-[500px] bg-slate-100`}>
+              <div className="flex items-center justify-center lg:justify-start gap-4 sticky top-0 left-0 w-full bg-white lg:pl-4 py-1">
                 {/* Lyric title */}
                 <h2 className="text-center font-semibold text-xl tracking-wide my-2 text-secondar">
                   Lời bài hát

@@ -1,7 +1,7 @@
 import { BsPlayCircleFill } from 'react-icons/bs';
 import { FcMusic } from 'react-icons/fc';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
-import { SiYoutubemusic } from 'react-icons/si';
+import { RiCloseFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import IconPlaying from '../assets/gif/icon-playing.gif';
@@ -9,10 +9,18 @@ import InputRangeVolumn from '../components/InputRangeVolumn';
 import ListSong from '../components/ListSong';
 import { SkeletionPrivateAudio } from '../components/Skeleton';
 import { AppDispatch, RootState } from '../config/store';
-import { setLoopAudio, setStatusAudio, setVolumnAudio } from '../reducer/audioStatus';
+import {
+  setIsPlaylist,
+  setLoopAudio,
+  setStatusAudio,
+  setVolumnAudio,
+} from '../reducer/audioStatus';
+import { removePlaylist } from '../reducer/playlistSlice';
 
 const Private = () => {
-  const { statusAudio, isLoop, volumn } = useSelector((state: RootState) => state.audioStatus);
+  const { statusAudio, isLoop, volumn, isPlaylist } = useSelector(
+    (state: RootState) => state.audioStatus
+  );
   const { currentDetails, loading } = useSelector((state: RootState) => state.songPlaying);
   const { songs } = useSelector((state: RootState) => state.playlist);
   const dispatch = useDispatch<AppDispatch>();
@@ -41,6 +49,15 @@ const Private = () => {
   // handle toggle isLoop Song
   const handleSetLoop = () => {
     dispatch(setLoopAudio(!isLoop));
+  };
+
+  // handle when click remove playlist
+  const handleRemovePlaylist = () => {
+    if (!isPlaylist) return;
+
+    // dispatch action
+    dispatch(removePlaylist());
+    dispatch(setIsPlaylist(false)); // set isPlaylist in audioStatus ==> false
   };
 
   return (
@@ -157,7 +174,7 @@ const Private = () => {
         {/* Current Playlists */}
         <div className="xl:w-8/12 lg:w-6/12">
           {/* List Song Play Current */}
-          <div className="mt-8 lg:mt-4 mb-4">
+          <div className="mt-8 lg:mt-4 mb-4 flex items-center space-x-4">
             <div className="flex items-center space-x-2 justify-center lg:justify-start border-b-2 border-secondary">
               <div className="text-28">
                 <FcMusic />
@@ -167,6 +184,20 @@ const Private = () => {
                 <FcMusic />
               </div>
             </div>
+
+            {/* Icon remove Playlist -- if playlist true ==> show else hide */}
+            {isPlaylist && (
+              <div
+                className="icon-player text-xl relative group"
+                onClick={handleRemovePlaylist}
+              >
+                <RiCloseFill />
+
+                <div className="toolip-container">
+                  <p>Xóa Playlist</p>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* List song */}

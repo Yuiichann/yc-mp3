@@ -42,13 +42,13 @@ const Lyric = ({ encodeId }: Props) => {
   return (
     <>
       {isLoading ? (
-        <div className="flex items-center justify-center min-h-[300px]">
+        <div className="flex items-center justify-center min-h-[450px]">
           <div className="animate-spin text-3xl text-secondary">
             <AiOutlineLoading />
           </div>
         </div>
       ) : (
-        <div className="flex space-y-2 flex-col px-2 mt-6 text-center md:text-left">
+        <div className="flex space-y-2 flex-col px-2 mt-6 text-center lg:text-left lg:pl-12">
           {lyric.map((item, index) => (
             <p key={index}>{item}</p>
           ))}

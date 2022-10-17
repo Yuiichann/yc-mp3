@@ -71,11 +71,15 @@ const Home = () => {
 
             {/* Weekend */}
             <div className="mt-8">
-              <h1 className="text-2xl font-semibold tracking-widest text-underline mb-2">
+              <h1 className="text-xl md:text-2xl font-semibold tracking-widest text-underline mb-2">
                 {weekend.title}
               </h1>
 
-              <div className="block lg:hidden">
+              {/* Slider */}
+              <div className="block sm:hidden lg:hidden">
+                <Slider data={weekend.items} slidePerView={3} space={4} navigate={false} />
+              </div>
+              <div className="hidden sm:block lg:hidden">
                 <Slider data={weekend.items} slidePerView={4} space={4} navigate={false} />
               </div>
               <div className="hidden lg:block">
@@ -88,14 +92,17 @@ const Home = () => {
 
             {/* New Song Slider */}
             <div className="mt-6">
-              <h1 className="text-2xl font-semibold tracking-widest text-underline mb-2">
+              <h1 className="text-xl md:text-2xl font-semibold tracking-widest text-underline mb-2">
                 {newSongSlider.title}
               </h1>
 
-              <div className="block lg:hidden">
+              {/* Slider */}
+              <div className="block sm:hidden lg:hidden">
+                <Slider data={newSongSlider.items} slidePerView={3} space={4} navigate={false} />
+              </div>
+              <div className="hidden sm:block lg:hidden">
                 <Slider data={newSongSlider.items} slidePerView={4} space={4} navigate={false} />
               </div>
-
               <div className="hidden lg:block">
                 <Slider
                   data={newSongSlider.items}
@@ -106,14 +113,16 @@ const Home = () => {
 
             {/* Top 100  Slider */}
             <div className="mt-6">
-              <h1 className="text-2xl font-semibold tracking-widest text-underline mb-2">
+              <h1 className="text-xl md:text-2xl font-semibold tracking-widest text-underline mb-2">
                 {top100.title}
               </h1>
 
-              <div className="block lg:hidden">
+              <div className="block sm:hidden lg:hidden">
+                <Slider data={top100.items} slidePerView={3} space={4} navigate={false} />
+              </div>
+              <div className="hidden sm:block lg:hidden">
                 <Slider data={top100.items} slidePerView={4} space={4} navigate={false} />
               </div>
-
               <div className="hidden lg:block">
                 <Slider
                   data={top100.items}
