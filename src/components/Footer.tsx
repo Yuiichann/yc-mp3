@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="w-full bg-[whitesmoke] shadow-sm effect pb-player">
       <div className="container text-[13px] text-secondary tracking-widest">
-        <div className="h-navbar flex flex-col items-center justify-center select-none">
+        <div className="h-footer flex flex-col items-center justify-center select-none space-y-2">
           <p>Copyright © 2022 - YC Entertainment</p>
           <div className="flex items-center justify-center space-x-2">
             <h2>Contact: </h2>

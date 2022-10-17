@@ -1,6 +1,5 @@
 import { memo, useEffect } from 'react';
 import Marquee from 'react-fast-marquee';
-import { AiOutlineQuestion } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -19,7 +18,7 @@ const MusicPlayer = () => {
   const { playlistDetail, songs, currentSongIndex } = useSelector(
     (state: RootState) => state.playlist
   );
-  const { isHiddenMusicPlayer, statusAudio } = useSelector((state: RootState) => state.audioStatus);
+  const { statusAudio } = useSelector((state: RootState) => state.audioStatus);
 
   // play first song when add new List
   // and listen playlistDetail.encode and currentSongIndex changed ==> when play song with index current
@@ -49,18 +48,12 @@ const MusicPlayer = () => {
 
   return (
     <>
-      <div
-        className={`fixed z-10 h-player effect left-0 w-screen bg-tertiary bg-main text-white select-none shadow-musicplayer ${
-          loading === 'idle' || loading === 'failed' || isHiddenMusicPlayer
-            ? 'bottom-0'
-            : 'bottom-0'
-        }`}
-      >
+      <div className="fixed z-10 h-player effect left-0 w-screen bg-tertiary bg-main bottom-0 text-white select-none shadow-musicplayer">
         <div className="h-full px-1 py-2 lg:px-8 flex justify-center lg:justify-between">
           {/* Current Song Playing Infomation */}
           <div className="flex items-center flex-grow lg:flex-grow-0 lg:w-[350px]">
             {/* check loading to render */}
-            {loading === 'idle' ? (
+            {loading === 'idle' || loading === 'failed' ? (
               <>
                 <div className="px-1 min-w-max">
                   <Link to="/ca-nhan">
@@ -71,13 +64,19 @@ const MusicPlayer = () => {
                     />
                   </Link>
                 </div>
+                <div className="px-1 text-14">
+                  <Link to="/ca-nhan" className="tracking-wider">
+                    Chọn bài hát . . .
+                  </Link>
+                </div>
               </>
             ) : loading === 'pending' ? (
               <>
                 <SkeletonSongPlaying />
               </>
-            ) : loading === 'successed' ? (
+            ) : (
               <>
+                {/* Loading === success */}
                 {/* Image */}
                 <div className="px-1 min-w-max">
                   <Link to="/ca-nhan">
@@ -90,29 +89,13 @@ const MusicPlayer = () => {
                     />
                   </Link>
                 </div>
+
                 {/* title */}
                 <div className="px-1 text-14">
                   <Link to="/ca-nhan">
                     <Marquee gradient={false} speed={30} className="md:min-w-[150px]">
                       <h1>{currentDetails.title}</h1>
                     </Marquee>
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* when faied */}
-                {/* <div className="text-4xl flex items-center justify-center flex-grow gap-2">
-                  <AiOutlineQuestion />
-                </div> */}
-
-                <div className="px-1 min-w-max">
-                  <Link to="/ca-nhan">
-                    <img
-                      src="https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/3/2/a/3/32a35f4d26ee56366397c09953f6c269.jpg"
-                      alt="image-not-found-music"
-                      className="w-[65px] h-[65px] max-w-[65px] block max-h-[65px] rounded-full"
-                    />
                   </Link>
                 </div>
               </>

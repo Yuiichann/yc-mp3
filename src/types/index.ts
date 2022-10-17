@@ -11,8 +11,7 @@ interface RoutesProps {
 
 interface AudioStatus {
   statusAudio: 'playing' | 'pause';
-  isLoop: boolean;
-  isHiddenMusicPlayer: boolean;
+  isLoop: false | 'single' | 'multi';
   volumn: number;
   isPlaylist: boolean;
 }

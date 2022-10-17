@@ -1,9 +1,8 @@
 import { memo } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { BsDisc, BsPlayCircle } from 'react-icons/bs';
-import { GiMusicalNotes } from 'react-icons/gi';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../config/store';
 import { initPrivatePlaylist, setPlayBySongIndex } from '../reducer/playlistSlice';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
@@ -20,6 +19,9 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
   const { currentDetails, loading } = useSelector((state: RootState) => state.songPlaying);
   const { songs, currentSongIndex } = useSelector((state: RootState) => state.playlist);
   const dispatch = useDispatch<AppDispatch>();
+
+  // check path
+  const location = useLocation();
 
   const handleClickPlaySong = () => {
     // if song in playylist, set currentIndexSong ==> index of song in playlist
@@ -56,12 +58,19 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
     >
       {/* STT */}
       {enbleIndex ? (
-        <div className="min-w-[80px] text-[16] lg:text-xl font-bold">
+        <div className="min-w-[50px] text-14 lg:text-18 font-bold">
           <p className="text-center">{index + 1}</p>
         </div>
       ) : (
-        <div className="min-w-[50px] text-xl font-extrabold">
-          <GiMusicalNotes className="mx-auto" />
+        <div className="min-w-[60px] flex items-center justify-center">
+          <img
+            src={song.thumbnailM}
+            alt=""
+            loading="lazy"
+            width={40}
+            height={40}
+            className="rounded-sm"
+          />
         </div>
       )}
 
@@ -79,7 +88,7 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
       </div>
 
       {/* Button Play current Music */}
-      {index === currentSongIndex && loading === 'pending' ? (
+      {index === currentSongIndex && loading === 'pending' && location.pathname === '/ca-nhan' ? (
         <div className="text-3xl py-2 min-w-[60px] px-4 cursor-pointer text-secondary hover:opacity-70 animate-spin">
           <AiOutlineLoading />
         </div>

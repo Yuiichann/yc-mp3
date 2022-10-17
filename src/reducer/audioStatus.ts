@@ -2,13 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AudioStatus } from '../types';
 
 // get data from local storage
-const isLoopLocal = JSON.parse(localStorage.getItem('__isLoop') || 'false') as boolean;
+const isLoopLocal = JSON.parse(
+  localStorage.getItem('__isLoop') || 'false'
+) as AudioStatus['isLoop'];
 const volumnLocal = JSON.parse(localStorage.getItem('__volumn') || '1') as number;
 
 const initialState: AudioStatus = {
   statusAudio: 'pause',
   isLoop: isLoopLocal,
-  isHiddenMusicPlayer: false,
   volumn: volumnLocal,
   isPlaylist: false,
 };
@@ -38,12 +39,7 @@ const audioStatusSlice = createSlice({
         isLoop: action.payload,
       };
     },
-    setIsHiddenMusicPlayer: (state, action: PayloadAction<AudioStatus['isHiddenMusicPlayer']>) => {
-      return {
-        ...state,
-        isHiddenMusicPlayer: action.payload,
-      };
-    },
+
     setVolumnAudio: (state, action: PayloadAction<AudioStatus['volumn']>) => {
       if (action.payload < 0 || action.payload > 1) {
         console.error('Redux Error:', 'State invalid');
@@ -60,11 +56,6 @@ const audioStatusSlice = createSlice({
   },
 });
 
-export const {
-  setStatusAudio,
-  setLoopAudio,
-  setIsHiddenMusicPlayer,
-  setVolumnAudio,
-  setIsPlaylist,
-} = audioStatusSlice.actions;
+export const { setStatusAudio, setLoopAudio, setVolumnAudio, setIsPlaylist } =
+  audioStatusSlice.actions;
 export default audioStatusSlice.reducer;

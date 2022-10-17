@@ -13,7 +13,7 @@ const initialState: PlayList = {
     totalDuration: 0,
     items: [],
   },
-  currentSongIndex: 0,
+  currentSongIndex: -1,
 };
 
 const playlistSlice = createSlice({

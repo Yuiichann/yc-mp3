@@ -14,14 +14,17 @@ module.exports = {
       height: {
         navbar: '56px',
         player: '90px',
+        footer: '90px',
       },
       margin: {
         navbar: '56px',
         player: '90px',
+        footer: '90px',
       },
       padding: {
         navbar: '56px',
         player: '90px',
+        footer: '90px',
       },
       fontSize: {
         12: '12px',

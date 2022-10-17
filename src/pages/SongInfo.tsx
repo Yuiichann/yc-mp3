@@ -107,6 +107,11 @@ const SongInfo = () => {
     // if playlist none, init playlist true
     if (songs.items.length <= 1) {
       dispatch(setIsPlaylist(true));
+
+      // listen when not song is play and user click add song to empty playlist ==> hat bai dau
+      if (songs.items.length === 0) {
+        dispatch(setPlayBySongIndex(0));
+      }
     }
     // dispatch action add song to playlist
     dispatch(addSongToPlaylist(songInfo));

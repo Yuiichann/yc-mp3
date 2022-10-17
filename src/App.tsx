@@ -54,13 +54,8 @@ const App = () => {
     getData();
   }, []);
 
-  console.log('app render');
-
   return (
     <BrowserRouter>
-      {/* Toastify */}
-      <ToastContainer autoClose={1200} />
-
       {/* Header */}
       <NavBar />
 
@@ -87,6 +82,11 @@ const App = () => {
 
       {/* Footer */}
       <Footer />
+
+      {/* Toastify */}
+      <div>
+        <ToastContainer autoClose={1200} position="top-center" closeOnClick={true} theme="light" />
+      </div>
 
       {/* Music Player */}
       <MusicPlayer />

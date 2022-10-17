@@ -77,6 +77,11 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
     // if playlist none, init playlist true
     if (songs.items.length <= 1) {
       dispatch(setIsPlaylist(true));
+
+      // listen when not song is play and user click add song to empty playlist ==> hat bai dau
+      if (songs.items.length === 0) {
+        dispatch(setPlayBySongIndex(0));
+      }
     }
     // dispatch action add song to playlist
     dispatch(addSongToPlaylist(tabInfo as SongApi));
@@ -87,32 +92,47 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
     <div className="p-1" key={tabInfo.encodeId}>
       {/* Image component */}
       <div className="relative overflow-hidden rounded-sm group">
-        {/* Image background */}
-        <div
-          className="pt-[100%] bg-center bg-no-repeat bg-cover scale-100 group-hover:scale-110 effect"
-          style={{ backgroundImage: `url(${tabInfo.thumbnailM})` }}
-        ></div>
+        {/* UI with type === album | playlist */}
+        {type !== 'song' && (
+          <Link to={`/${type}?id=${tabInfo.encodeId}`}>
+            <div
+              className="pt-[100%] bg-center bg-no-repeat bg-cover scale-100 group-hover:scale-110 effect"
+              style={{ backgroundImage: `url(${tabInfo.thumbnailM})` }}
+            ></div>
+          </Link>
+        )}
 
-        {/* Overlay and action in this song */}
+        {/* UI with type === song */}
         {type === 'song' && (
-          <div className="absolute bg-[rgb(0,0,0,0.5)] top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 effect flex items-center justify-center">
-            <div className="w-full flex items-center text-4xl justify-around">
-              {/* Button play music */}
-              <div
-                className="text-white p-2 hover:scale-110 cursor-pointer effect"
-                onClick={handlePlayCurrentMusic}
-              >
-                <RiPlayFill />
-              </div>
-              {/* Button add song to playlist */}
-              <div
-                className="text-white p-2 hover:scale-110 cursor-pointer effect"
-                onClick={handleAddSongToPlaylist}
-              >
-                <IoMdAddCircleOutline />
+          <>
+            <div
+              className="pt-[100%] bg-center bg-no-repeat bg-cover scale-100 group-hover:scale-110 effect"
+              style={{ backgroundImage: `url(${tabInfo.thumbnailM})` }}
+            ></div>
+            {/* Overlay and action in this song */}
+            <div className="absolute bg-[rgb(0,0,0,0.5)] top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 effect flex items-center justify-center">
+              <div className="w-full flex items-center text-3xl lg:text-2xl justify-around">
+                {/* Button favorite */}
+                <div className="text-white p-2 hover:scale-110 cursor-pointer effect">
+                  <IoMdHeartEmpty />
+                </div>
+                {/* Button play music */}
+                <div
+                  className="text-white sm:text-5xl text-6xl p-2 hover:scale-125 hover:text-secondary cursor-pointer effect"
+                  onClick={handlePlayCurrentMusic}
+                >
+                  <RiPlayFill />
+                </div>
+                {/* Button add song to playlist */}
+                <div
+                  className="text-white p-2 hover:scale-110 cursor-pointer effect"
+                  onClick={handleAddSongToPlaylist}
+                >
+                  <IoMdAddCircleOutline />
+                </div>
               </div>
             </div>
-          </div>
+          </>
         )}
       </div>
 

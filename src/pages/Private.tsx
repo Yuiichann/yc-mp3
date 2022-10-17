@@ -2,6 +2,7 @@ import { BsPlayCircleFill } from 'react-icons/bs';
 import { FcMusic } from 'react-icons/fc';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
 import { RiCloseFill } from 'react-icons/ri';
+import { TiArrowLoopOutline } from 'react-icons/ti';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import IconPlaying from '../assets/gif/icon-playing.gif';
@@ -48,7 +49,13 @@ const Private = () => {
 
   // handle toggle isLoop Song
   const handleSetLoop = () => {
-    dispatch(setLoopAudio(!isLoop));
+    const valueLoop = () => {
+      if (isPlaylist && isLoop === 'single') return 'multi';
+
+      return !isLoop ? 'single' : false;
+    };
+
+    dispatch(setLoopAudio(valueLoop()));
   };
 
   // handle when click remove playlist
@@ -128,11 +135,15 @@ const Private = () => {
                 <div className="flex items-center">
                   <div
                     className={`text-24 icon-player${
-                      isLoop ? ' text-red-500 bg-[rgb(0,0,0,0.1)]' : ''
+                      isLoop === 'single' ? ' text-red-600' : ' opacity-70'
                     }`}
                     onClick={handleSetLoop}
                   >
-                    <ImLoop />
+                    {isLoop === 'multi' ? (
+                      <TiArrowLoopOutline className="text-red-500" />
+                    ) : (
+                      <ImLoop />
+                    )}
                   </div>
                 </div>
               </div>
@@ -140,8 +151,8 @@ const Private = () => {
           </div>
         )}
 
-        {/* UI when idle */}
-        {loading === 'idle' && (
+        {/* UI when idle or faile */}
+        {loading === 'idle' || loading === 'failed' ? (
           <div className="lg:w-6/12 xl:w-4/12 justify-center flex flex-col items-center space-y-4 h-full mt-12">
             <div className="min-w-max">
               <img
@@ -150,7 +161,12 @@ const Private = () => {
                 className="w-[150px] h-[150px] max-w-[150px] block max-h-[150px] rounded-full"
               />
             </div>
+            <div>
+              <Link to="/">Chọn bài hát</Link>
+            </div>
           </div>
+        ) : (
+          <></>
         )}
 
         {/* UI when pending */}
@@ -158,28 +174,17 @@ const Private = () => {
           <SkeletionPrivateAudio center={songs.items.length > 0 ? false : true} />
         )}
 
-        {/* UI when faied */}
-        {loading === 'failed' && (
-          <div className="lg:w-6/12 xl:w-4/12 flex flex-col items-center space-y-4 h-full mt-12">
-            <div className="min-w-max">
-              <img
-                src="https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/3/2/a/3/32a35f4d26ee56366397c09953f6c269.jpg"
-                alt="image-not-found-music"
-                className="w-[150px] h-[150px] max-w-[150px] block max-h-[150px] rounded-full"
-              />
-            </div>
-          </div>
-        )}
-
         {/* Current Playlists */}
         <div className="xl:w-8/12 lg:w-6/12">
           {/* List Song Play Current */}
-          <div className="mt-8 lg:mt-4 mb-4 flex items-center space-x-4">
+          <div className="mt-8 lg:mt-4 mb-4 flex items-center space-x-4 select-none">
             <div className="flex items-center space-x-2 justify-center lg:justify-start border-b-2 border-secondary">
               <div className="text-28">
                 <FcMusic />
               </div>
-              <h2 className="text-24 tracking-wider font-medium uppercase">Playlist</h2>
+              <h2 className="text-24 tracking-wider font-medium uppercase">
+                {isPlaylist ? 'playlist' : 'đang phát'}
+              </h2>
               <div className="text-28">
                 <FcMusic />
               </div>
@@ -187,10 +192,7 @@ const Private = () => {
 
             {/* Icon remove Playlist -- if playlist true ==> show else hide */}
             {isPlaylist && (
-              <div
-                className="icon-player text-xl relative group"
-                onClick={handleRemovePlaylist}
-              >
+              <div className="icon-player text-xl relative group" onClick={handleRemovePlaylist}>
                 <RiCloseFill />
 
                 <div className="toolip-container">

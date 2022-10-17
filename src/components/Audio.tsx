@@ -2,6 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
 import { RiPauseCircleFill, RiPlayFill, RiSkipBackFill, RiSkipForwardFill } from 'react-icons/ri';
 import { AiOutlineLoading } from 'react-icons/ai';
+import { TiArrowLoopOutline } from 'react-icons/ti';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { AppDispatch, RootState } from '../config/store';
@@ -81,7 +82,13 @@ const Audio = ({ linkMp3 }: Props) => {
   const handleSetLoop = () => {
     if (!audioRef.current) return;
 
-    dispatch(setLoopAudio(!isLoop));
+    const valueLoop = () => {
+      if (isPlaylist && isLoop === 'single') return 'multi';
+
+      return !isLoop ? 'single' : false;
+    };
+
+    dispatch(setLoopAudio(valueLoop()));
   };
 
   //reload when change link music
@@ -116,10 +123,17 @@ const Audio = ({ linkMp3 }: Props) => {
   // handle when click prev song
   const handleSkipBackSong = () => {
     if (!isPlaylist) {
-      toast.warning('Danh sách phát rỗng!');
+      toast.info('Danh sách phát rỗng!');
       return;
     }
+
     if (loading === 'pending') {
+      return;
+    }
+
+    // disable when playlist length = 1
+    if (songs.items.length <= 1) {
+      toast.warning('Danh sách nhạc chỉ có 1 bài!');
       return;
     }
 
@@ -137,7 +151,7 @@ const Audio = ({ linkMp3 }: Props) => {
   // handle when click next song or when end song and next new song
   const handleSkipForwardSong = (isClickSkip?: boolean) => {
     if (!isPlaylist) {
-      toast.warning('Danh sách phát rỗng!');
+      toast.info('Danh sách phát rỗng!');
       return;
     }
     // disable click when fetch data
@@ -145,17 +159,18 @@ const Audio = ({ linkMp3 }: Props) => {
       return;
     }
 
+    // disable when playlist length = 1
+    if (songs.items.length <= 1) {
+      toast.warning('Danh sách nhạc chỉ có 1 bài!');
+      return;
+    }
+
     const songsLength = songs.items.length; // get length of list song playlist
     const newCurrentSongIndex = currentSongIndex + 1; // calculator index of next song
 
-    // if true, we is end playlist now
+    // if true, we is end playlist now ==> go to on start list
     if (newCurrentSongIndex === songsLength) {
-      // check if loop is true or isClickSkip true, restart playlist ---- and false ==> pause music
-      if (isLoop || isClickSkip) {
-        dispatch(setPlayBySongIndex(0));
-      } else {
-        handlePauseMusic(true);
-      }
+      dispatch(setPlayBySongIndex(0));
     } else {
       // when not end list ==> play next song
       dispatch(setPlayBySongIndex(newCurrentSongIndex));
@@ -164,18 +179,41 @@ const Audio = ({ linkMp3 }: Props) => {
 
   // handle when Ended Music
   const handleEndedMusic = () => {
-    // check isPlaylist or not
+    // isPlaylist === true
     if (isPlaylist) {
-      handleSkipForwardSong();
-    } else {
-      // if loop is active with simple song
-      if (isLoop) {
+      if (isLoop === 'single') {
         handlePauseMusic(true);
         setTimeout(() => {
           handlePlayMusic(true);
         }, 50);
+        return;
+      }
+
+      const songsLength = songs.items.length; // get length of list song playlist
+      const newCurrentSongIndex = currentSongIndex + 1; // calculator index of next song
+
+      if (songsLength === newCurrentSongIndex) {
+        if (isLoop === 'multi') {
+          dispatch(setPlayBySongIndex(0));
+        } else {
+          handlePauseMusic(true);
+          toast.info('Đã đến cuối danh sách nhạc!');
+        }
+      } else {
+        handleSkipBackSong();
+      }
+    }
+    // isPlaylist === false
+    else {
+      if (!isLoop) {
+        handlePauseMusic(true);
+        toast.info('Trình phát nhạc tắt!');
+        return;
       } else {
         handlePauseMusic(true);
+        setTimeout(() => {
+          handlePlayMusic(true);
+        }, 50);
       }
     }
   };
@@ -260,10 +298,10 @@ const Audio = ({ linkMp3 }: Props) => {
           </div>
           {/* loop button */}
           <div
-            className={`icon-player${isLoop ? ' text-yellow-500 bg-[rgb(0,0,0,0.3)]' : ''}`}
+            className={`icon-player${isLoop === 'single' ? ' text-red-600' : ' opacity-70'}`}
             onClick={handleSetLoop}
           >
-            <ImLoop />
+            {isLoop === 'multi' ? <TiArrowLoopOutline className="text-red-500" /> : <ImLoop />}
           </div>
         </div>
       </div>
