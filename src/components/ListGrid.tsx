@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from 'react';
 import { AlbumApi, SongApi } from '../types';
-import NewReleaseTabItem from './NewReleaseTabItem';
+import NewReleaseTabItem from './ListGridItem';
 import { SkeletonNewRelease } from './Skeleton';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 // use page search && home
-const NewReleaseTab = ({ data, type }: Props) => {
+const ListGrid = ({ data, type }: Props) => {
   const [loading, setLoading] = useState(true);
 
   //fake loading after 400 milisecond will render
@@ -36,4 +36,4 @@ const NewReleaseTab = ({ data, type }: Props) => {
   );
 };
 
-export default memo(NewReleaseTab);
+export default memo(ListGrid);

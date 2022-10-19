@@ -100,7 +100,7 @@ const SongInfo = () => {
     const findSong = songs.items.find((song) => song.encodeId === songInfo.encodeId);
 
     if (findSong) {
-      toast.error('Bài hát đã trong playlist');
+      toast.info('Bài hát đã trong playlist');
       return;
     }
 

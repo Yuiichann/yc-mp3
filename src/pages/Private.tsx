@@ -177,7 +177,7 @@ const Private = () => {
         {/* Current Playlists */}
         <div className="xl:w-8/12 lg:w-6/12">
           {/* List Song Play Current */}
-          <div className="mt-8 lg:mt-4 mb-4 flex items-center space-x-4 select-none">
+          <div className="mt-8 lg:mt-4 mb-4 flex items-center space-x-4 select-none justify-center lg:justify-start flex-col space-y-2 lg:flex-row lg:space-y-0">
             <div className="flex items-center space-x-2 justify-center lg:justify-start border-b-2 border-secondary">
               <div className="text-28">
                 <FcMusic />

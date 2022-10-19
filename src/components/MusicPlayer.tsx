@@ -40,9 +40,19 @@ const MusicPlayer = () => {
   }, [playlistDetail.encodeId, currentSongIndex]);
 
   // alert when data fetch dont have
+  // change title when loading successfully new song
   useEffect(() => {
     if (loading === 'failed') {
       toast.error('Không có dữ liệu nhạc!!!');
+      document.title = 'YC MP3';
+    }
+
+    if (loading === 'pending') {
+      document.title = 'Đang tải . . .';
+    }
+
+    if (loading === 'successed') {
+      document.title = `${currentDetails.title} - ${currentDetails.artistsNames}`;
     }
   }, [loading]);
 

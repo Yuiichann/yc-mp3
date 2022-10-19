@@ -95,7 +95,7 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
       ) : (
         <div
           className={`text-3xl py-2 min-w-[60px] px-4 cursor-pointer hover:opacity-70 hover:text-secondary ${
-            currentDetails.encodeId === song.encodeId ? 'text-secondary' : 'text-black'
+            currentDetails.encodeId === song.encodeId ? 'text-secondary animate-spin-medium' : 'text-black'
           }`}
           onClick={handleClickPlaySong}
         >

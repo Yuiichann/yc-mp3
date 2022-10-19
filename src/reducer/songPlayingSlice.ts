@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import ycMp3 from '../api/ycmp3Api';
-import { SongPlaying, SongYcAlbum } from '../types';
+import { SongPlaying } from '../types';
 
 interface FetchDataFulfilled {
   link_mp3: string;
@@ -11,32 +11,28 @@ interface FetchDataFulfilled {
 export const fetchDataMp3 = createAsyncThunk(
   'song/fetchLinkMusic',
   async (songDetail: SongPlaying['currentDetails'], thunkAPI) => {
-    const res: any = await ycMp3.getSong({ id: songDetail.encodeId });
+    const resZing: any = await ycMp3.getSong({ id: songDetail.encodeId });
 
-    if (res.msg === 'Success' && res.data['128']) {
+    // get API of Zing Mp3 Successfully
+    if (resZing.msg === 'Success' && resZing.data['128']) {
       return {
-        link_mp3: res.data['128'],
+        link_mp3: resZing.data['128'],
         songDetail,
       };
-    } else {
-      return thunkAPI.rejectWithValue(res.msg);
     }
-  }
-);
 
-// thunk function fetch data Yc Collection
-export const fetchYcCollection = createAsyncThunk(
-  'song/fetchYcSong',
-  async (encodeId: string, thunkAPI) => {
-    const res: any = await ycMp3.getOneSongInYcAlbum({ id: encodeId });
+    const resAlbumYc: any = await ycMp3.getDataSongOfAlbumYc({ id: songDetail.encodeId });
 
-    if (res.msg === 'Success') {
-      const songItem: SongYcAlbum = res.data;
-
-      return songItem;
-    } else {
-      return thunkAPI.rejectWithValue(res.msg);
+    // get API of Yc Album
+    if (resAlbumYc.msg === 'Success' && resAlbumYc.data['128']) {
+      return {
+        link_mp3: resAlbumYc.data['128'],
+        songDetail,
+      };
     }
+
+    // data not found
+    return thunkAPI.rejectWithValue(resZing.msg);
   }
 );
 
@@ -58,7 +54,7 @@ const songPlayingSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // case of fetch link mp3
+    //  case pending
     builder.addCase(fetchDataMp3.pending, (state, action) => {
       return {
         currentDetails: initialState.currentDetails,
@@ -67,6 +63,7 @@ const songPlayingSlice = createSlice({
       };
     });
 
+    // case fulfilled
     builder.addCase(fetchDataMp3.fulfilled, (state, action: PayloadAction<FetchDataFulfilled>) => {
       return {
         currentDetails: action.payload.songDetail,
@@ -75,38 +72,8 @@ const songPlayingSlice = createSlice({
       };
     });
 
+    // case rejected
     builder.addCase(fetchDataMp3.rejected, (state, action) => {
-      return {
-        currentDetails: initialState.currentDetails,
-        currentSong: '',
-        loading: 'failed',
-      };
-    });
-
-    // case fetch data from yc collection
-    builder.addCase(fetchYcCollection.pending, (state, action) => {
-      return {
-        ...state,
-        currentSong: '',
-        loading: 'pending',
-      };
-    });
-
-    builder.addCase(fetchYcCollection.fulfilled, (state, action: PayloadAction<SongYcAlbum>) => {
-      return {
-        currentSong: action.payload.link_mp3,
-        currentDetails: {
-          thumbnail: action.payload.thumbnail,
-          thumbnailM: action.payload.thumbnailM,
-          artistsNames: action.payload.artistsNames,
-          encodeId: action.payload.encodeId,
-          title: action.payload.title,
-        },
-        loading: 'successed',
-      };
-    });
-
-    builder.addCase(fetchYcCollection.rejected, (state, action) => {
       return {
         currentDetails: initialState.currentDetails,
         currentSong: '',

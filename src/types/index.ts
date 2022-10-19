@@ -39,9 +39,20 @@ interface SongPlaying {
 interface SearchItems {
   song: SongApi[];
   playlists: AlbumApi[];
-  top?: SongApi;
+  top?: TopItemSearch;
   artists: any;
   videos?: VideoSearchItems[];
+}
+
+// Song or Artist - using for SearchItems
+interface TopItemSearch {
+  alias?: string;
+  thumbnail?: string;
+  thumbnailM?: string;
+  name?: string;
+  encodeId?: string;
+  title?: string;
+  artistsNames?: string;
 }
 
 // playlist using in playlistSlice
@@ -136,17 +147,16 @@ interface SongApi {
   genres: [];
 }
 
-// using for Song Yc Collection
-interface SongYcAlbum {
-  thumbnail: string;
-  thumbnailM: string;
-  title: string;
-  releaseDate: number | string;
-  duration: number;
-  artistsNames: string;
-  encodeId: string;
-  link_mp3: string;
-}
+// // using for Song Yc Collection
+// interface SongYcAlbum {
+//   thumbnail: string;
+//   thumbnailM: string;
+//   title: string;
+//   releaseDate: number | string;
+//   duration: number;
+//   artistsNames: string;
+//   encodeId: string;
+// }
 
 // Album API --> using on Home
 interface AlbumApi {
@@ -232,7 +242,6 @@ export type {
   VideoItems,
   AudioStatus,
   DataRanking,
-  SongYcAlbum,
   Artist,
   MainInfoSlider,
   TempState,

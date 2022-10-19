@@ -22,7 +22,7 @@ interface Props {
   tabInfo: AlbumApi | SongApi;
 }
 
-const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
+const ListGridItem = ({ tabInfo, type }: Props) => {
   const { songs } = useSelector((state: RootState) => state.playlist);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -70,7 +70,7 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
     const checkSong = checkSongInList(tabInfo.encodeId, songs.items);
 
     if (checkSong !== -1) {
-      toast.error('Bài hát đã trong playlist');
+      toast.info('Bài hát đã trong playlist');
       return;
     }
 
@@ -110,7 +110,7 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
               style={{ backgroundImage: `url(${tabInfo.thumbnailM})` }}
             ></div>
             {/* Overlay and action in this song */}
-            <div className="absolute bg-[rgb(0,0,0,0.5)] top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 effect flex items-center justify-center">
+            <div className="absolute bg-[rgb(0,0,0,0.5)] top-0 left-0 w-full h-full opacity-0 invisible group-hover:visible group-hover:opacity-100 effect flex items-center justify-center">
               <div className="w-full flex items-center text-3xl lg:text-2xl justify-around">
                 {/* Button favorite */}
                 <div className="text-white p-2 hover:scale-110 cursor-pointer effect">
@@ -155,4 +155,4 @@ const NewReleaseTabInfo = ({ tabInfo, type }: Props) => {
   );
 };
 
-export default memo(NewReleaseTabInfo);
+export default memo(ListGridItem);

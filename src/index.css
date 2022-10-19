@@ -60,6 +60,14 @@ body {
     @apply relative before:absolute before:left-0 before:bottom-0 before:w-full before:h-[3px] before:bg-main w-fit;
   }
 
+  .title {
+    @apply text-xl lg:text-2xl tracking-widest font-medium select-none mb-4;
+  }
+
+  .title-underline {
+    @apply text-xl lg:text-2xl tracking-widest font-medium select-none mb-4 relative before:absolute before:left-0 before:bottom-0 before:w-full before:h-[3px] before:bg-main w-fit;
+  }
+
   .button {
     @apply flex justify-center bg-main text-white rounded-sm items-center border-none outline-none cursor-pointer px-[8px] py-[4px] min-w-[105px] max-w-[120px];
   }

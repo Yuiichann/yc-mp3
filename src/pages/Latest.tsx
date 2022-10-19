@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
-import NewReleaseTab from '../components/NewReleaseTab';
+import NewReleaseTab from '../components/ListGrid';
 import { RootState } from '../config/store';
 
 // Nhạc & Album Mới Nhất

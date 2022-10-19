@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SkeletonNewRelease = () => {
   return (
     <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4 animate-pulse">
@@ -71,4 +69,17 @@ const SkeletionPrivateAudio = ({ center }: { center: boolean }) => {
   );
 };
 
-export { SkeletonNewRelease, SkeletonSongPlaying, SkeletionPrivateAudio };
+const SkeletionKeyWordTrending = () => {
+  return (
+    <>
+      <div className="flex flex-wrap animate-pulse">
+        <div className="px-3 py-2 w-[150px] h-[36px] bg-gray-300 mt-2 mr-2 lg:mr-4 lg:mt-4 flex items-center justify-center gap-2"></div>
+        <div className="px-3 py-2 w-[100px] h-[36px] bg-gray-300 mt-2 mr-2 lg:mr-4 lg:mt-4 flex items-center justify-center gap-2"></div>
+        <div className="px-3 py-2 w-[120px] h-[36px] bg-gray-300 mt-2 mr-2 lg:mr-4 lg:mt-4 flex items-center justify-center gap-2"></div>
+        <div className="px-3 py-2 w-[110px] h-[36px] bg-gray-300 mt-2 mr-2 lg:mr-4 lg:mt-4 flex items-center justify-center gap-2"></div>
+      </div>
+    </>
+  );
+};
+
+export { SkeletonNewRelease, SkeletonSongPlaying, SkeletionPrivateAudio, SkeletionKeyWordTrending };

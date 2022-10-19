@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import NewReleaseTab from '../components/NewReleaseTab';
+import ListGrid from '../components/ListGrid';
 import Slide, { Slider } from '../components/Slide';
 import { RootState } from '../config/store';
 import { useState } from 'react';
@@ -45,9 +45,7 @@ const Home = () => {
             {/* New Release */}
             <div className="mt-8">
               {/* title */}
-              <h1 className="text-2xl font-semibold tracking-widest text-underline">
-                {newRelease.title}
-              </h1>
+              <h1 className="title-underline">{newRelease.title}</h1>
               {/* Button change Type */}
               <div className="w-full flex mt-6 justify-center md:gap-6 lg:justify-start lg:gap-0 lg:space-x-8">
                 {newReleaseType.map((item) => (
@@ -63,7 +61,7 @@ const Home = () => {
                 ))}
                 {/* New Release List */}
               </div>
-              <NewReleaseTab
+              <ListGrid
                 type={typeNewRelease}
                 data={typeNewRelease === 'song' ? newRelease.song : newRelease.album}
               />
@@ -71,9 +69,7 @@ const Home = () => {
 
             {/* Weekend */}
             <div className="mt-8">
-              <h1 className="text-xl md:text-2xl font-semibold tracking-widest text-underline mb-2">
-                {weekend.title}
-              </h1>
+              <h1 className="title-underline">{weekend.title}</h1>
 
               {/* Slider */}
               <div className="block sm:hidden lg:hidden">
@@ -92,9 +88,7 @@ const Home = () => {
 
             {/* New Song Slider */}
             <div className="mt-6">
-              <h1 className="text-xl md:text-2xl font-semibold tracking-widest text-underline mb-2">
-                {newSongSlider.title}
-              </h1>
+              <h1 className="title-underline">{newSongSlider.title}</h1>
 
               {/* Slider */}
               <div className="block sm:hidden lg:hidden">
@@ -113,9 +107,7 @@ const Home = () => {
 
             {/* Top 100  Slider */}
             <div className="mt-6">
-              <h1 className="text-xl md:text-2xl font-semibold tracking-widest text-underline mb-2">
-                {top100.title}
-              </h1>
+              <h1 className="title-underline">{top100.title}</h1>
 
               <div className="block sm:hidden lg:hidden">
                 <Slider data={top100.items} slidePerView={3} space={4} navigate={false} />
