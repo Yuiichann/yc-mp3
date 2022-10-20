@@ -200,7 +200,7 @@ const Audio = ({ linkMp3 }: Props) => {
           toast.info('Đã đến cuối danh sách nhạc!');
         }
       } else {
-        handleSkipBackSong();
+        handleSkipForwardSong();
       }
     }
     // isPlaylist === false
