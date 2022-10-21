@@ -24,6 +24,7 @@ const KeyWordTrending = () => {
         <div className="flex flex-wrap">
           {hotKeyword.map((key) => (
             <Link
+              key={key.rank}
               to={`/tim-kiem?keyword=${encodeURI(key.value)}`}
               className="px-3 py-2 bg-gray-200 mt-2 mr-2 lg:mr-4 lg:mt-4 flex items-center justify-center gap-2"
             >
@@ -43,6 +44,7 @@ const KeyWordTrending = () => {
         <div className="flex flex-wrap">
           {hotArtistKey.map((key) => (
             <Link
+              key={key.rank}
               to={`/tim-kiem?keyword=${encodeURI(key.value)}`}
               className="px-3 py-2 bg-gray-200 mt-2 mr-2 lg:mr-4 lg:mt-4 flex items-center justify-center gap-2"
             >

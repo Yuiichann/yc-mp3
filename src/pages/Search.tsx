@@ -62,7 +62,7 @@ const Search = () => {
     <section className="px-1 lg:px-2 min-h-[calc(100vh-180px)]">
       {/* Seach input when page not keyword */}
       <div className="py-2 flex items-center justify-center flex-col space-y-4">
-        <div className="w-full md:w-8/12">
+        <div className="w-full md:w-8/12 block lg:hidden">
           <SearchInput />
         </div>
 
@@ -128,7 +128,7 @@ const Search = () => {
                   {searchData.song ? (
                     <ListGrid data={searchData.song} type="song" />
                   ) : (
-                    <h1 className="text-center text-xl my-6">Không có dữ liệu</h1>
+                    <h1 className="text-center text-xl my-24">Không có dữ liệu</h1>
                   )}
                 </div>
 

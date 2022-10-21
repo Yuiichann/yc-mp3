@@ -111,14 +111,14 @@ const ListGridItem = ({ tabInfo, type }: Props) => {
             ></div>
             {/* Overlay and action in this song */}
             <div className="absolute bg-[rgb(0,0,0,0.5)] top-0 left-0 w-full h-full opacity-0 invisible group-hover:visible group-hover:opacity-100 effect flex items-center justify-center">
-              <div className="w-full flex items-center text-3xl lg:text-2xl justify-around">
+              <div className="w-full flex items-center text-2xl xl:text-3xl justify-around">
                 {/* Button favorite */}
                 <div className="text-white p-2 hover:scale-110 cursor-pointer effect">
                   <IoMdHeartEmpty />
                 </div>
                 {/* Button play music */}
                 <div
-                  className="text-white sm:text-5xl text-6xl p-2 hover:scale-125 hover:text-secondary cursor-pointer effect"
+                  className="text-white text-4xl xl:text-5xl p-2 hover:scale-125 hover:text-secondary cursor-pointer effect"
                   onClick={handlePlayCurrentMusic}
                 >
                   <RiPlayFill />
