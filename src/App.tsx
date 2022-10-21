@@ -27,6 +27,9 @@ const App = () => {
         // console.log(resItems);
         const banner = resItems.find((item: any) => item.sectionType === 'banner'); // banner api
         const newRelease = resItems.find((item: any) => item.sectionType === 'new-release'); // new release items
+        const artistSpotlight = resItems.find(
+          (item: any) => item.sectionType === 'artistSpotlight'
+        ); // artist spolight
         const weekend: MainInfoSlider = resItems[4]; // weekend items
         const newSongSlider: MainInfoSlider = resItems[6]; // get new song slider
         const top100: MainInfoSlider = resItems[10]; // get top 100
@@ -40,6 +43,11 @@ const App = () => {
               title: newRelease.title || '',
               ...newRelease.items[0],
             } as NewReleaseApi,
+
+            artistSpotlight: {
+              title: 'Spotlight',
+              items: artistSpotlight.items,
+            },
 
             weekend: weekend,
             newSongSlider: newSongSlider,

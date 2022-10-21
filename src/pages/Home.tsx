@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import ListGrid from '../components/ListGrid';
-import Slide, { Slider } from '../components/Slide';
+import Slide, { Slider, SliderSpotlight } from '../components/Slide';
 import { RootState } from '../config/store';
 import { useState } from 'react';
 import Loading from '../components/Loading';
@@ -19,9 +19,8 @@ const newReleaseType = [
 // Home and Discover
 const Home = () => {
   const [typeNewRelease, setTypeNewRelease] = useState<'song' | 'album'>('song');
-  const { banner, newRelease, weekend, newSongSlider, top100, isLoading, error } = useSelector(
-    (state: RootState) => state.mainInfo
-  );
+  const { banner, newRelease, weekend, newSongSlider, top100, artistSpotlight, isLoading, error } =
+    useSelector((state: RootState) => state.mainInfo);
 
   // change type of tab new release
   const handleChangeTypeNewRealse = (type: typeof typeNewRelease) => {
@@ -119,6 +118,34 @@ const Home = () => {
                 <Slider
                   data={top100.items}
                   slidePerView={top100.items.length < 6 ? top100.items.length : 6}
+                />
+              </div>
+            </div>
+
+            {/* Artist Spotlight */}
+            <div className="mt-6">
+              <h1 className="title-underline">{artistSpotlight.title}</h1>
+
+              <div className="block sm:hidden lg:hidden">
+                <SliderSpotlight
+                  data={artistSpotlight.items}
+                  slidePerView={3}
+                  space={4}
+                  navigate={false}
+                />
+              </div>
+              <div className="hidden sm:block lg:hidden">
+                <SliderSpotlight
+                  data={artistSpotlight.items}
+                  slidePerView={4}
+                  space={4}
+                  navigate={false}
+                />
+              </div>
+              <div className="hidden lg:block">
+                <SliderSpotlight
+                  data={artistSpotlight.items}
+                  slidePerView={artistSpotlight.items.length < 6 ? artistSpotlight.items.length : 6}
                 />
               </div>
             </div>

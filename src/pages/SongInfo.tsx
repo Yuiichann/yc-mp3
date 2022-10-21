@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { IoMdAddCircleOutline, IoMdHeartEmpty } from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ycMp3 from '../api/ycmp3Api';
 import Loading from '../components/Loading';
@@ -92,6 +92,7 @@ const SongInfo = () => {
     }
   };
 
+  console.log(songInfo);
   // Handle add song to playlist
   const handleAddToPlaylist = () => {
     if (!songInfo) return;
@@ -191,6 +192,28 @@ const SongInfo = () => {
                     </h5>
                   </div>
                 )}
+
+                <div className="flex space-x-0 lg:space-x-4 mt-4 flex-col lg:flex-row space-y-2 lg:space-y-0">
+                  <h2 className="text-center italic">Ca sĩ trình bày:</h2>
+                  <div className="flex flex-wrap items-center justify-center lg:justify-start space-x-4">
+                    {songInfo.artists.map((artist) => (
+                      <Link
+                        to={`/ca-si?name=${artist.alias}`}
+                        className="flex items-center flex-col space-y-2 text-12 truncate"
+                      >
+                        <img
+                          src={artist.thumbnailM}
+                          alt={artist.alias}
+                          loading="lazy"
+                          width={60}
+                          height={60}
+                          className="shadow-sm"
+                        />
+                        <h2>{artist.name}</h2>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 

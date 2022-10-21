@@ -1,5 +1,6 @@
 import AddSong from '../pages/AddSong';
 import Album from '../pages/Album';
+import ArtistInfo from '../pages/ArtistInfo';
 import Home from '../pages/Home';
 import Latest from '../pages/Latest';
 import NotFound from '../pages/NotFound';
@@ -63,6 +64,11 @@ const routes: RoutesProps[] = [
     title: 'Thông tin bài hát',
     path: '/bai-hat',
     component: SongInfo,
+  },
+  {
+    title: 'Thông tin ca sĩ',
+    path: '/ca-si',
+    component: ArtistInfo,
   },
   {
     title: 'Thông tin Album',

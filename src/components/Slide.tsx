@@ -7,7 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { AlbumApi, BannerApi } from '../types';
+import { AlbumApi, Artist, BannerApi } from '../types';
 import getUrlByType from '../utils/getUrlByType';
 
 interface Props {
@@ -114,6 +114,40 @@ export const Slider = ({ data, slidePerView, space, navigate }: SliderProps) => 
         <SwiperSlide key={index}>
           <Link to={`/${item.textType.toLowerCase()}?id=${item.encodeId}`}>
             <img src={item.thumbnailM} alt={item.title} className="rounded-xl" />
+          </Link>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+};
+
+interface SliderSpotlightProps {
+  data: Artist[];
+  slidePerView?: number;
+  space?: number;
+  navigate?: boolean;
+}
+
+export const SliderSpotlight = ({ data, navigate, slidePerView, space }: SliderSpotlightProps) => {
+  return (
+    <Swiper
+      modules={[Navigation, Scrollbar, A11y, Autoplay]}
+      grabCursor={true}
+      autoplay={{
+        delay: 4000,
+      }}
+      spaceBetween={space || 10}
+      slidesPerView={slidePerView}
+      navigation={navigate}
+    >
+      {data.map((item, index) => (
+        <SwiperSlide key={index}>
+          <Link
+            to={`/ca-si?name=${item.alias}`}
+            className="flex flex-col items-center space-y-2 truncate"
+          >
+            <img src={item.thumbnail} alt={item.alias} className="rounded-xl" />
+            <h2 className="text-14">{item.name}</h2>
           </Link>
         </SwiperSlide>
       ))}

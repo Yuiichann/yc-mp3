@@ -67,20 +67,33 @@ interface PlayList {
   currentSongIndex: number;
 }
 
-// using for Artists
+// using for Artists in home
 interface Artist {
   alias: string;
   id: string;
   spotlight: boolean;
   thumbnail: string;
   thumbnailM: string;
+  cover: string;
   name: string;
+}
+
+// using for ArtistsDetail
+interface ArtistDetail extends Artist {
+  realname: string;
+  biography: string;
+  birthday: string;
+  national: string;
+  sortBiography: string;
+  topAlbum: AlbumApi;
+  sections: any;
 }
 
 // state global save temp
 interface TempState {
   temp_songs: SongApi[];
   temp_playlists: PlaylistItem[];
+  temp_artists: ArtistDetail[];
 }
 
 // Main Infomation of app include banner,playlist,... ==> use in rudux
@@ -90,6 +103,10 @@ interface MainInfo {
   weekend: MainInfoSlider;
   newSongSlider: MainInfoSlider;
   top100: MainInfoSlider;
+  artistSpotlight: {
+    title: string;
+    items: Artist[];
+  };
 
   isLoading: boolean;
   error?: {
@@ -244,5 +261,6 @@ export type {
   DataRanking,
   Artist,
   MainInfoSlider,
+  ArtistDetail,
   TempState,
 };
