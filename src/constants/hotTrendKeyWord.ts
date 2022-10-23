@@ -16,6 +16,10 @@ export const hotKeyword: HotKey[] = [
     rank: 3,
     value: 'Waitting for you',
   },
+  {
+    rank: 4,
+    value: 'Bài này không để đi diễn',
+  }
 ];
 
 export const hotArtistKey: HotKey[] = [
@@ -30,5 +34,9 @@ export const hotArtistKey: HotKey[] = [
   {
     rank: 3,
     value: 'Anh Tú',
+  },
+  {
+    rank: 4,
+    value: 'Masew',
   },
 ];
