@@ -17,7 +17,7 @@ const Lyric = ({ encodeId }: Props) => {
       if (res.msg === 'Success' && res.data.file) {
         const textFile = res.data.file;
 
-        fetch(textFile)
+        await fetch(textFile)
           .then((res) => res.text())
           .then((text) => {
             if (text.length < 0) return;

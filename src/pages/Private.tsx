@@ -5,6 +5,7 @@ import { RiCloseFill } from 'react-icons/ri';
 import { TiArrowLoopOutline } from 'react-icons/ti';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import IconPlaying from '../assets/gif/icon-playing.gif';
 import InputRangeVolumn from '../components/InputRangeVolumn';
 import ListSong from '../components/ListSong';
@@ -65,6 +66,7 @@ const Private = () => {
     // dispatch action
     dispatch(removePlaylist());
     dispatch(setIsPlaylist(false)); // set isPlaylist in audioStatus ==> false
+    toast.success('Xóa playlist thành công!');
   };
 
   return (

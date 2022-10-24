@@ -4,9 +4,10 @@ import { useSearchParams } from 'react-router-dom';
 import ycMp3 from '../api/ycmp3Api';
 import ListSong from '../components/ListSong';
 import Loading from '../components/Loading';
+import { Slider } from '../components/Slide';
 import { AppDispatch, RootState } from '../config/store';
 import { addTempArtist } from '../reducer/tempGlobalState';
-import { ArtistDetail, SongApi } from '../types';
+import { AlbumApi, ArtistDetail, SongApi } from '../types';
 import NotFound from './NotFound';
 
 const ArtistInfo = () => {
@@ -23,6 +24,7 @@ const ArtistInfo = () => {
   // check artist in temp state
   const tempArtistSaved = temp_artists.find((artist) => artist.alias === artistAlias);
 
+  // call api get data
   useEffect(() => {
     if (artistAlias) {
       setIsLoading(true);
@@ -60,14 +62,18 @@ const ArtistInfo = () => {
     <Loading />
   ) : (
     <>
-      {artistInfo && (
+      {artistInfo ? (
         <section className="px-1 lg:px-2">
           {/* info include image, name, realname, birthday, sortbio */}
           <div className="flex flex-col-reverse lg:flex-row items-center">
             <div className="w-full lg:w-8/12 text-center lg:text-left lg:text-16 text-14 p-2">
               <h1 className="text-20 font-semibold tracking-normal mb-3">{artistInfo.name}</h1>
-              <p className="italic mt-1 tracking-normal">Tên thật: {artistInfo.realname}</p>
-              <p className="italic mt-1 tracking-normal">Sinh nhật: {artistInfo.birthday}</p>
+              {artistInfo.realname && (
+                <p className="italic mt-1 tracking-normal">Tên thật: {artistInfo.realname}</p>
+              )}
+              {artistInfo.birthday && (
+                <p className="italic mt-1 tracking-normal">Sinh nhật: {artistInfo.birthday}</p>
+              )}
 
               <p className="text-justify mt-4 max-w-[400px] mx-auto lg:max-w-none leading-6">
                 {artistInfo.sortBiography}
@@ -86,17 +92,32 @@ const ArtistInfo = () => {
           </div>
 
           {/* main bio a.k.a Tiểu sử */}
-          <div className="my-4">
-            <h1 className="title text-center">Tiểu sử</h1>
-            <div className="flex flex-col space-y-2 text-16 leading-6 text-justify">
-              {artistInfo.biography.split('<br>').map((item, index) => (
-                <p key={index}>{item}</p>
-              ))}
+          {artistInfo.biography && (
+            <div className="my-4">
+              <h1 className="title text-center">Tiểu sử</h1>
+              <div className="flex flex-col space-y-4 text-16 leading-6 text-justify max-w-[90%] lg:max-w-none mx-auto">
+                {artistInfo.biography.split('<br>').map((item, index) => (
+                  <p key={index}>{item}</p>
+                ))}
+              </div>
             </div>
+          )}
+
+          {/* Top Album */}
+          <div className="my-4">
+            <h1 className="title text-center">Top Album của {artistInfo.name}</h1>
           </div>
 
-          <div></div>
+          {artistInfo.sections.map((section, index) => (
+            <div key={index}>
+              <h1 className="title text-center">{section.title}</h1>
+            </div>
+          ))}
         </section>
+      ) : (
+        <div>
+          <h1 className="text-center title">Không có dữ liệu</h1>
+        </div>
       )}
     </>
   );

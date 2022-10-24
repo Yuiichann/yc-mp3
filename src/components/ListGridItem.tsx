@@ -1,21 +1,8 @@
-import React, { memo } from 'react';
-import { MdPlayCircleFilled } from 'react-icons/md';
-import { IoMdAddCircleOutline, IoMdHeartEmpty } from 'react-icons/io';
-import { RiPlayFill } from 'react-icons/ri';
-import { useDispatch, useSelector } from 'react-redux';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { AppDispatch, RootState } from '../config/store';
-import {
-  addSongToPlaylist,
-  initPrivatePlaylist,
-  setPlayBySongIndex,
-} from '../reducer/playlistSlice';
-import { fetchDataMp3 } from '../reducer/songPlayingSlice';
-import { AlbumApi, SongApi, SongPlaying } from '../types';
-import checkSongInList from '../utils/checkSongInList';
+import { AlbumApi, SongApi } from '../types';
 import convertDate from '../utils/convertDate';
-import { toast } from 'react-toastify';
-import { setIsPlaylist } from '../reducer/audioStatus';
+import AudioHandler from './AudioHandler';
 
 interface Props {
   type: 'song' | 'album' | 'playlist';
@@ -23,71 +10,6 @@ interface Props {
 }
 
 const ListGridItem = ({ tabInfo, type }: Props) => {
-  const { songs } = useSelector((state: RootState) => state.playlist);
-  const dispatch = useDispatch<AppDispatch>();
-
-  // handle play 1 song when click play
-  const handlePlayCurrentMusic = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // with type === album
-    if (type === 'album') {
-      console.warn('Chưa hỗ trợ phát Album');
-      return;
-    }
-
-    // with type === song
-    if (type === 'song') {
-      // check if song already in playlist, dispatch index of song
-      const checkSongInPlaylist = checkSongInList(tabInfo.encodeId, songs.items);
-      if (checkSongInPlaylist >= 0) {
-        dispatch(setPlayBySongIndex(checkSongInPlaylist));
-        return;
-      }
-
-      // create const info song
-      const detailSong: SongPlaying['currentDetails'] = {
-        artistsNames: tabInfo.artistsNames,
-        encodeId: tabInfo.encodeId,
-        thumbnail: tabInfo.thumbnail,
-        thumbnailM: tabInfo.thumbnailM,
-        title: tabInfo.title,
-      };
-
-      // if playlist is none (when start app or change each song) ==> init new playlist with one uniqe song
-      if (songs.items.length <= 1) {
-        dispatch(initPrivatePlaylist(tabInfo as SongApi));
-      } else {
-        // else, when playlist is avaialbe, play this song
-        dispatch(setPlayBySongIndex(-1));
-        dispatch(fetchDataMp3(detailSong));
-      }
-    }
-  };
-
-  const handleAddSongToPlaylist = () => {
-    const checkSong = checkSongInList(tabInfo.encodeId, songs.items);
-
-    if (checkSong !== -1) {
-      toast.info('Bài hát đã trong playlist');
-      return;
-    }
-
-    // if playlist none, init playlist true
-    if (songs.items.length <= 1) {
-      dispatch(setIsPlaylist(true));
-
-      // listen when not song is play and user click add song to empty playlist ==> hat bai dau
-      if (songs.items.length === 0) {
-        dispatch(setPlayBySongIndex(0));
-      }
-    }
-    // dispatch action add song to playlist
-    dispatch(addSongToPlaylist(tabInfo as SongApi));
-    toast.success('Đã thêm vào danh sách phát');
-  };
-
   return (
     <div className="p-1" key={tabInfo.encodeId}>
       {/* Image component */}
@@ -111,26 +33,8 @@ const ListGridItem = ({ tabInfo, type }: Props) => {
             ></div>
             {/* Overlay and action in this song */}
             <div className="absolute bg-[rgb(0,0,0,0.5)] top-0 left-0 w-full h-full opacity-0 invisible group-hover:visible group-hover:opacity-100 effect flex items-center justify-center">
-              <div className="w-full flex items-center text-2xl xl:text-3xl justify-around">
-                {/* Button favorite */}
-                <div className="text-white p-2 hover:scale-110 cursor-pointer effect">
-                  <IoMdHeartEmpty />
-                </div>
-                {/* Button play music */}
-                <div
-                  className="text-white text-4xl xl:text-5xl p-2 hover:scale-125 hover:text-secondary cursor-pointer effect"
-                  onClick={handlePlayCurrentMusic}
-                >
-                  <RiPlayFill />
-                </div>
-                {/* Button add song to playlist */}
-                <div
-                  className="text-white p-2 hover:scale-110 cursor-pointer effect"
-                  onClick={handleAddSongToPlaylist}
-                >
-                  <IoMdAddCircleOutline />
-                </div>
-              </div>
+              {/* Audio handler */}
+              <AudioHandler component="ListGridItem" songInfo={tabInfo as SongApi} />
             </div>
           </>
         )}

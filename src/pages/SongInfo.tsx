@@ -1,23 +1,13 @@
 import { useEffect, useState } from 'react';
-import { IoMdAddCircleOutline, IoMdHeartEmpty } from 'react-icons/io';
-import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useSearchParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import ycMp3 from '../api/ycmp3Api';
+import AudioHandler from '../components/AudioHandler';
 import Loading from '../components/Loading';
 import Lyric from '../components/Lyric';
 import { AppDispatch, RootState } from '../config/store';
-import { setIsPlaylist } from '../reducer/audioStatus';
-import {
-  addSongToPlaylist,
-  initPrivatePlaylist,
-  setPlayBySongIndex,
-} from '../reducer/playlistSlice';
-import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { addTempSong } from '../reducer/tempGlobalState';
 import { SongApi } from '../types';
-import checkSongInList from '../utils/checkSongInList';
 import convertDate from '../utils/convertDate';
 import NotFound from './NotFound';
 
@@ -26,7 +16,6 @@ const SongInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { songs } = useSelector((state: RootState) => state.playlist);
   const { temp_songs } = useSelector((state: RootState) => state.tempGlobalState);
 
   // get ID SONG
@@ -62,63 +51,6 @@ const SongInfo = () => {
     }
   }, [songID]);
 
-  // handle play song
-  const handlePlayCurrentSong = () => {
-    if (songInfo) {
-      // check if song already in playlist, dispatch index of song
-      const checkSongInPlaylist = checkSongInList(songInfo.encodeId, songs.items);
-      if (checkSongInPlaylist >= 0) {
-        dispatch(setPlayBySongIndex(checkSongInPlaylist));
-        return;
-      }
-
-      // create const info song
-      const songDetail = {
-        title: songInfo.title,
-        artistsNames: songInfo.artistsNames,
-        encodeId: songInfo.encodeId,
-        thumbnail: songInfo.thumbnail,
-        thumbnailM: songInfo.thumbnailM,
-      };
-
-      // if playlist is none (when start app or change each song) ==> init new playlist with one uniqe song
-      if (songs.items.length <= 1) {
-        dispatch(initPrivatePlaylist(songInfo));
-      } else {
-        // else, when playlist is avaialbe, play this song
-        dispatch(setPlayBySongIndex(-1));
-        dispatch(fetchDataMp3(songDetail));
-      }
-    }
-  };
-
-  console.log(songInfo);
-  // Handle add song to playlist
-  const handleAddToPlaylist = () => {
-    if (!songInfo) return;
-
-    // check if song in playlist, alert and return
-    const findSong = songs.items.find((song) => song.encodeId === songInfo.encodeId);
-
-    if (findSong) {
-      toast.info('Bài hát đã trong playlist');
-      return;
-    }
-
-    // if playlist none, init playlist true
-    if (songs.items.length <= 1) {
-      dispatch(setIsPlaylist(true));
-
-      // listen when not song is play and user click add song to empty playlist ==> hat bai dau
-      if (songs.items.length === 0) {
-        dispatch(setPlayBySongIndex(0));
-      }
-    }
-    // dispatch action add song to playlist
-    dispatch(addSongToPlaylist(songInfo));
-    toast.success('Đã thêm vào danh sách phát');
-  };
-
   if (!songID) {
     return <NotFound />;
   }
@@ -143,38 +75,8 @@ const SongInfo = () => {
                   />
                 </div>
 
-                {/* Icon */}
-                <div className="flex justify-center items-center gap-5 text-3xl">
-                  <div
-                    className="icon-player text-secondary relative group"
-                    onClick={handlePlayCurrentSong}
-                  >
-                    <RiPlayFill />
-
-                    <div className="toolip-container">
-                      <p>Phát bài hát</p>
-                    </div>
-                  </div>
-
-                  <div
-                    className="icon-player text-secondary relative group"
-                    onClick={handleAddToPlaylist}
-                  >
-                    <IoMdAddCircleOutline />
-
-                    <div className="toolip-container">
-                      <p>Thêm vào danh sách phát</p>
-                    </div>
-                  </div>
-
-                  <div className="icon-player text-red-600 relative group">
-                    <IoMdHeartEmpty />
-
-                    <div className="toolip-container">
-                      <p>Thêm vào yêu thích</p>
-                    </div>
-                  </div>
-                </div>
+                {/* Icon Audio handler */}
+                <AudioHandler songInfo={songInfo} component="SongInfo" />
               </div>
 
               {/* Info details */}
@@ -198,6 +100,7 @@ const SongInfo = () => {
                   <div className="flex flex-wrap items-center justify-center lg:justify-start space-x-4">
                     {songInfo.artists.map((artist) => (
                       <Link
+                        key={artist.id}
                         to={`/ca-si?name=${artist.alias}`}
                         className="flex items-center flex-col space-y-2 text-12 truncate"
                       >

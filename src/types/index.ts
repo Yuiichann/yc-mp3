@@ -86,7 +86,11 @@ interface ArtistDetail extends Artist {
   national: string;
   sortBiography: string;
   topAlbum: AlbumApi;
-  sections: any;
+  sections: {
+    sectionType: 'playlist' | 'video' | 'song' | 'artist';
+    title: string;
+    items: any;
+  }[];
 }
 
 // state global save temp
