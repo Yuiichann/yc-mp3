@@ -12,6 +12,7 @@ import { AppDispatch } from './config/store';
 import { setDataOfMainInfo } from './reducer/mainInfoSlice';
 import routes from './routes';
 import { BannerApi, MainInfoSlider, NewReleaseApi, RoutesProps } from './types';
+import alertMessApp from './utils/alertMessApp';
 import ScrollTopAction from './utils/ScrollTopAction';
 
 const App = () => {
@@ -61,6 +62,8 @@ const App = () => {
 
     getData();
   }, []);
+
+  alertMessApp();
 
   return (
     <BrowserRouter>
