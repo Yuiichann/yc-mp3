@@ -63,7 +63,10 @@ const App = () => {
     getData();
   }, []);
 
-  alertMessApp();
+  // only alert in production
+  if (!process.env.NODE_ENV) {
+    alertMessApp();
+  }
 
   return (
     <BrowserRouter>
