@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         primary: '#2f80ed',
         secondary: '#00aeef',
+        blur: 'rgb(0,174,239,0.1)',
       },
       width: {
         none: 'none',

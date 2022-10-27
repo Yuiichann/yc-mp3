@@ -1,56 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import ycMp3 from '../api/ycmp3Api';
+import { useSelector } from 'react-redux';
+import ChartList from '../components/ChartList';
+import LineChart from '../components/LineChart';
 import Loading from '../components/Loading';
-import Slide from '../components/Slide';
-import { BannerApi, DataRanking } from '../types';
+import { RootState } from '../config/store';
+import { useState, useEffect } from 'react';
 
 const Ranking = () => {
-  const [dataRanking, setDataRanking] = useState<DataRanking[]>();
-  const [isLoading, setIsLoading] = useState(false);
+  const { isLoading, chart } = useSelector((state: RootState) => state.mainInfo);
 
-  // fetch data top100
-  useEffect(() => {
-    setIsLoading(true);
-    const fetchData = async () => {
-      const res: any = await ycMp3.getTop100();
+  const [data, setData] = useState();
+  const [loading, setIsLoading] = useState(true);
 
-      if (res.msg === 'Success') {
-        // set data for state
-        setDataRanking(res.data as DataRanking[]);
-      } else {
-        console.error('Không có dữ liệu');
-      }
+  useEffect(() => {});
 
-      setIsLoading(false);
-    };
-    fetchData();
-  }, []);
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <section className="px-1 lg:px-2">
+      <h2 className="text-4xl font-bold mb-8 mt-2">#chart</h2>
+      <div className="w-11/12 mx-auto">
+        <LineChart darkColor={true} />
+      </div>
 
-  return (
-    <>
-      {isLoading ? (
-        <Loading />
-      ) : dataRanking && dataRanking?.length > 0 ? (
-        <>
-          <section className="px-1 lg:px-2">
-            {dataRanking.map((dataItem, index) => (
-              <div className="mb-8" key={index}>
-                <div className="w-full mb-4 flex items-center justify-center md:justify-start">
-                  <h1 className="text-underline text-2xl font-semibold tracking-wider text-center ">
-                    {dataItem.title}
-                  </h1>
-                </div>
-                <Slide data={dataItem.items} isRanking={true} />
-              </div>
-            ))}
-          </section>
-        </>
+      {loading ? (
+        <></>
       ) : (
-        <>
-          <h1>Khong co du lieu</h1>
-        </>
+        <div className="mt-4">
+          <ChartList dataList={chart.items} type="bxh" />
+        </div>
       )}
-    </>
+    </section>
   );
 };
 

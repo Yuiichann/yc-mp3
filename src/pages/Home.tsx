@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import ChartHome from '../components/ChartHome';
 import ListGrid from '../components/ListGrid';
+import Loading from '../components/Loading';
 import Slide, { Slider, SliderSpotlight } from '../components/Slide';
 import { RootState } from '../config/store';
-import { useState } from 'react';
-import Loading from '../components/Loading';
 
 const newReleaseType = [
   {
@@ -102,6 +103,11 @@ const Home = () => {
                   slidePerView={newSongSlider.items.length < 6 ? newSongSlider.items.length : 6}
                 />
               </div>
+            </div>
+
+            {/* Chart  */}
+            <div className="mt-6">
+              <ChartHome />
             </div>
 
             {/* Top 100  Slider */}

@@ -16,7 +16,7 @@ import checkSongInList from '../utils/checkSongInList';
 
 interface Props {
   songInfo: SongApi;
-  component: 'SongInfo' | 'ListGridItem';
+  component: 'SongInfo' | 'ListGridItem' | 'ChartListItem';
 }
 
 // component xử lý thao tác audio ở ngoài file audio
@@ -128,6 +128,19 @@ const AudioHandler = ({ songInfo, component }: Props) => {
           onClick={handleAddToPlaylist}
         >
           <IoMdAddCircleOutline />
+        </div>
+      </div>
+    );
+  }
+
+  if (component === 'ChartListItem') {
+    return (
+      <div className="w-full h-full flex items-center justify-center text-white">
+        <div
+          className="text-3xl cursor-pointer hover:scale-110 hover:text-secondary effect"
+          onClick={handlePlayCurrentSong}
+        >
+          <RiPlayFill />
         </div>
       </div>
     );

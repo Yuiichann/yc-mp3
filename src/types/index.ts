@@ -111,11 +111,28 @@ interface MainInfo {
     title: string;
     items: Artist[];
   };
+  chart: ChartData;
+
+  albumYc: SongApi[];
 
   isLoading: boolean;
   error?: {
     message: string;
   };
+}
+
+// chart data in maininfo
+interface ChartData {
+  chart: {
+    items: {};
+    times: {
+      hour: string;
+    }[];
+    totalScore: number;
+    minScore: number;
+    maxScore: number;
+  };
+  items: SongApi[];
 }
 
 // weekend items in Maininfo
@@ -166,6 +183,7 @@ interface SongApi {
   encodeId: string;
   hasLyric: boolean;
   genres: [];
+  score: number;
 }
 
 // // using for Song Yc Collection

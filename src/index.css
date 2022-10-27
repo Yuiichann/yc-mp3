@@ -39,6 +39,18 @@ body {
   cursor: pointer;
 }
 
+.text-stroke-1 {
+  -webkit-text-stroke: 1.5px yellow;
+}
+
+.text-stroke-2 {
+  -webkit-text-stroke: 1.5px #50e3c2;
+}
+
+.text-stroke-3 {
+  -webkit-text-stroke: 1.5px #e35050;
+}
+
 @layer base {
   body {
     @apply font-inter text-black text-16 scrollbar-thin scrollbar-track-[whitesmoke] scrollbar-thumb-secondary;

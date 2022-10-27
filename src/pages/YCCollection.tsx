@@ -1,26 +1,10 @@
-import { SongApi } from '../types';
-import { useState, useEffect } from 'react';
-import ycMp3 from '../api/ycmp3Api';
-import Loading from '../components/Loading';
+import { useSelector } from 'react-redux';
 import ListGrid from '../components/ListGrid';
+import Loading from '../components/Loading';
+import { RootState } from '../config/store';
 
 const YCCollection = () => {
-  const [albumYc, setAlbumYc] = useState<SongApi[]>();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res: any = await ycMp3.getYcAlbum();
-
-      if (res.msg === 'Success') {
-        setAlbumYc(res.data);
-      }
-
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, []);
+  const { albumYc, isLoading } = useSelector((state: RootState) => state.mainInfo);
 
   return isLoading ? (
     <Loading />

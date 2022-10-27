@@ -22,8 +22,9 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       const res: any = await ycMp3.getHome({ page: '1' });
+      const resAlbumYc: any = await ycMp3.getYcAlbum();
 
-      if (res.msg === 'Success') {
+      if (res.msg === 'Success' && resAlbumYc.msg === 'Success') {
         const resItems: any = res.data.items;
         // console.log(resItems);
         const banner = resItems.find((item: any) => item.sectionType === 'banner'); // banner api
@@ -31,6 +32,7 @@ const App = () => {
         const artistSpotlight = resItems.find(
           (item: any) => item.sectionType === 'artistSpotlight'
         ); // artist spolight
+        const chartData = resItems.find((item: any) => item.sectionType === 'RTChart'); // get data chart
         const weekend: MainInfoSlider = resItems[4]; // weekend items
         const newSongSlider: MainInfoSlider = resItems[6]; // get new song slider
         const top100: MainInfoSlider = resItems[10]; // get top 100
@@ -53,6 +55,9 @@ const App = () => {
             weekend: weekend,
             newSongSlider: newSongSlider,
             top100: top100,
+            chart: chartData,
+
+            albumYc: resAlbumYc.data,
 
             isLoading: false,
           })
@@ -74,7 +79,7 @@ const App = () => {
       <NavBar />
 
       {/* main section */}
-      <div className="mt-navbar py-[32px]">
+      <div className="mt-navbar py-[32px] ">
         <div className="container flex gap-2">
           {/* side bar on left screen */}
           <div className="hidden lg:block min-w-[200px] max-w-[200px] relative">

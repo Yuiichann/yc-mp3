@@ -25,6 +25,9 @@ const initialState: MainInfo = {
     title: '',
     items: [],
   },
+  chart: {} as MainInfo['chart'],
+
+  albumYc: [],
 
   isLoading: true,
 };

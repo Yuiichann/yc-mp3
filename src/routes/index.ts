@@ -42,7 +42,7 @@ const routes: RoutesProps[] = [
   // bun bun lmao
   {
     title: 'Thêm nhạc',
-    path: '/api/them-bai-hat',
+    path: '/dashboard/them-bai-hat',
     component: AddSong,
   },
   {
@@ -82,7 +82,7 @@ const routes: RoutesProps[] = [
   },
   {
     title: 'Không tìm thấy',
-    path: '/:error',
+    path: '*',
     component: NotFound,
   },
 ];
