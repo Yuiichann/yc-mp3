@@ -41,7 +41,9 @@ const AlbumInfo = () => {
         })
       );
       // set state isPlaylist of state songPlay ==> true
-      dispatch(setIsPlaylist(true));
+      if (dataList.song.items.length > 1) {
+        dispatch(setIsPlaylist(true));
+      }
     }
   };
 

@@ -1,17 +1,30 @@
 import { useSelector } from 'react-redux';
-import ChartList from '../components/ChartList';
+import { ChartListRanking } from '../components/ChartList';
 import LineChart from '../components/LineChart';
 import Loading from '../components/Loading';
 import { RootState } from '../config/store';
 import { useState, useEffect } from 'react';
+import ycMp3 from '../api/ycmp3Api';
+import { ChartHome, SongApi } from '../types';
+import { SkeletionChartTop100 } from '../components/Skeleton';
 
 const Ranking = () => {
   const { isLoading, chart } = useSelector((state: RootState) => state.mainInfo);
 
-  const [data, setData] = useState();
-  const [loading, setIsLoading] = useState(true);
+  const [chartHome, setChartHome] = useState<ChartHome>();
+  const [loadingChartTop, setLoadingChartTop] = useState(true);
 
-  useEffect(() => {});
+  useEffect(() => {
+    const fetchData = async () => {
+      const res: any = await ycMp3.getCharthome();
+
+      if (res.msg === 'Success') {
+        setChartHome(res.data);
+      }
+      setLoadingChartTop(false);
+    };
+    fetchData();
+  }, []);
 
   return isLoading ? (
     <Loading />
@@ -22,12 +35,18 @@ const Ranking = () => {
         <LineChart darkColor={true} />
       </div>
 
-      {loading ? (
-        <></>
+      {loadingChartTop ? (
+        <SkeletionChartTop100 />
       ) : (
-        <div className="mt-4">
-          <ChartList dataList={chart.items} type="bxh" />
-        </div>
+        <>
+          {/* Top 100 */}
+          <div className="mt-8">
+            {chartHome && <ChartListRanking dataList={chartHome.RTChart.items} />}
+          </div>
+
+          {/* WeekChart */}
+          <div className="mt-8"></div>
+        </>
       )}
     </section>
   );

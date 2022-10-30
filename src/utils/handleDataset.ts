@@ -17,7 +17,7 @@ const handleDataset = (dataChart: any, totalScore: number, songs: SongApi[]) => 
       return score;
     });
 
-    const borderColor = index === 0 ? 'yellow' : index === 1 ? '#50e3c2' : '#e35050';
+    const borderColor = index === 0 ? '#FFD700' : index === 1 ? '#50e3c2' : '#e35050';
 
     return {
       label,

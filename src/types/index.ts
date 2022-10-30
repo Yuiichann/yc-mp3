@@ -135,6 +135,31 @@ interface ChartData {
   items: SongApi[];
 }
 
+// chart home using in ranking
+interface ChartHome {
+  RTChart: {
+    items: SongApi[];
+  };
+  weekChart: {
+    korea: WeekChartItem;
+    vn: WeekChartItem;
+    us: WeekChartItem;
+  };
+}
+
+// using for ChartHome
+interface WeekChartItem {
+  banner: string;
+  country: string;
+  cover: string;
+  group: {};
+  items: SongApi[];
+  year: number;
+  playlistId: string;
+  startDate: string;
+  endDate: string;
+}
+
 // weekend items in Maininfo
 interface MainInfoSlider {
   title: string;
@@ -184,6 +209,7 @@ interface SongApi {
   hasLyric: boolean;
   genres: [];
   score: number;
+  rakingStatus: number;
 }
 
 // // using for Song Yc Collection
@@ -284,5 +310,6 @@ export type {
   Artist,
   MainInfoSlider,
   ArtistDetail,
+  ChartHome,
   TempState,
 };

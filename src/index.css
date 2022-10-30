@@ -39,8 +39,12 @@ body {
   cursor: pointer;
 }
 
+.text-stroke-0 {
+  -webkit-text-stroke: 1.5px #00aeef;
+}
+
 .text-stroke-1 {
-  -webkit-text-stroke: 1.5px yellow;
+  -webkit-text-stroke: 1.5px #FFD700;
 }
 
 .text-stroke-2 {

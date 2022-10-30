@@ -7,6 +7,9 @@ module.exports = {
         primary: '#2f80ed',
         secondary: '#00aeef',
         blur: 'rgb(0,174,239,0.1)',
+        // primary: '#0F1A2E',
+        // secondary: '#1B2639',
+        // thirdty: '#111F3B',
       },
       width: {
         none: 'none',
@@ -44,6 +47,9 @@ module.exports = {
       boxShadow: {
         musicplayer: '0 25px 50px -12px #2f80ed',
       },
+      backgroundColor: {
+        chartbg: 'rgba(47, 128, 237, 0.8)',
+      },
     },
     fontFamily: {
       inter: 'Inter, sans-serif',
@@ -57,6 +63,8 @@ module.exports = {
     backgroundImage: {
       main: 'linear-gradient(45deg, #2f80ed 0%, #00aeef 100%)',
       overlay: 'linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.4) 100%)',
+      // main: 'linear-gradient(45deg, #111F3B 0%, #1B2639 100%)',
+      // overlay: 'linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.4) 100%)',
     },
     animation: {
       'spin-slow': 'spin 8s linear infinite',
