@@ -29,7 +29,7 @@ export const ChartListRanking = memo(({ dataList }: Props) => {
     // fake loading
     setTimeout(() => {
       setItemShowed(100); // 100 items
-      setIsLoading(true);
+      setIsLoading(false);
     }, 1000);
   };
 
@@ -43,7 +43,7 @@ export const ChartListRanking = memo(({ dataList }: Props) => {
 
       {/* Loading */}
       {isLoading && (
-        <div className="flex items-center justify-center my-4">
+        <div className="flex items-center justify-center my-4 h-[100px]">
           <div>
             <div className="text-secondary text-2xl animate-spin">
               <AiOutlineLoading />
@@ -54,7 +54,7 @@ export const ChartListRanking = memo(({ dataList }: Props) => {
 
       {/* Loading load more */}
       {itemShowed === 10 && !isLoading && (
-        <div className="flex items-center justify-center my-4">
+        <div className="flex items-center justify-center my-4 h-[100px]">
           <button
             className="py-2 px-4 border border-secondary rounded-md hover:opacity-70"
             onClick={handleSetShowAllItem}
