@@ -1,3 +1,5 @@
+const arr = [123, 672, 673, 344, 125, 796, 347, 498, 609, 931];
+
 const SkeletonNewRelease = () => {
   return (
     <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4 animate-pulse">
@@ -83,7 +85,6 @@ const SkeletionKeyWordTrending = () => {
 };
 
 const SkeletionChartTop100 = () => {
-  const arr = [123, 672, 673, 344, 225, 896, 947, 968, 909, 231];
   return (
     <div className="flex flex-col space-y-3 mt-8 animate-pulse">
       {arr.map((item) => (

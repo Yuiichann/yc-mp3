@@ -66,3 +66,13 @@ export const ChartListRanking = memo(({ dataList }: Props) => {
     </div>
   );
 });
+
+export const WeekChartList = memo(({ dataList }: Props) => {
+  return (
+    <div className="flex flex-col">
+      {dataList.map((song, index) => (
+        <ChartItemsTop100 song={song} key={index} index={index} />
+      ))}
+    </div>
+  );
+});

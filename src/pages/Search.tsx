@@ -6,6 +6,9 @@ import Loading from '../components/Loading';
 import ListGrid from '../components/ListGrid';
 import SearchInput from '../components/SearchInput';
 import { SearchItems } from '../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../config/store';
+import { addTempSearch } from '../reducer/tempGlobalState';
 
 const Search = () => {
   const [searchData, setSearchData] = useState<SearchItems>({
@@ -13,6 +16,8 @@ const Search = () => {
     playlists: [],
     artists: {},
   });
+  const { temp_search } = useSelector((state: RootState) => state.tempGlobalState);
+  const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
 
   // get query
@@ -23,40 +28,56 @@ const Search = () => {
     if (!keywordSearch) return;
 
     setLoading(true);
-    const getDataSearch = async () => {
-      const res: any = await ycMp3.getSearch({ keyword: keywordSearch });
 
-      // console.log(res);
+    if (temp_search.key !== keywordSearch) {
+      const getDataSearch = async () => {
+        const res: any = await ycMp3.getSearch({ keyword: keywordSearch });
 
-      if (res.msg === 'Success') {
-        const songSearch = res.data.songs; // get list songs
-        const playListsSearch = res.data.playlists; // get playlist
-        const topItemSearch = res.data.top; // get item top search
-        const artistsSearch = res.data.artists; // get artists list
-        const videosSearch = res.data.videos; // get Video list
+        if (res.msg === 'Success') {
+          const songSearch = res.data.songs; // get list songs
+          const playListsSearch = res.data.playlists; // get playlist
+          const topItemSearch = res.data.top; // get item top search
+          const artistsSearch = res.data.artists; // get artists list
+          const videosSearch = res.data.videos; // get Video list
 
-        setSearchData({
-          song: songSearch as SearchItems['song'],
-          playlists: playListsSearch as SearchItems['playlists'],
-          top: topItemSearch as SearchItems['top'],
-          artists: artistsSearch,
-          videos: videosSearch as SearchItems['videos'],
-        });
-      } else {
-        console.error('Fail to fetch search keyword: ' + keywordSearch);
-      }
+          // save temp search
+          dispatch(
+            addTempSearch({
+              key: keywordSearch,
+              data: {
+                song: songSearch as SearchItems['song'],
+                playlists: playListsSearch as SearchItems['playlists'],
+                top: topItemSearch as SearchItems['top'],
+                artists: artistsSearch,
+                videos: videosSearch as SearchItems['videos'],
+              },
+            })
+          );
 
-      setLoading(false);
-    };
-    getDataSearch();
+          setSearchData({
+            song: songSearch as SearchItems['song'],
+            playlists: playListsSearch as SearchItems['playlists'],
+            top: topItemSearch as SearchItems['top'],
+            artists: artistsSearch,
+            videos: videosSearch as SearchItems['videos'],
+          });
+        } else {
+          console.error('Fail to fetch search keyword: ' + keywordSearch);
+        }
+
+        setLoading(false);
+      };
+      getDataSearch();
+    } else {
+      setTimeout(() => {
+        setSearchData(temp_search.data);
+        setLoading(false);
+      }, 400);
+    }
   }, [keywordSearch]);
 
-  // console.log(searchData);
 
-  // check URL failed (not keyword)
-  // if (!keywordSearch) {
-  //   return <NotFound />;
-  // }
+  console.log('search-render');
 
   return (
     <section className="px-1 lg:px-2 min-h-[calc(100vh-180px)]">

@@ -98,6 +98,10 @@ interface TempState {
   temp_songs: SongApi[];
   temp_playlists: PlaylistItem[];
   temp_artists: ArtistDetail[];
+  temp_search: {
+    key: string;
+    data: SearchItems;
+  };
 }
 
 // Main Infomation of app include banner,playlist,... ==> use in rudux
@@ -155,6 +159,7 @@ interface WeekChartItem {
   group: {};
   items: SongApi[];
   year: number;
+  week: number;
   playlistId: string;
   startDate: string;
   endDate: string;
@@ -311,5 +316,6 @@ export type {
   MainInfoSlider,
   ArtistDetail,
   ChartHome,
+  WeekChartItem,
   TempState,
 };

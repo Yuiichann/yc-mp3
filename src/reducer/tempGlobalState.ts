@@ -8,6 +8,7 @@ const initialState: TempState = {
   temp_songs: [],
   temp_playlists: [],
   temp_artists: [],
+  temp_search: {} as TempState['temp_search'],
 };
 
 const tempGlobalState = createSlice({
@@ -64,8 +65,15 @@ const tempGlobalState = createSlice({
         temp_artists: [...state.temp_artists, action.payload],
       };
     },
+    addTempSearch: (state, action: PayloadAction<TempState['temp_search']>) => {
+      return {
+        ...state,
+        temp_search: action.payload,
+      };
+    },
   },
 });
 
-export const { addTempSong, addTempPlaylist, addTempArtist } = tempGlobalState.actions;
+export const { addTempSong, addTempPlaylist, addTempArtist, addTempSearch } =
+  tempGlobalState.actions;
 export default tempGlobalState.reducer;
