@@ -191,8 +191,8 @@ interface BannerApi {
 // New Release Api of main info
 interface NewReleaseApi {
   title: string;
-  song: SongApi[];
-  album: AlbumApi[];
+  vPop: SongApi[];
+  others: AlbumApi[];
 }
 
 // Song api

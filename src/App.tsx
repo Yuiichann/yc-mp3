@@ -44,7 +44,7 @@ const App = () => {
             // set data newRelease
             newRelease: {
               title: newRelease.title || '',
-              ...newRelease.items[0],
+              ...newRelease.items,
             } as NewReleaseApi,
 
             artistSpotlight: {

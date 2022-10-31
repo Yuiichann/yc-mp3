@@ -6,8 +6,8 @@ const initialState: MainInfo = {
   banner: [],
   newRelease: {
     title: '',
-    song: [],
-    album: [],
+    vPop: [],
+    others: [],
   },
   weekend: {
     title: '',

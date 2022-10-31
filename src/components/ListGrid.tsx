@@ -27,11 +27,17 @@ const ListGrid = ({ data, type }: Props) => {
     </>
   ) : (
     <>
-      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-1">
-        {data.map((item, index) => (
-          <NewReleaseTabItem key={item.encodeId} tabInfo={item} type={type} />
-        ))}
-      </div>
+      {data ? (
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 lg:gap-1">
+          {data.map((item, index) => (
+            <NewReleaseTabItem key={item.encodeId} tabInfo={item} type={type} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center my-12">
+          <h1 className="title">Có lỗi với dữ liệu !!!</h1>
+        </div>
+      )}
     </>
   );
 };

@@ -63,7 +63,7 @@ const Home = () => {
               </div>
               <ListGrid
                 type={typeNewRelease}
-                data={typeNewRelease === 'song' ? newRelease.song : newRelease.album}
+                data={typeNewRelease === 'song' ? newRelease.vPop : newRelease.others}
               />
             </div>
 

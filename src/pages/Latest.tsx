@@ -32,7 +32,7 @@ const Latest = () => {
       ) : (
         <NewReleaseTab
           type={checkTypeOfRoute()}
-          data={checkTypeOfRoute() === 'song' ? newRelease.song : newRelease.album}
+          data={checkTypeOfRoute() === 'song' ? newRelease.vPop : newRelease.others}
         />
       )}
     </div>
