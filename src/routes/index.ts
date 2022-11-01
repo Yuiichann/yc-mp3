@@ -3,6 +3,7 @@ import Album from '../pages/Album';
 import ArtistInfo from '../pages/ArtistInfo';
 import Home from '../pages/Home';
 import Latest from '../pages/Latest';
+import LiveStream from '../pages/LiveStream';
 import NotFound from '../pages/NotFound';
 import Private from '../pages/Private';
 import Ranking from '../pages/Ranking';
@@ -59,6 +60,11 @@ const routes: RoutesProps[] = [
     title: 'Bộ sưu tập của Yc',
     path: '/album-yc',
     component: YCCollection,
+  },
+  {
+    title: 'live Streaming',
+    path: '/nghe-nhac-truc-tuyen',
+    component: LiveStream,
   },
   {
     title: 'Thông tin bài hát',

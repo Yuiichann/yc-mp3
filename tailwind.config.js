@@ -50,6 +50,12 @@ module.exports = {
       backgroundColor: {
         chartbg: 'rgba(47, 128, 237, 0.8)',
       },
+      keyframes: {
+        show: {
+          '0%': { transform: 'translateY( 100%)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 },
+        },
+      },
     },
     fontFamily: {
       inter: 'Inter, sans-serif',
@@ -71,6 +77,7 @@ module.exports = {
       'spin-medium': 'spin 3s linear infinite',
       spin: 'spin 1s linear infinite',
       pulse: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      show: 'show .2s linear',
     },
   },
   plugins: [require('tailwind-scrollbar')],

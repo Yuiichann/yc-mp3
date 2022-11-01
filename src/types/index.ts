@@ -111,6 +111,7 @@ interface MainInfo {
   weekend: MainInfoSlider;
   newSongSlider: MainInfoSlider;
   top100: MainInfoSlider;
+  liveStream: MainInfoStream;
   artistSpotlight: {
     title: string;
     items: Artist[];
@@ -123,6 +124,25 @@ interface MainInfo {
   error?: {
     message: string;
   };
+}
+
+interface MainInfoStream {
+  title: '';
+  items: StreamItem[];
+}
+
+interface StreamItem {
+  activeUsers: number;
+  description: string;
+  encodeId: string;
+  id: number;
+  streaming: string;
+  thumbnail: string;
+  thumbnailM: string;
+  thumbnailH: string;
+  thumbnailV: string;
+  title: string;
+  type: string;
 }
 
 // chart data in maininfo
@@ -317,5 +337,7 @@ export type {
   ArtistDetail,
   ChartHome,
   WeekChartItem,
+  MainInfoStream,
+  StreamItem,
   TempState,
 };

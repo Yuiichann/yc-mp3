@@ -21,6 +21,10 @@ const initialState: MainInfo = {
     title: '',
     items: [],
   },
+  liveStream: {
+    title: '',
+    items: [],
+  },
   artistSpotlight: {
     title: '',
     items: [],

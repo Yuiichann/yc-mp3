@@ -13,8 +13,8 @@ import NotFound from './NotFound';
 const ArtistInfo = () => {
   const [artistInfo, setArtistInfo] = useState<ArtistDetail>();
   const [isLoading, setIsLoading] = useState(true);
-
   const dispatch = useDispatch<AppDispatch>();
+
   const { temp_artists } = useSelector((state: RootState) => state.tempGlobalState);
 
   // get name alias of artist
@@ -102,17 +102,6 @@ const ArtistInfo = () => {
               </div>
             </div>
           )}
-
-          {/* Top Album */}
-          <div className="my-4">
-            <h1 className="title text-center">Top Album của {artistInfo.name}</h1>
-          </div>
-
-          {artistInfo.sections.map((section, index) => (
-            <div key={index}>
-              <h1 className="title text-center">{section.title}</h1>
-            </div>
-          ))}
         </section>
       ) : (
         <div>

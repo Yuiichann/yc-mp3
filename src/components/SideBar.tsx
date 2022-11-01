@@ -31,6 +31,11 @@ export const sideBarItem: SideBarItem[] = [
     title: 'Bảng Xếp Hạng',
   },
   {
+    Icon: Ranking,
+    path: '/nghe-nhac-truc-tuyen',
+    title: 'Radio',
+  },
+  {
     Icon: AlbumYc,
     path: '/album-yc',
     title: 'YC Collection',

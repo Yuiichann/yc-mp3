@@ -11,7 +11,7 @@ import SideBar from './components/SideBar';
 import { AppDispatch } from './config/store';
 import { setDataOfMainInfo } from './reducer/mainInfoSlice';
 import routes from './routes';
-import { BannerApi, MainInfoSlider, NewReleaseApi, RoutesProps } from './types';
+import { BannerApi, MainInfoSlider, MainInfoStream, NewReleaseApi, RoutesProps } from './types';
 import alertMessApp from './utils/alertMessApp';
 import ScrollTopAction from './utils/ScrollTopAction';
 
@@ -36,6 +36,9 @@ const App = () => {
         const weekend: MainInfoSlider = resItems[4]; // weekend items
         const newSongSlider: MainInfoSlider = resItems[6]; // get new song slider
         const top100: MainInfoSlider = resItems[10]; // get top 100
+        const liveStream: MainInfoStream = resItems.find(
+          (item: any) => item.sectionType === 'livestream'
+        );
 
         dispatch(
           setDataOfMainInfo({
@@ -59,6 +62,8 @@ const App = () => {
             top100: top100,
             // Chart Data
             chart: chartData,
+            // streaming data a.k.a audio
+            liveStream: liveStream,
             // Album yc
             albumYc: resAlbumYc.data,
 
