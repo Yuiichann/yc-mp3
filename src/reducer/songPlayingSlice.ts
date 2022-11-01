@@ -78,12 +78,16 @@ const songPlayingSlice = createSlice({
       const currentSong: SongPlaying = {
         currentDetails: action.payload.songDetail,
         currentSong: action.payload.link_mp3,
-        loading: 'successed',
+        loading: 'init-local',
       };
 
       localStorage.setItem('playing', JSON.stringify(currentSong));
 
-      return currentSong;
+      return {
+        currentDetails: action.payload.songDetail,
+        currentSong: action.payload.link_mp3,
+        loading: 'successed',
+      };
     });
 
     // case rejected

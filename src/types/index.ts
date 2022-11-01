@@ -32,7 +32,7 @@ interface SongPlaying {
     artistsNames: string;
     encodeId: string;
   };
-  loading: 'idle' | 'pending' | 'successed' | 'failed';
+  loading: 'idle' | 'pending' | 'successed' | 'failed' | 'init-local';
 }
 
 // Type state Search in page Search

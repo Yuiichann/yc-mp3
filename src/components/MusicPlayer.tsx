@@ -51,7 +51,7 @@ const MusicPlayer = () => {
       document.title = 'Đang tải . . .';
     }
 
-    if (loading === 'successed') {
+    if (loading === 'successed' || loading === 'init-local') {
       document.title = `${currentDetails.title} - ${currentDetails.artistsNames}`;
     }
   }, [loading]);

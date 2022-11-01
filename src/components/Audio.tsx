@@ -227,6 +227,9 @@ const Audio = ({ linkMp3 }: Props) => {
     if (!audioRef.current) return;
 
     setAudioCanPlay(true);
+
+    // lần đầu load app, nếu local có dữ liệu thì chỉ setup chứ k phát
+    if (loading === 'init-local') return;
     handlePlayMusic(true);
   };
 

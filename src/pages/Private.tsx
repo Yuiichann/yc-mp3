@@ -73,8 +73,8 @@ const Private = () => {
     <section className="pt-1 lg:px-2 min-h-[calc(100vh-180px)]">
       <div className="flex flex-col lg:flex-row">
         {/* Current Play song */}
-        {/* UI when successed */}
-        {loading === 'successed' && (
+        {/* UI when successed or init-local */}
+        {loading === 'successed' || loading === 'init-local' ? (
           <div className="relative md:px-1 xl:px-2 xl:w-4/12 lg:w-6/12">
             <div className="lg:sticky lg:top-[150px] lg:left-0 flex flex-col items-center space-y-4">
               {/* image */}
@@ -151,6 +151,8 @@ const Private = () => {
               </div>
             </div>
           </div>
+        ) : (
+          <></>
         )}
 
         {/* UI when idle or faile */}

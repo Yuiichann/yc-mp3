@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import SearchInput from './SearchInput';
-import { sideBarItem } from './SideBar';
+import { sideBarItem } from '../constants/sideBarItems';
 
 interface Props {
   handleCloseMenu: VoidFunction;
