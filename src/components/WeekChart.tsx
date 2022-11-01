@@ -27,6 +27,13 @@ const WeekChart = ({ weekChartData }: Props) => {
     }, 500);
   }, [chartOptions]);
 
+  // handle click change option week chart
+  const handleChangeWeekOption = (options: WeekChartOptions) => {
+    if (isLoading) return;
+
+    setChartOptions(options);
+  };
+
   return (
     <>
       {/* Title */}
@@ -39,12 +46,12 @@ const WeekChart = ({ weekChartData }: Props) => {
         {weekChartOptions.map((option) => (
           <li
             key={option.key}
-            className={`cursor-pointer relative py-1 ${
+            className={`cursor-pointer relative py-1 select-none ${
               option.key === chartOptions
                 ? 'after:absolute after:left-0 after:bottom-0 after:w-full after:h-1 after:bg-secondary'
                 : 'opacity-60'
             }`}
-            onClick={() => setChartOptions(option.key as WeekChartOptions)}
+            onClick={() => handleChangeWeekOption(option.key as WeekChartOptions)}
           >
             {option.value}
           </li>
@@ -57,9 +64,11 @@ const WeekChart = ({ weekChartData }: Props) => {
       ) : (
         <>
           {/* Banner */}
-          <div className="my-2">
+          <div className="my-2 min-h-fit">
             <img
               src={currentWeekChart.banner}
+              loading="lazy"
+              height={120}
               alt="Week chart banner"
               className="w-full lg:w-10/12 mx-auto"
             />

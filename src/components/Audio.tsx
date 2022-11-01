@@ -102,7 +102,11 @@ const Audio = ({ linkMp3 }: Props) => {
   const handlePlayMusic = (onDispatchStatusAudio: boolean) => {
     if (!audioRef.current) return;
 
-    audioRef.current.play();
+    // catch error
+    audioRef.current.play().catch((error) => {
+      if (error) handlePauseMusic(true);
+    });
+
     // if === true will dispatch
     if (onDispatchStatusAudio) {
       dispatch(setStatusAudio('playing'));

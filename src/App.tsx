@@ -46,17 +46,20 @@ const App = () => {
               title: newRelease.title || '',
               ...newRelease.items,
             } as NewReleaseApi,
-
+            // data artist spotlight
             artistSpotlight: {
               title: 'Spotlight',
               items: artistSpotlight.items,
             },
-
+            // weekend
             weekend: weekend,
+            // new Song
             newSongSlider: newSongSlider,
+            // Topp100
             top100: top100,
+            // Chart Data
             chart: chartData,
-
+            // Album yc
             albumYc: resAlbumYc.data,
 
             isLoading: false,

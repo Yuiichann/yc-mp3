@@ -7,6 +7,28 @@ interface FetchDataFulfilled {
   songDetail: SongPlaying['currentDetails'];
 }
 
+// get data song playing in local storage
+const getDataLocal = () => {
+  const localData = localStorage.getItem('playing');
+
+  if (!localData) return undefined;
+
+  const parserData = JSON.parse(localData);
+  return parserData as SongPlaying;
+};
+
+const initialState: SongPlaying = getDataLocal() || {
+  currentSong: '',
+  currentDetails: {
+    thumbnail: '',
+    title: '',
+    artistsNames: '',
+    encodeId: '',
+    thumbnailM: '',
+  },
+  loading: 'idle',
+};
+
 // thunk function fetch data link mp3
 export const fetchDataMp3 = createAsyncThunk(
   'song/fetchLinkMusic',
@@ -36,18 +58,6 @@ export const fetchDataMp3 = createAsyncThunk(
   }
 );
 
-const initialState: SongPlaying = {
-  currentSong: '',
-  currentDetails: {
-    thumbnail: '',
-    title: '',
-    artistsNames: '',
-    encodeId: '',
-    thumbnailM: '',
-  },
-  loading: 'idle',
-};
-
 // always dipatch actions setInfoSongPlaying before createayncthunk
 const songPlayingSlice = createSlice({
   name: 'song',
@@ -65,11 +75,15 @@ const songPlayingSlice = createSlice({
 
     // case fulfilled
     builder.addCase(fetchDataMp3.fulfilled, (state, action: PayloadAction<FetchDataFulfilled>) => {
-      return {
+      const currentSong: SongPlaying = {
         currentDetails: action.payload.songDetail,
         currentSong: action.payload.link_mp3,
         loading: 'successed',
       };
+
+      localStorage.setItem('playing', JSON.stringify(currentSong));
+
+      return currentSong;
     });
 
     // case rejected
