@@ -8,6 +8,8 @@ import NotFound from '../pages/NotFound';
 import Private from '../pages/Private';
 import Ranking from '../pages/Ranking';
 import Search from '../pages/Search';
+import SignIn from '../pages/SignIn';
+import SignUp from '../pages/SignUp';
 import SongInfo from '../pages/SongInfo';
 import Video from '../pages/Video';
 import YCCollection from '../pages/YCCollection';
@@ -34,6 +36,16 @@ const routes: RoutesProps[] = [
     title: 'Cá Nhân',
     path: '/ca-nhan',
     component: Private,
+  },
+  {
+    title: 'Đăng nhập',
+    path: '/dang-nhap',
+    component: SignIn,
+  },
+  {
+    title: 'Đăng Ký',
+    path: '/dang-ky',
+    component: SignUp,
   },
   {
     title: 'playlists',
