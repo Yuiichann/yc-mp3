@@ -39,6 +39,13 @@ body {
   cursor: pointer;
 }
 
+#time-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+
 .text-stroke-0 {
   -webkit-text-stroke: 1.5px #00aeef;
 }

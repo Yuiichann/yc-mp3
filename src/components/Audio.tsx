@@ -1,18 +1,21 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
+import { AiOutlineLoading } from 'react-icons/ai';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
 import { RiPauseCircleFill, RiPlayFill, RiSkipBackFill, RiSkipForwardFill } from 'react-icons/ri';
-import { AiOutlineLoading } from 'react-icons/ai';
 import { TiArrowLoopOutline } from 'react-icons/ti';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { AppDispatch, RootState } from '../config/store';
 import { setLoopAudio, setStatusAudio, setVolumnAudio } from '../reducer/audioStatus';
 import { setPlayBySongIndex } from '../reducer/playlistSlice';
+import AudioTimeProcess from './AudioTimeProcess';
 import InputRangeVolumn from './InputRangeVolumn';
 
 interface Props {
   linkMp3?: string;
 }
+
+// const storeSet = new Set();
 
 const Audio = ({ linkMp3 }: Props) => {
   const { statusAudio, isLoop, volumn, isPlaylist } = useSelector(
@@ -20,8 +23,17 @@ const Audio = ({ linkMp3 }: Props) => {
   );
   const { currentSongIndex, songs } = useSelector((state: RootState) => state.playlist);
   const { loading } = useSelector((state: RootState) => state.songPlaying);
+
+  // ref
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [audioCanPlay, setAudioCanPlay] = useState(true);
+
+  // state
+  const [audioCanPlay, setAudioCanPlay] = useState(true); // trạng thái của audio
+  const [percentage, setPercentage] = useState(0); // phần trăm đẻ làm thanh thời gian
+  const [duration, setDuration] = useState(0); // thời lượng của bài nhạc
+  const [currentTime, setCurrentTime] = useState(0); // thời gian hiện tại khi phát
+
+  // dispathc
   const dispatch = useDispatch<AppDispatch>();
 
   //when fetch data mp3 to change music, in status pending ==> stop music now and wait new linkMp3
@@ -79,7 +91,7 @@ const Audio = ({ linkMp3 }: Props) => {
   }, [volumn]);
 
   // set loop true or false
-  const handleSetLoop = () => {
+  const handleSetLoop = useCallback(() => {
     if (!audioRef.current) return;
 
     const valueLoop = () => {
@@ -89,43 +101,49 @@ const Audio = ({ linkMp3 }: Props) => {
     };
 
     dispatch(setLoopAudio(valueLoop()));
-  };
+  }, [isPlaylist, isLoop]);
 
   //reload when change link music
-  const handleReloadMusic = () => {
+  const handleReloadMusic = useCallback(() => {
     if (!audioRef.current) return;
 
     audioRef.current.load();
-  };
+  }, [linkMp3]);
 
   //handle play music - onDispatchStatusAudio === true will dispatch.
-  const handlePlayMusic = (onDispatchStatusAudio: boolean) => {
-    if (!audioRef.current) return;
+  const handlePlayMusic = useCallback(
+    (onDispatchStatusAudio: boolean) => {
+      if (!audioRef.current) return;
 
-    // catch error
-    audioRef.current.play().catch((error) => {
-      if (error) handlePauseMusic(true);
-    });
+      // catch error
+      audioRef.current.play().catch((error) => {
+        if (error) handlePauseMusic(true);
+      });
 
-    // if === true will dispatch
-    if (onDispatchStatusAudio) {
-      dispatch(setStatusAudio('playing'));
-    }
-  };
+      // if === true will dispatch
+      if (onDispatchStatusAudio) {
+        dispatch(setStatusAudio('playing'));
+      }
+    },
+    [linkMp3]
+  );
 
   //handle pause music - onDispatchStatusAudio === true will dispatch.
-  const handlePauseMusic = (onDispatchStatusAudio: boolean) => {
-    if (!audioRef.current) return;
+  const handlePauseMusic = useCallback(
+    (onDispatchStatusAudio: boolean) => {
+      if (!audioRef.current) return;
 
-    audioRef.current.pause();
-    // if === true will dispatch
-    if (onDispatchStatusAudio) {
-      dispatch(setStatusAudio('pause'));
-    }
-  };
+      audioRef.current.pause();
+      // if === true will dispatch
+      if (onDispatchStatusAudio) {
+        dispatch(setStatusAudio('pause'));
+      }
+    },
+    [linkMp3]
+  );
 
   // handle when click prev song
-  const handleSkipBackSong = () => {
+  const handleSkipBackSong = useCallback(() => {
     if (!isPlaylist) {
       toast.info('Danh sách phát rỗng!');
       return;
@@ -150,39 +168,42 @@ const Audio = ({ linkMp3 }: Props) => {
 
     const newCurrentSongIndex = currentSongIndex - 1; // calculator index of prev song
     dispatch(setPlayBySongIndex(newCurrentSongIndex));
-  };
+  }, [currentSongIndex, isPlaylist]);
 
   // handle when click next song or when end song and next new song
-  const handleSkipForwardSong = (isClickSkip?: boolean) => {
-    if (!isPlaylist) {
-      toast.info('Danh sách phát rỗng!');
-      return;
-    }
-    // disable click when fetch data
-    if (loading === 'pending') {
-      return;
-    }
+  const handleSkipForwardSong = useCallback(
+    (isClickSkip?: boolean) => {
+      if (!isPlaylist) {
+        toast.info('Danh sách phát rỗng!');
+        return;
+      }
+      // disable click when fetch data
+      if (loading === 'pending') {
+        return;
+      }
 
-    // disable when playlist length = 1
-    if (songs.items.length <= 1) {
-      toast.warning('Danh sách nhạc chỉ có 1 bài!');
-      return;
-    }
+      // disable when playlist length = 1
+      if (songs.items.length <= 1) {
+        toast.warning('Danh sách nhạc chỉ có 1 bài!');
+        return;
+      }
 
-    const songsLength = songs.items.length; // get length of list song playlist
-    const newCurrentSongIndex = currentSongIndex + 1; // calculator index of next song
+      const songsLength = songs.items.length; // get length of list song playlist
+      const newCurrentSongIndex = currentSongIndex + 1; // calculator index of next song
 
-    // if true, we is end playlist now ==> go to on start list
-    if (newCurrentSongIndex === songsLength) {
-      dispatch(setPlayBySongIndex(0));
-    } else {
-      // when not end list ==> play next song
-      dispatch(setPlayBySongIndex(newCurrentSongIndex));
-    }
-  };
+      // if true, we is end playlist now ==> go to on start list
+      if (newCurrentSongIndex === songsLength) {
+        dispatch(setPlayBySongIndex(0));
+      } else {
+        // when not end list ==> play next song
+        dispatch(setPlayBySongIndex(newCurrentSongIndex));
+      }
+    },
+    [currentSongIndex, isPlaylist]
+  );
 
   // handle when Ended Music
-  const handleEndedMusic = () => {
+  const handleEndedMusic = useCallback(() => {
     // isPlaylist === true
     if (isPlaylist) {
       if (isLoop === 'single') {
@@ -220,68 +241,133 @@ const Audio = ({ linkMp3 }: Props) => {
         }, 50);
       }
     }
-  };
+  }, [currentSongIndex, isPlaylist, isLoop]);
 
   // when audio can play, set state duration of song
-  const handleCanPlay = () => {
+  const handleCanPlay = useCallback(() => {
     if (!audioRef.current) return;
 
     setAudioCanPlay(true);
+    setDuration(Math.round(audioRef.current.duration));
 
     // lần đầu load app, nếu local có dữ liệu thì chỉ setup chứ k phát
     if (loading === 'init-local') return;
     handlePlayMusic(true);
-  };
+  }, [linkMp3]);
 
   // handle when change input volumn
-  const handleChangeVolumn = (volumnString: string) => {
-    const volumnNumber = Number(volumnString);
+  const handleChangeVolumn = useCallback(
+    (volumnString: string) => {
+      const volumnNumber = Number(volumnString);
 
-    dispatch(setVolumnAudio(volumnNumber));
-  };
+      dispatch(setVolumnAudio(volumnNumber));
+    },
+    [volumn]
+  );
 
   // click to mute song, if song is mute now, delete mute
-  const handleClickToggleMuteSong = () => {
+  const handleClickToggleMuteSong = useCallback(() => {
     if (volumn != 0) {
       dispatch(setVolumnAudio(0));
     } else {
       dispatch(setVolumnAudio(1));
     }
-  };
+  }, [volumn]);
+
+  // handle when time audio update
+  const handleTimeUpdate = useCallback((e: React.SyntheticEvent<HTMLAudioElement>) => {
+    if (!audioRef.current) return;
+
+    // tính ra % thời gian hiện tại trên tổng time bài hát
+    const percent = ((e.currentTarget.currentTime / e.currentTarget.duration) * 100).toFixed(2);
+    // lấy thời gian hiện tại của bài hát
+    const time = e.currentTarget.currentTime.toFixed(2);
+
+    // setState
+    setPercentage(+percent);
+    setCurrentTime(+time);
+  }, []);
+
+  // handle when user change time
+  const handleChangeCurrentTime = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!audioRef.current) return;
+
+    const audio = audioRef.current;
+    audio.currentTime = (audio.duration / 100) * +e.target.value;
+    setPercentage(+e.target.value);
+  }, []);
+
+  // storeSet.add(handleCanPlay);
+  // storeSet.add(handleChangeVolumn);
+  // storeSet.add(handleClickToggleMuteSong);
+  // storeSet.add(handleEndedMusic);
+  // storeSet.add(handleSkipBackSong);
+  // storeSet.add(handleSkipForwardSong);
+  // storeSet.add(handleSetLoop);
+  // storeSet.add(handlePlayMusic);
+  // storeSet.add(handlePauseMusic);
+  // storeSet.add(handleReloadMusic);
+  // storeSet.add(handleTimeUpdate)
+  // console.log(storeSet);
 
   return (
     <>
       {/* Audio */}
       {linkMp3 && (
-        <audio hidden ref={audioRef} onEnded={handleEndedMusic} onCanPlay={handleCanPlay}>
+        <audio
+          hidden
+          ref={audioRef}
+          onEnded={handleEndedMusic}
+          onCanPlay={handleCanPlay}
+          onTimeUpdate={handleTimeUpdate}
+        >
           <source src={linkMp3} />
         </audio>
       )}
 
       {/* time progress in mobile */}
-      {/* <InputRangeTime /> */}
+      <div className="absolute top-0 left-0 w-full  h-2 block lg:hidden">
+        <AudioTimeProcess
+          currentTime={currentTime}
+          duration={duration}
+          handleChangeCurrentTime={handleChangeCurrentTime}
+          percentage={percentage}
+          isMobile={true}
+        />
+      </div>
 
       {/* Media controls */}
       <div className="h-full flex space-x-1 items-center">
-        <div className="flex-grow flex space-x-1 justify-center">
-          <div className="icon-player" onClick={handleSkipBackSong}>
-            <RiSkipBackFill />
+        <div className="flex-grow flex flex-col gap-1 text-32 lg:text-28">
+          <div className="flex space-x-1 justify-center">
+            <div className="icon-player" onClick={handleSkipBackSong}>
+              <RiSkipBackFill />
+            </div>
+            {!audioCanPlay ? (
+              <div className="icon-player animate-spin">
+                <AiOutlineLoading />
+              </div>
+            ) : statusAudio === 'playing' ? (
+              <div className="icon-player" onClick={() => handlePauseMusic(true)}>
+                <RiPauseCircleFill />
+              </div>
+            ) : (
+              <div className="icon-player" onClick={() => handlePlayMusic(true)}>
+                <RiPlayFill />
+              </div>
+            )}
+            <div className="icon-player" onClick={() => handleSkipForwardSong(true)}>
+              <RiSkipForwardFill />
+            </div>
           </div>
-          {!audioCanPlay ? (
-            <div className="icon-player animate-spin">
-              <AiOutlineLoading />
-            </div>
-          ) : statusAudio === 'playing' ? (
-            <div className="icon-player" onClick={() => handlePauseMusic(true)}>
-              <RiPauseCircleFill />
-            </div>
-          ) : (
-            <div className="icon-player" onClick={() => handlePlayMusic(true)}>
-              <RiPlayFill />
-            </div>
-          )}
-          <div className="icon-player" onClick={() => handleSkipForwardSong(true)}>
-            <RiSkipForwardFill />
+
+          <div className="w-10/12 mx-auto hidden lg:flex items-center space-x-1">
+            <AudioTimeProcess
+              percentage={percentage}
+              currentTime={currentTime}
+              duration={duration}
+              handleChangeCurrentTime={handleChangeCurrentTime}
+            />
           </div>
         </div>
 
@@ -295,7 +381,7 @@ const Audio = ({ linkMp3 }: Props) => {
             )}
 
             {/* input range to increase/decrease volumn */}
-            <div className="absolute hidden group-hover:flex left-1/2 top-0 w-[80px] h-[30px] bg-primary -translate-y-full -translate-x-1/2  items-center justify-center rounded-xl after:absolute after:bottom-0 after:left-0 after:w-full after:h-[15px] after:translate-y-full">
+            <div className="absolute hidden group-hover:flex left-1/2 top-0 w-[80px] h-[30px] bg-primary -translate-y-full -translate-x-1/2  items-center justify-center rounded-xl after:absolute after:bottom-0 after:left-0 after:w-full after:h-[5px] after:translate-y-full">
               <InputRangeVolumn
                 volumnValue={volumn}
                 handleChangeVolumn={handleChangeVolumn}

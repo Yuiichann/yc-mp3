@@ -48,12 +48,10 @@ const ListGridItem = ({ tabInfo, type }: Props) => {
               tabInfo.encodeId
             }`}
           >
-            <h2 className="font-medium text-16 md:text-18 cursor-pointer hover:opacity-60">
-              {tabInfo.title}
-            </h2>
+            <h2 className="font-medium text-16 cursor-pointer hover:opacity-60">{tabInfo.title}</h2>
           </Link>
         </div>
-        <p className="cursor-default">{convertDate(tabInfo.releaseDate)}</p>
+        <p className="cursor-default text-14">{convertDate(tabInfo.releaseDate)}</p>
       </div>
     </div>
   );

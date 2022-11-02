@@ -59,7 +59,7 @@ const MusicPlayer = () => {
   return (
     <>
       <div className="fixed z-10 h-player effect left-0 w-screen bg-tertiary bg-main bottom-0 text-white select-none shadow-musicplayer">
-        <div className="h-full px-1 py-2 lg:px-8 flex justify-center lg:justify-between">
+        <div className="h-full px-1 pt-2 pb-1 lg:py-2 lg:px-8 flex justify-center lg:justify-between">
           {/* Current Song Playing Infomation */}
           <div className="flex items-center flex-grow lg:flex-grow-0 lg:w-[350px]">
             {/* check loading to render */}

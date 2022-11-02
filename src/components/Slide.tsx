@@ -146,7 +146,7 @@ export const SliderSpotlight = ({ data, navigate, slidePerView, space }: SliderS
             to={`/ca-si?name=${item.alias}`}
             className="flex flex-col items-center space-y-2 truncate"
           >
-            <img src={item.thumbnail} alt={item.alias} className="rounded-xl" />
+            <img src={item.thumbnail} alt={item.alias} className="rounded-xl" loading="lazy" />
             <h2 className="text-14">{item.name}</h2>
           </Link>
         </SwiperSlide>
