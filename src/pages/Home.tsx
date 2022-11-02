@@ -8,18 +8,18 @@ import { RootState } from '../config/store';
 
 const newReleaseType = [
   {
-    type: 'song',
-    title: 'Bài hát',
+    type: 'vPop',
+    title: 'Việt Nam',
   },
   {
-    type: 'album',
-    title: 'Album',
+    type: 'others',
+    title: 'Nước Ngoài',
   },
 ];
 
 // Home and Discover
 const Home = () => {
-  const [typeNewRelease, setTypeNewRelease] = useState<'song' | 'album'>('song');
+  const [typeNewRelease, setTypeNewRelease] = useState<'vPop' | 'others'>('vPop');
   const { banner, newRelease, weekend, newSongSlider, top100, artistSpotlight, isLoading, error } =
     useSelector((state: RootState) => state.mainInfo);
 
@@ -62,8 +62,8 @@ const Home = () => {
                 {/* New Release List */}
               </div>
               <ListGrid
-                type={typeNewRelease}
-                data={typeNewRelease === 'song' ? newRelease.vPop : newRelease.others}
+                type="song"
+                data={typeNewRelease === 'vPop' ? newRelease.vPop : newRelease.others}
               />
             </div>
 

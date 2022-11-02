@@ -12,7 +12,7 @@ const Latest = () => {
 
   // check url is song or album latest
   const checkTypeOfRoute = () => {
-    if (location.pathname === '/nhac-moi-nhat') {
+    if (location.pathname === '/nhac-vn-moi-nhat') {
       return 'song';
     } else {
       return 'album';
@@ -31,7 +31,7 @@ const Latest = () => {
         <Loading />
       ) : (
         <NewReleaseTab
-          type={checkTypeOfRoute()}
+          type="song"
           data={checkTypeOfRoute() === 'song' ? newRelease.vPop : newRelease.others}
         />
       )}

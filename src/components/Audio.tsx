@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
 import { RiPauseCircleFill, RiPlayFill, RiSkipBackFill, RiSkipForwardFill } from 'react-icons/ri';
@@ -168,7 +168,7 @@ const Audio = ({ linkMp3 }: Props) => {
 
     const newCurrentSongIndex = currentSongIndex - 1; // calculator index of prev song
     dispatch(setPlayBySongIndex(newCurrentSongIndex));
-  }, [currentSongIndex, isPlaylist]);
+  }, [currentSongIndex, isPlaylist, songs.items.length, loading]);
 
   // handle when click next song or when end song and next new song
   const handleSkipForwardSong = useCallback(
@@ -199,7 +199,7 @@ const Audio = ({ linkMp3 }: Props) => {
         dispatch(setPlayBySongIndex(newCurrentSongIndex));
       }
     },
-    [currentSongIndex, isPlaylist]
+    [currentSongIndex, isPlaylist, songs.items.length, loading]
   );
 
   // handle when Ended Music
@@ -241,7 +241,7 @@ const Audio = ({ linkMp3 }: Props) => {
         }, 50);
       }
     }
-  }, [currentSongIndex, isPlaylist, isLoop]);
+  }, [currentSongIndex, isPlaylist, isLoop, songs.items.length]);
 
   // when audio can play, set state duration of song
   const handleCanPlay = useCallback(() => {
@@ -253,7 +253,7 @@ const Audio = ({ linkMp3 }: Props) => {
     // lần đầu load app, nếu local có dữ liệu thì chỉ setup chứ k phát
     if (loading === 'init-local') return;
     handlePlayMusic(true);
-  }, [linkMp3]);
+  }, [linkMp3, loading]);
 
   // handle when change input volumn
   const handleChangeVolumn = useCallback(
@@ -307,7 +307,7 @@ const Audio = ({ linkMp3 }: Props) => {
   // storeSet.add(handlePlayMusic);
   // storeSet.add(handlePauseMusic);
   // storeSet.add(handleReloadMusic);
-  // storeSet.add(handleTimeUpdate)
+  // storeSet.add(handleTimeUpdate);
   // console.log(storeSet);
 
   return (

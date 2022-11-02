@@ -15,13 +15,13 @@ export const sideBarItem: SideBarItem[] = [
   },
   {
     Icon: Svg4,
-    path: '/nhac-moi-nhat',
-    title: 'Nhạc Mới',
+    path: '/nhac-vn-moi-nhat',
+    title: 'Nhạc Việt Nam',
   },
   {
     Icon: AlbumSvg,
-    path: '/album-moi-nhat',
-    title: 'Album',
+    path: '/nhac-nuoc-ngoai-moi-nhat',
+    title: 'Nhạc N.Ngoài',
   },
   {
     Icon: Ranking,

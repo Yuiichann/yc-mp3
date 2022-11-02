@@ -24,12 +24,12 @@ const routes: RoutesProps[] = [
   },
   {
     title: 'Nhạc mới nhất(Latest)',
-    path: '/nhac-moi-nhat',
+    path: '/nhac-vn-moi-nhat',
     component: Latest,
   },
   {
-    title: 'Album mới nhất(Latest)',
-    path: '/album-moi-nhat',
+    title: 'Nhạc ngước ngoài mới nhất(Latest)',
+    path: '/nhac-nuoc-ngoai-moi-nhat',
     component: Latest,
   },
   {
