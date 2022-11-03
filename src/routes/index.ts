@@ -1,3 +1,4 @@
+import Account from '../pages/Account';
 import AddSong from '../pages/AddSong';
 import Album from '../pages/Album';
 import ArtistInfo from '../pages/ArtistInfo';
@@ -46,6 +47,11 @@ const routes: RoutesProps[] = [
     title: 'Đăng Ký',
     path: '/dang-ky',
     component: SignUp,
+  },
+  {
+    title: 'Tài khoản',
+    path: '/tai-khoan',
+    component: Account,
   },
   {
     title: 'playlists',

@@ -1,5 +1,7 @@
 import { memo } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
+import { auth } from '../config/firebase';
 import { sideBarItem } from '../constants/sideBarItems';
 
 interface Props {
@@ -7,18 +9,26 @@ interface Props {
 }
 
 const MenuMobile = ({ handleCloseMenu }: Props) => {
+  const [user] = useAuthState(auth);
+
   return (
     <nav className="container">
       <div className="flex flex-col space-y-6 mt-12">
-        {/* Button Group Signin / Signup */}
-        <div className="flex flex-row justify-around lg:justify-center items-center space-x-0 lg:space-x-3">
-          <Link to="/dang-nhap" className="button-outline" onClick={handleCloseMenu}>
-            Đăng Nhập
+        {/* Button Group Signin / Signup or profile*/}
+        {user ? (
+          <Link to="/tai-khoan" onClick={handleCloseMenu}>
+            tai khoan
           </Link>
-          <Link to="/dang-ky" className="button" onClick={handleCloseMenu}>
-            Đăng Ký
-          </Link>
-        </div>
+        ) : (
+          <div className="flex flex-row justify-around lg:justify-center items-center space-x-0 lg:space-x-3">
+            <Link to="/dang-nhap" className="button-outline" onClick={handleCloseMenu}>
+              Đăng Nhập
+            </Link>
+            <Link to="/dang-ky" className="button" onClick={handleCloseMenu}>
+              Đăng Ký
+            </Link>
+          </div>
+        )}
 
         <div className="w-full h-[3px] bg-main rounded-sm opacity-70"></div>
 

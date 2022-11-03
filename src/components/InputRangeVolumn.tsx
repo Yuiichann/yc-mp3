@@ -14,7 +14,7 @@ const InputRangeVolumn = ({ handleChangeVolumn, isChildOfComponent, volumnValue 
       max={1}
       step={0.05}
       value={volumnValue}
-      className={`${isChildOfComponent === 'audio' ? 'w-11/12 slider' : 'w-[150px]'}`}
+      className={`${isChildOfComponent === 'audio' ? 'w-11/12 slider' : 'w-[150px] range-private'}`}
       onChange={(e) => handleChangeVolumn(e.target.value)}
     />
   );

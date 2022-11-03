@@ -1,12 +1,15 @@
-import { useState, memo } from 'react';
+import { memo, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { BiMenuAltLeft, BiSearchAlt } from 'react-icons/bi';
 import { IoCloseSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import { auth } from '../config/firebase';
 import MenuMobile from './MenuMobile';
 import SearchInput from './SearchInput';
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user] = useAuthState(auth);
 
   // handle open or close menu when click
   const handleToggleMenu = () => {
@@ -49,15 +52,33 @@ const NavBar = () => {
             {/* Search */}
             <SearchInput />
 
-            {/* Button Group signin/signup */}
-            <div className="flex flex-row justify-center items-center space-x-3">
-              <Link to="/dang-nhap" className="button-none">
-                Đăng Nhập
-              </Link>
-              <Link to="/dang-ky" className="button">
-                Đăng Ký
-              </Link>
-            </div>
+            {/* Button Group signin/signup or profile */}
+            {user ? (
+              <div className="relative w-[40px] h-[40px]">
+                <Link to="/tai-khoan">
+                  <img
+                    src={user.photoURL || ''}
+                    alt={user.displayName || ''}
+                    className="w-full h-full rounded-full"
+                  />
+                </Link>
+
+                <ul className="absolute hidden top-full right-0 text-14 w-[120px] text-center bg-secondary text-white">
+                  <li className="px-2 py-1 cursor-pointer">Đăng xuất</li>
+                  <li className="px-2 py-1 cursor-pointer">Đăng xuất</li>
+                  <li className="px-2 py-1 cursor-pointer">Đăng xuất</li>
+                </ul>
+              </div>
+            ) : (
+              <div className="flex flex-row justify-center items-center space-x-3">
+                <Link to="/dang-nhap" className="button-none">
+                  Đăng Nhập
+                </Link>
+                <Link to="/dang-ky" className="button">
+                  Đăng Ký
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Search Icon Mobile */}

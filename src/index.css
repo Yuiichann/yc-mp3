@@ -6,7 +6,10 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+
+/* range-music-player */
 .slider {
+  appearance: none;
   -webkit-appearance: none;
   width: 80%;
   height: 5px;
@@ -36,6 +39,26 @@ body {
   height: 15px;
   border-radius: 100%;
   background: #fff;
+  cursor: pointer;
+}
+
+.range-private {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 4px;
+  background: #00aeef;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+.range-private::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+  background: #2f80ed;
   cursor: pointer;
 }
 
@@ -105,6 +128,14 @@ body {
 
   .button-outline {
     @apply flex justify-center text-primary items-center cursor-pointer rounded-sm border border-primary px-[7px] py-[3px] min-w-[105px] max-w-[120px];
+  }
+
+  .button-full {
+    @apply w-full bg-secondary py-2 text-white hover:opacity-75 rounded-sm;
+  }
+
+  .google-button {
+    @apply w-fit px-4 py-2 flex justify-center items-center space-x-2 border border-[#c23321] cursor-pointer rounded-sm mx-auto hover:bg-gray-100 text-primary select-none;
   }
 
   .icon-btn {

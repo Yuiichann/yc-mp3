@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,20 +8,28 @@ import Footer from './components/Footer';
 import MusicPlayer from './components/MusicPlayer';
 import NavBar from './components/NavBar';
 import SideBar from './components/SideBar';
-import { AppDispatch } from './config/store';
-import { setDataOfMainInfo } from './reducer/mainInfoSlice';
+import { AppDispatch, RootState } from './config/store';
+import { setDataOfMainInfo, setErrorApp } from './reducer/mainInfoSlice';
 import routes from './routes';
 import { BannerApi, MainInfoSlider, MainInfoStream, NewReleaseApi, RoutesProps } from './types';
 import alertMessApp from './utils/alertMessApp';
 import ScrollTopAction from './utils/ScrollTopAction';
 
 const App = () => {
+  const { error } = useSelector((state: RootState) => state.mainInfo);
   const dispatch = useDispatch<AppDispatch>();
 
-  // call api and set state in main info
+  // only alert in production
+  if (!process.env.NODE_ENV) {
+    alertMessApp();
+  }
+
+  // handle call api and set state in main state of app
   useEffect(() => {
     const getData = async () => {
-      const res: any = await ycMp3.getHome({ page: '1' });
+      const res: any = await ycMp3.getHome({ page: '1' }).catch((err) => {
+        dispatch(setErrorApp(err.message as string));
+      });
       const resAlbumYc: any = await ycMp3.getYcAlbum();
 
       if (res.msg === 'Success' && resAlbumYc.msg === 'Success') {
@@ -76,34 +84,39 @@ const App = () => {
     getData();
   }, []);
 
-  // only alert in production
-  if (!process.env.NODE_ENV) {
-    alertMessApp();
-  }
-
   return (
     <BrowserRouter>
       {/* Header */}
       <NavBar />
 
       {/* main section */}
-      <div className="mt-navbar py-[32px]">
+      <div className="mt-navbar pt-[32px] bg-[rgb(245,245,245,0.2)]">
         <div className="container flex gap-2">
           {/* side bar on left screen */}
-          <div className="hidden lg:block min-w-[200px] max-w-[200px] relative">
+          <div className="hidden lg:block min-w-[200px] max-w-[200px] min-h-screen relative">
             <SideBar />
           </div>
 
           {/* Main content */}
-          <div className="flex-grow min-w-0">
-            <Routes>
-              {routes.map((route: RoutesProps) => (
-                <Route path={route.path} element={<route.component />} key={route.title} />
-              ))}
-            </Routes>
-            {/* Action when change route */}
-            <ScrollTopAction />
-          </div>
+          {/* check error network */}
+          {error?.message ? (
+            <div className="min-h-screen flex-grow">
+              <h1 className="title mt-12 text-center text-red-500">{error.message}</h1>
+              <h2 className="text-center mt-4 italic">
+                Please check internet or using VPN to access the app
+              </h2>
+            </div>
+          ) : (
+            <div className="flex-grow min-w-0 pb-24">
+              <Routes>
+                {routes.map((route: RoutesProps) => (
+                  <Route path={route.path} element={<route.component />} key={route.title} />
+                ))}
+              </Routes>
+              {/* Action when change route */}
+              <ScrollTopAction />
+            </div>
+          )}
         </div>
       </div>
 

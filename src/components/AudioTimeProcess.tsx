@@ -53,7 +53,7 @@ const AudioTimeProcess = ({
         <div className="w-[40px] flex items-center justify-center text-12 tracking-wide">
           <span>{convertTime(currentTime)}</span>
         </div>
-        <div className="flex-grow min-w-0 h-2 bg-gray-800 relative rounded-lg cursor-pointer group">
+        <div className="flex-grow min-w-0 h-1 bg-slate-400 relative rounded-lg cursor-pointer shadow-lg group">
           {/*  */}
           <div
             className="h-full absolute left-0 top-0 bg-white z-10 rounded-lg group-hover:opacity-90"
@@ -91,25 +91,23 @@ const AudioTimeProcess = ({
   } else {
     return (
       <>
-        <div className="flex-grow min-w-0 h-2 bg-gray-300 relative cursor-pointer group">
-          {/*  */}
+        <div className="flex-grow min-w-0 h-1 bg-gray-300 relative cursor-pointer">
+          {/* line */}
           <div
-            className="h-full absolute left-0 top-0 bg-violet-500 z-10 group-hover:opacity-90"
+            className="h-full absolute left-0 top-0 bg-violet-500 z-10"
             style={{
               width: `${progressBarWidth}px`,
             }}
           ></div>
           {/* thumb */}
           <div
-            className="w-fit h-fit top-1/2 -translate-y-1/2 bg-white border absolute z-20 opacity-0 group-hover:opacity-100 text-[12px] font-medium text-primary p-1 rounded-md"
+            className="w-3 h-3 top-1/2 -translate-y-1/2 bg-white border absolute z-20 rounded-full"
             ref={thumbRef}
             style={{
               left: `${position}%`,
               marginLeft: `${marginLeft}px`,
             }}
-          >
-            <span>{convertTime(currentTime)}</span>
-          </div>
+          ></div>
 
           {/* input */}
           <input

@@ -43,8 +43,16 @@ const mainInfoSlice = createSlice({
     setDataOfMainInfo: (state, action: PayloadAction<MainInfo>) => {
       return action.payload;
     },
+    setErrorApp: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        error: {
+          message: action.payload,
+        },
+      };
+    },
   },
 });
 
-export const { setDataOfMainInfo } = mainInfoSlice.actions;
+export const { setDataOfMainInfo, setErrorApp } = mainInfoSlice.actions;
 export default mainInfoSlice.reducer;
