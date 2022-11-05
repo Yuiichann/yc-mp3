@@ -99,7 +99,7 @@ body {
   }
 
   .effect {
-    @apply transition-all ease-in duration-150;
+    @apply transition-all ease-in duration-200;
   }
 
   .text-underline {

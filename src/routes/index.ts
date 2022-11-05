@@ -12,6 +12,7 @@ import Search from '../pages/Search';
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 import SongInfo from '../pages/SongInfo';
+import Top100 from '../pages/Top100';
 import Video from '../pages/Video';
 import YCCollection from '../pages/YCCollection';
 import { RoutesProps } from '../types';
@@ -103,6 +104,11 @@ const routes: RoutesProps[] = [
     title: 'Thông tin & Xem Album',
     path: '/video',
     component: Video,
+  },
+  {
+    title: 'Top 100',
+    path: '/top100',
+    component: Top100,
   },
   {
     title: 'Không tìm thấy',

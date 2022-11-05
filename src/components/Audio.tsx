@@ -21,7 +21,9 @@ const Audio = ({ linkMp3 }: Props) => {
   const { statusAudio, isLoop, volumn, isPlaylist } = useSelector(
     (state: RootState) => state.audioStatus
   );
-  const { currentSongIndex, songs } = useSelector((state: RootState) => state.playlist);
+  const { currentSongIndex, songs, playlistDetail } = useSelector(
+    (state: RootState) => state.playlist
+  );
   const { loading } = useSelector((state: RootState) => state.songPlaying);
 
   // ref
@@ -171,36 +173,34 @@ const Audio = ({ linkMp3 }: Props) => {
   }, [currentSongIndex, isPlaylist, songs.items.length, loading]);
 
   // handle when click next song or when end song and next new song
-  const handleSkipForwardSong = useCallback(
-    (isClickSkip?: boolean) => {
-      if (!isPlaylist) {
-        toast.info('Danh sách phát rỗng!');
-        return;
-      }
-      // disable click when fetch data
-      if (loading === 'pending') {
-        return;
-      }
+  const handleSkipForwardSong = useCallback(() => {
+    if (!isPlaylist) {
+      toast.info('Danh sách phát rỗng!');
+      return;
+    }
 
-      // disable when playlist length = 1
-      if (songs.items.length <= 1) {
-        toast.warning('Danh sách nhạc chỉ có 1 bài!');
-        return;
-      }
+    // disable click when fetch data
+    if (loading === 'pending') {
+      return;
+    }
 
-      const songsLength = songs.items.length; // get length of list song playlist
-      const newCurrentSongIndex = currentSongIndex + 1; // calculator index of next song
+    // disable when playlist length = 1
+    if (songs.items.length <= 1) {
+      toast.warning('Danh sách nhạc chỉ có 1 bài!');
+      return;
+    }
 
-      // if true, we is end playlist now ==> go to on start list
-      if (newCurrentSongIndex === songsLength) {
-        dispatch(setPlayBySongIndex(0));
-      } else {
-        // when not end list ==> play next song
-        dispatch(setPlayBySongIndex(newCurrentSongIndex));
-      }
-    },
-    [currentSongIndex, isPlaylist, songs.items.length, loading]
-  );
+    const songsLength = songs.items.length; // get length of list song playlist
+    const newCurrentSongIndex = currentSongIndex + 1; // calculator index of next song
+
+    // if true, we is end playlist now ==> go to on start list
+    if (newCurrentSongIndex === songsLength) {
+      dispatch(setPlayBySongIndex(0));
+    } else {
+      // when not end list ==> play next song
+      dispatch(setPlayBySongIndex(newCurrentSongIndex));
+    }
+  }, [currentSongIndex, isPlaylist, songs.items.length, loading]);
 
   // handle when Ended Music
   const handleEndedMusic = useCallback(() => {
@@ -225,7 +225,7 @@ const Audio = ({ linkMp3 }: Props) => {
           toast.info('Đã đến cuối danh sách nhạc!');
         }
       } else {
-        handleSkipForwardSong();
+        dispatch(setPlayBySongIndex(newCurrentSongIndex));
       }
     }
     // isPlaylist === false
@@ -233,7 +233,6 @@ const Audio = ({ linkMp3 }: Props) => {
       if (!isLoop) {
         handlePauseMusic(true);
         toast.info('Trình phát nhạc tắt!');
-        return;
       } else {
         handlePauseMusic(true);
         setTimeout(() => {
@@ -356,7 +355,7 @@ const Audio = ({ linkMp3 }: Props) => {
                 <RiPlayFill />
               </div>
             )}
-            <div className="icon-player" onClick={() => handleSkipForwardSong(true)}>
+            <div className="icon-player" onClick={() => handleSkipForwardSong()}>
               <RiSkipForwardFill />
             </div>
           </div>

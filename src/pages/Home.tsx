@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ChartHome from '../components/ChartHome';
 import ListGrid from '../components/ListGrid';
 import Loading from '../components/Loading';
@@ -69,40 +70,16 @@ const Home = () => {
 
             {/* Weekend */}
             <div className="mt-8">
-              <h1 className="title-underline">{weekend.title}</h1>
+              <h1 className="title">{weekend.title}</h1>
 
-              {/* Slider */}
-              <div className="block sm:hidden lg:hidden">
-                <Slider data={weekend.items} slidePerView={3} space={4} navigate={false} />
-              </div>
-              <div className="hidden sm:block lg:hidden">
-                <Slider data={weekend.items} slidePerView={4} space={4} navigate={false} />
-              </div>
-              <div className="hidden lg:block">
-                <Slider
-                  data={weekend.items}
-                  slidePerView={weekend.items.length < 6 ? weekend.items.length : 6}
-                />
-              </div>
+              <ListGrid type="playlist" data={weekend.items} />
             </div>
 
             {/* New Song Slider */}
             <div className="mt-6">
-              <h1 className="title-underline">{newSongSlider.title}</h1>
+              <h1 className="title">{newSongSlider.title}</h1>
 
-              {/* Slider */}
-              <div className="block sm:hidden lg:hidden">
-                <Slider data={newSongSlider.items} slidePerView={3} space={4} navigate={false} />
-              </div>
-              <div className="hidden sm:block lg:hidden">
-                <Slider data={newSongSlider.items} slidePerView={4} space={4} navigate={false} />
-              </div>
-              <div className="hidden lg:block">
-                <Slider
-                  data={newSongSlider.items}
-                  slidePerView={newSongSlider.items.length < 6 ? newSongSlider.items.length : 6}
-                />
-              </div>
+              <ListGrid type="playlist" data={newSongSlider.items} />
             </div>
 
             {/* Chart  */}
@@ -112,7 +89,12 @@ const Home = () => {
 
             {/* Top 100  Slider */}
             <div className="mt-6">
-              <h1 className="title-underline">{top100.title}</h1>
+              <div className="flex justify-between items-start">
+                <h1 className="title-underline">{top100.title}</h1>
+                <Link to="/top100" className="text-14 text-primary">
+                  Xem tất cả
+                </Link>
+              </div>
 
               <div className="block sm:hidden lg:hidden">
                 <Slider data={top100.items} slidePerView={3} space={4} navigate={false} />

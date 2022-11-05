@@ -9,6 +9,7 @@ import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { AlbumApi, Artist, BannerApi } from '../types';
 import getUrlByType from '../utils/getUrlByType';
+import ImageLazyLoad from './ImageLazyLoad';
 
 interface Props {
   data: BannerApi[];
@@ -49,7 +50,11 @@ const Slide = ({ data, isRanking }: Props) => {
           {data.map((item, index) => (
             <SwiperSlide key={index}>
               <Link to={`/${handleChooseType(item.type, item.textType)}?id=${item.encodeId}`}>
-                <img src={item.banner || item.thumbnailM} alt={item.title} className="rounded-xl" />
+                <ImageLazyLoad
+                  src={item.banner || item.thumbnailM || ''}
+                  alt={item.title}
+                  className="rounded-xl"
+                />
               </Link>
             </SwiperSlide>
           ))}
@@ -113,7 +118,7 @@ export const Slider = ({ data, slidePerView, space, navigate }: SliderProps) => 
       {data.map((item, index) => (
         <SwiperSlide key={index}>
           <Link to={`/${item.textType.toLowerCase()}?id=${item.encodeId}`}>
-            <img src={item.thumbnailM} alt={item.title} className="rounded-xl" />
+            <ImageLazyLoad src={item.thumbnailM} alt={item.title} className="rounded-xl" />
           </Link>
         </SwiperSlide>
       ))}
