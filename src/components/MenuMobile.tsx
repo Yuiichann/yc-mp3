@@ -1,3 +1,4 @@
+import { signOut } from 'firebase/auth';
 import { memo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
@@ -11,14 +12,37 @@ interface Props {
 const MenuMobile = ({ handleCloseMenu }: Props) => {
   const [user] = useAuthState(auth);
 
+  const handleSignOut = () => {
+    signOut(auth);
+  };
+
   return (
     <nav className="container">
       <div className="flex flex-col space-y-6 mt-12">
         {/* Button Group Signin / Signup or profile*/}
         {user ? (
-          <Link to="/tai-khoan" onClick={handleCloseMenu}>
-            tai khoan
-          </Link>
+          <div onClick={handleCloseMenu} className="flex items-center px-2 space-x-2">
+            <Link to="/tai-khoan" className="flex items-center space-x-2 flex-grow truncate">
+              {user.photoURL ? (
+                <img
+                  src={user.photoURL}
+                  alt={user.displayName || ''}
+                  className="rounded-full"
+                  loading="lazy"
+                  width={60}
+                  height={60}
+                />
+              ) : (
+                <img />
+              )}
+
+              <span className="text-18 truncate">{user.displayName || user.email}</span>
+            </Link>
+
+            <button className="button" onClick={handleSignOut}>
+              Đăng xuất
+            </button>
+          </div>
         ) : (
           <div className="flex flex-row justify-around lg:justify-center items-center space-x-0 lg:space-x-3">
             <Link to="/dang-nhap" className="button-outline" onClick={handleCloseMenu}>

@@ -1,9 +1,13 @@
+import { addDoc, collection, doc, Timestamp } from 'firebase/firestore';
 import React from 'react';
-import { IoMdAddCircleOutline, IoMdHeartEmpty } from 'react-icons/io';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { IoMdAddCircleOutline, IoMdHeartEmpty, IoMdHeart } from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { auth, db } from '../config/firebase';
 import { AppDispatch, RootState } from '../config/store';
+import { useCheckSongIsLiked } from '../hooks/useCheckSongisLiked';
 import { setIsPlaylist } from '../reducer/audioStatus';
 import {
   addSongToPlaylist,
@@ -24,6 +28,9 @@ interface Props {
 const AudioHandler = ({ songInfo, component }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const { songs } = useSelector((state: RootState) => state.playlist);
+  const [user] = useAuthState(auth);
+
+  const isLiked = useCheckSongIsLiked(songInfo.encodeId);
 
   // handle play song
   const handlePlayCurrentSong = () => {
@@ -76,6 +83,25 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     toast.success('Đã thêm vào danh sách phát');
   };
 
+  const handleCLickLikeButton = async () => {
+    if (!user) {
+      toast.error('Vui lòng đăng nhập để sử dụng tính năng này!!!');
+      return;
+    }
+
+    try {
+      const newData = await addDoc(collection(db, 'favorite_songs'), {
+        email: user.email,
+        createAt: Timestamp.now(),
+        data: songInfo,
+      });
+      toast.success('Thêm bài hát thành công !!!');
+    } catch (error) {
+      console.log(error);
+      toast.error('Lỗi trong quá trình!');
+    }
+  };
+
   //   tùy vào component sẽ có giao diện khác nhau
   //   component === SongInfo
   if (component === 'SongInfo') {
@@ -97,13 +123,23 @@ const AudioHandler = ({ songInfo, component }: Props) => {
           </div>
         </div>
 
-        <div className="icon-player text-red-600 relative group">
-          <IoMdHeartEmpty />
-
-          <div className="toolip-container">
-            <p>Thêm vào yêu thích</p>
+        {/* liked */}
+        {isLiked ? (
+          <div className="icon-player text-red-600 relative group">
+            <IoMdHeart />
+            <div className="toolip-container">
+              <p>Xóa khỏi yêu thích</p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="icon-player text-red-600 relative group" onClick={handleCLickLikeButton}>
+            <IoMdHeartEmpty />
+
+            <div className="toolip-container">
+              <p>Thêm vào yêu thích</p>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -112,9 +148,19 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     return (
       <div className="w-full flex items-center text-2xl xl:text-3xl justify-around">
         {/* Button favorite */}
-        <div className="text-white p-2 hover:scale-110 cursor-pointer effect">
-          <IoMdHeartEmpty />
-        </div>
+        {isLiked ? (
+          <div className="text-red-500 p-2 hover:scale-110 cursor-pointer effect">
+            <IoMdHeart />
+          </div>
+        ) : (
+          <div
+            className="text-white p-2 hover:scale-110 cursor-pointer effect"
+            onClick={handleCLickLikeButton}
+          >
+            <IoMdHeartEmpty />
+          </div>
+        )}
+
         {/* Button play music */}
         <div
           className="text-white text-4xl xl:text-5xl p-2 hover:scale-125 hover:text-secondary cursor-pointer effect"
@@ -145,9 +191,15 @@ const AudioHandler = ({ songInfo, component }: Props) => {
           <IoMdAddCircleOutline />
         </div>
 
-        <div className="icon-player text-red-600">
-          <IoMdHeartEmpty />
-        </div>
+        {isLiked ? (
+          <div className="icon-player text-red-600">
+            <IoMdHeart />
+          </div>
+        ) : (
+          <div className="icon-player text-red-600" onClick={handleCLickLikeButton}>
+            <IoMdHeartEmpty />
+          </div>
+        )}
       </div>
     );
   }

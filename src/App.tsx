@@ -90,7 +90,7 @@ const App = () => {
       <NavBar />
 
       {/* main section */}
-      <div className="mt-navbar pt-[32px] bg-[rgb(245,245,245,0.2)]">
+      <div className="mt-navbar pt-[32px] min-h-screen bg-[rgb(245,245,245,0.2)]">
         <div className="container flex gap-2">
           {/* side bar on left screen */}
           <div className="hidden lg:block min-w-[200px] max-w-[200px] min-h-screen relative">
@@ -125,7 +125,13 @@ const App = () => {
 
       {/* Toastify */}
       <div>
-        <ToastContainer autoClose={1200} position="top-center" closeOnClick={true} theme="light" />
+        <ToastContainer
+          autoClose={1200}
+          position="top-center"
+          className="text-center"
+          closeOnClick={true}
+          theme="light"
+        />
       </div>
 
       {/* Music Player */}

@@ -7,11 +7,10 @@ import CustomInput from './CustomInput';
 import {
   useCreateUserWithEmailAndPassword,
   useSignInWithEmailAndPassword,
-  useSignInWithGoogle,
 } from 'react-firebase-hooks/auth';
 import { auth } from '../config/firebase';
 import { AiOutlineLoading } from 'react-icons/ai';
-import GoogleSignIn from './GoogleSignIn';
+import { FacebookSignIn, GoogleSignIn } from './SignInWith3Party';
 
 interface SignUpValues {
   email: string;
@@ -167,7 +166,13 @@ export const FormSignIn = memo(() => {
 
       <div className="text-center font-semibold tracking-wider mb-4">HOẶC</div>
 
-      <GoogleSignIn />
+      <div>
+        <GoogleSignIn />
+      </div>
+
+      <div className='my-3'>
+        <FacebookSignIn />
+      </div>
     </>
   );
 });

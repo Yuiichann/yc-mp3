@@ -1,48 +1,14 @@
-const arr = [123, 672, 673, 344, 125, 796, 347, 498, 609, 931];
+const arr = [123, 672, 673, 344, 125, 796, 347, 498, 609, 931, 441, 876, 342, 953, 756];
 
 const SkeletonNewRelease = () => {
   return (
     <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 lg:gap-4 animate-pulse">
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[15  0px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>{' '}
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>{' '}
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>{' '}
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>{' '}
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>{' '}
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>{' '}
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>{' '}
-      <div className="p1">
-        <div className="w-full h-[150px] md:h-[150px] lg:h-[150px] xl:h-[180px] rounded-md bg-[rgb(0,0,0,0.2)] "></div>
-        <div className="w-full rounded-md bg-[rgb(0,0,0,0.2)] h-[30px] mt-1"></div>
-      </div>
+      {arr.map((item) => (
+        <div
+          className="bg-[rgb(0,0,0,0.2)] bg-cover bg-no-repeat bg-center pt-[100%] rounded-md"
+          key={item}
+        ></div>
+      ))}
     </div>
   );
 };

@@ -134,8 +134,8 @@ body {
     @apply w-full bg-secondary py-2 text-white hover:opacity-75 rounded-sm;
   }
 
-  .google-button {
-    @apply w-fit px-4 py-2 flex justify-center items-center space-x-2 border border-[#c23321] cursor-pointer rounded-sm mx-auto hover:bg-gray-100 text-primary select-none;
+  .signin-button {
+    @apply max-w-[330px] px-4 py-2 flex items-center space-x-3 border cursor-pointer rounded-sm mx-auto hover:bg-gray-100 text-primary select-none;
   }
 
   .icon-btn {
