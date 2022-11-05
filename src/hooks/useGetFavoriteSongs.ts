@@ -1,4 +1,4 @@
-import { collection, query, where } from 'firebase/firestore';
+import { collection, orderBy, query, where } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../config/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -10,12 +10,17 @@ export const useGetFavoriteSongs = () => {
 
   const collectionQuery = query(
     collection(db, 'favorite_songs'),
-    where('email', '==', userLogged?.email)
+    where('email', '==', userLogged?.email || '')
   );
 
-  const [snapshot, __loading, __error] = useCollection(collectionQuery);
+  const [snapshot, loading, error] = useCollection(collectionQuery);
 
-  const favoriteSongs = snapshot?.docs.map((item) => item.data().data);
+  const favoriteSongs = snapshot?.docs.map((item) => item.data().data) as SongApi[];
 
-  return favoriteSongs as SongApi[];
+  // return favorites list by email, loading, and error
+  return {
+    favoriteSongs,
+    loading,
+    error,
+  };
 };

@@ -2,19 +2,17 @@ import { signOut } from 'firebase/auth';
 import { memo } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { auth } from '../config/firebase';
 import { sideBarItem } from '../constants/sideBarItems';
 
 interface Props {
   handleCloseMenu: VoidFunction;
+  handleSignOut: VoidFunction;
 }
 
-const MenuMobile = ({ handleCloseMenu }: Props) => {
+const MenuMobile = ({ handleCloseMenu, handleSignOut }: Props) => {
   const [user] = useAuthState(auth);
-
-  const handleSignOut = () => {
-    signOut(auth);
-  };
 
   return (
     <nav className="container">

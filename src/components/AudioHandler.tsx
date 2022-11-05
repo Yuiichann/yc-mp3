@@ -1,7 +1,8 @@
-import { addDoc, collection, doc, Timestamp } from 'firebase/firestore';
+import Tippy from '@tippyjs/react';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { IoMdAddCircleOutline, IoMdHeartEmpty, IoMdHeart } from 'react-icons/io';
+import { IoMdAddCircleOutline, IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -20,7 +21,7 @@ import checkSongInList from '../utils/checkSongInList';
 
 interface Props {
   songInfo: SongApi;
-  component: 'SongInfo' | 'ListGridItem' | 'ChartListItem' | 'ChartItemsTop100';
+  component: 'SongInfo' | 'ListGridItem' | 'ChartListItem' | 'ListSongItem' | 'ChartItemsTop100';
 }
 
 // component xử lý thao tác audio ở ngoài file audio
@@ -30,6 +31,7 @@ const AudioHandler = ({ songInfo, component }: Props) => {
   const { songs } = useSelector((state: RootState) => state.playlist);
   const [user] = useAuthState(auth);
 
+  // hooks kiểm tra bài nhạc có nằm trong danh sách yêu thích của user không ==> true or false
   const isLiked = useCheckSongIsLiked(songInfo.encodeId);
 
   // handle play song
@@ -60,6 +62,7 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     }
   };
 
+  // handle add song to playlist
   const handleAddToPlaylist = () => {
     // check if song in playlist, alert and return
     const findSong = songs.items.find((song) => song.encodeId === songInfo.encodeId);
@@ -83,6 +86,7 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     toast.success('Đã thêm vào danh sách phát');
   };
 
+  // handle when click add song to favorites list
   const handleCLickLikeButton = async () => {
     if (!user) {
       toast.error('Vui lòng đăng nhập để sử dụng tính năng này!!!');
@@ -90,12 +94,12 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     }
 
     try {
-      const newData = await addDoc(collection(db, 'favorite_songs'), {
+      await addDoc(collection(db, 'favorite_songs'), {
         email: user.email,
         createAt: Timestamp.now(),
         data: songInfo,
       });
-      toast.success('Thêm bài hát thành công !!!');
+      toast.success('Đã thêm vào danh sách yêu thích!!!');
     } catch (error) {
       console.log(error);
       toast.error('Lỗi trong quá trình!');
@@ -149,32 +153,40 @@ const AudioHandler = ({ songInfo, component }: Props) => {
       <div className="w-full flex items-center text-2xl xl:text-3xl justify-around">
         {/* Button favorite */}
         {isLiked ? (
-          <div className="text-red-500 p-2 hover:scale-110 cursor-pointer effect">
-            <IoMdHeart />
-          </div>
+          <Tippy content="Xóa khỏi danh sách yêu thích">
+            <div className="text-red-500 p-2 hover:scale-110 cursor-pointer effect">
+              <IoMdHeart />
+            </div>
+          </Tippy>
         ) : (
-          <div
-            className="text-white p-2 hover:scale-110 cursor-pointer effect"
-            onClick={handleCLickLikeButton}
-          >
-            <IoMdHeartEmpty />
-          </div>
+          <Tippy content="Thêm vào danh sách yêu thích">
+            <div
+              className="text-white p-2 hover:scale-110 cursor-pointer effect"
+              onClick={handleCLickLikeButton}
+            >
+              <IoMdHeartEmpty />
+            </div>
+          </Tippy>
         )}
 
         {/* Button play music */}
-        <div
-          className="text-white text-4xl xl:text-5xl p-2 hover:scale-125 hover:text-secondary cursor-pointer effect"
-          onClick={handlePlayCurrentSong}
-        >
-          <RiPlayFill />
-        </div>
+        <Tippy content="Phát">
+          <div
+            className="text-white text-4xl xl:text-5xl p-2 hover:scale-125 hover:text-secondary cursor-pointer effect"
+            onClick={handlePlayCurrentSong}
+          >
+            <RiPlayFill />
+          </div>
+        </Tippy>
         {/* Button add song to playlist */}
-        <div
-          className="text-white p-2 hover:scale-110 cursor-pointer effect"
-          onClick={handleAddToPlaylist}
-        >
-          <IoMdAddCircleOutline />
-        </div>
+        <Tippy content="Thêm vào danh sách phát">
+          <div
+            className="text-white p-2 hover:scale-110 cursor-pointer effect"
+            onClick={handleAddToPlaylist}
+          >
+            <IoMdAddCircleOutline />
+          </div>
+        </Tippy>
       </div>
     );
   }
@@ -183,22 +195,51 @@ const AudioHandler = ({ songInfo, component }: Props) => {
   if (component === 'ChartItemsTop100') {
     return (
       <div className="flex justify-center items-center gap-1 text-xl lg:text-2xl">
-        <div className="icon-player text-secondary" onClick={handlePlayCurrentSong}>
-          <RiPlayFill />
-        </div>
+        <Tippy content="Phát">
+          <div className="icon-player text-secondary" onClick={handlePlayCurrentSong}>
+            <RiPlayFill />
+          </div>
+        </Tippy>
 
-        <div className="icon-player text-secondary" onClick={handleAddToPlaylist}>
-          <IoMdAddCircleOutline />
-        </div>
+        <Tippy content="Thêm vào danh sách phát">
+          <div className="icon-player text-secondary" onClick={handleAddToPlaylist}>
+            <IoMdAddCircleOutline />
+          </div>
+        </Tippy>
 
         {isLiked ? (
-          <div className="icon-player text-red-600">
-            <IoMdHeart />
-          </div>
+          <Tippy content="Xóa khỏi danh sách yêu thích">
+            <div className="icon-player text-red-600">
+              <IoMdHeart />
+            </div>
+          </Tippy>
         ) : (
-          <div className="icon-player text-red-600" onClick={handleCLickLikeButton}>
-            <IoMdHeartEmpty />
-          </div>
+          <Tippy content="Thêm vào danh sách yêu thích">
+            <div className="icon-player text-red-600" onClick={handleCLickLikeButton}>
+              <IoMdHeartEmpty />
+            </div>
+          </Tippy>
+        )}
+      </div>
+    );
+  }
+
+  // component === ListSongItem
+  if (component === 'ListSongItem') {
+    return (
+      <div>
+        {isLiked ? (
+          <Tippy content="Xóa khỏi danh sách yêu thích">
+            <div className="icon-player text-red-600">
+              <IoMdHeart />
+            </div>
+          </Tippy>
+        ) : (
+          <Tippy content="Thêm vào danh sách yêu thích">
+            <div className="icon-player text-red-600" onClick={handleCLickLikeButton}>
+              <IoMdHeartEmpty />
+            </div>
+          </Tippy>
         )}
       </div>
     );

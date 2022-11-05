@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from '../config/store';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongPlaying } from '../types';
 import Audio from './Audio';
+import ImageLazyLoad from './ImageLazyLoad';
 import { SkeletonSongPlaying } from './Skeleton';
 
 // handle music, playlist is here
@@ -90,9 +91,9 @@ const MusicPlayer = () => {
                 {/* Image */}
                 <div className="px-1 min-w-max">
                   <Link to="/ca-nhan">
-                    <img
+                    <ImageLazyLoad
                       src={currentDetails.thumbnail}
-                      alt=""
+                      alt={currentDetails.title}
                       className={`w-[65px] h-[65px] max-w-[65px] block max-h-[65px] rounded-full effect ${
                         statusAudio === 'playing' ? 'animate-spin-slow' : ''
                       }`}
@@ -103,7 +104,7 @@ const MusicPlayer = () => {
                 {/* title */}
                 <div className="px-1 text-14">
                   <Link to="/ca-nhan">
-                    <Marquee gradient={false} speed={30} className="md:min-w-[150px]">
+                    <Marquee gradient={false} speed={30} className="md:min-w-[150px] space-x-4">
                       <h1>{currentDetails.title}</h1>
                     </Marquee>
                   </Link>

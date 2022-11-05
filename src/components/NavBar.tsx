@@ -1,8 +1,10 @@
-import { memo, useState } from 'react';
+import { signOut } from 'firebase/auth';
+import { memo, useCallback, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { BiMenuAltLeft, BiSearchAlt } from 'react-icons/bi';
 import { IoCloseSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { auth } from '../config/firebase';
 import MenuMobile from './MenuMobile';
 import SearchInput from './SearchInput';
@@ -12,9 +14,14 @@ const NavBar = () => {
   const [user] = useAuthState(auth);
 
   // handle open or close menu when click
-  const handleToggleMenu = () => {
+  const handleToggleMenu = useCallback(() => {
     setIsMenuOpen((prev) => !prev);
-  };
+  }, [isMenuOpen]);
+
+  const handleSignOut = useCallback(() => {
+    signOut(auth);
+    toast.success('Đăng xuất thành công!!!');
+  }, []);
 
   return (
     <header className="fixed z-50 left-0 top-0 w-screen bg-[whitesmoke] shadow-lg">
@@ -34,7 +41,7 @@ const NavBar = () => {
               isMenuOpen ? 'left-0 opacity-100' : '-left-full opacity-0'
             }  mt-navbar h-screen w-screen bg-slate-200 effect`}
           >
-            <MenuMobile handleCloseMenu={handleToggleMenu} />
+            <MenuMobile handleCloseMenu={handleToggleMenu} handleSignOut={handleSignOut} />
           </div>
 
           {/* Logo */}
@@ -54,7 +61,7 @@ const NavBar = () => {
 
             {/* Button Group signin/signup or profile */}
             {user ? (
-              <div className="relative w-[40px] h-[40px]">
+              <div className="relative w-[40px] h-[40px] group">
                 <Link to="/tai-khoan">
                   <img
                     src={user.photoURL || ''}
@@ -63,10 +70,10 @@ const NavBar = () => {
                   />
                 </Link>
 
-                <ul className="absolute hidden top-full right-0 text-14 w-[120px] text-center bg-secondary text-white">
-                  <li className="px-2 py-1 cursor-pointer">Đăng xuất</li>
-                  <li className="px-2 py-1 cursor-pointer">Đăng xuất</li>
-                  <li className="px-2 py-1 cursor-pointer">Đăng xuất</li>
+                <ul className="absolute hidden group-hover:block top-full right-0 text-14 w-[120px] text-center bg-secondary text-white">
+                  <li className="px-2 py-1 cursor-pointer" onClick={handleSignOut}>
+                    Đăng xuất
+                  </li>
                 </ul>
               </div>
             ) : (
