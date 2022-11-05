@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import 'tippy.js/dist/tippy.css';
 import ycMp3 from './api/ycmp3Api';
 import Footer from './components/Footer';
 import MusicPlayer from './components/MusicPlayer';

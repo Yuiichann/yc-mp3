@@ -10,6 +10,10 @@ import { initNewPlaylist } from '../reducer/playlistSlice';
 import { addTempPlaylist } from '../reducer/tempGlobalState';
 import { PlaylistItem } from '../types';
 import NotFound from './NotFound';
+import { IoMdAddCircleOutline, IoMdHeartEmpty } from 'react-icons/io';
+import { RiPlayFill } from 'react-icons/ri';
+import ImageLazyLoad from '../components/ImageLazyLoad';
+import Tippy from '@tippyjs/react';
 
 // using for Playlist and album
 const AlbumInfo = () => {
@@ -90,14 +94,16 @@ const AlbumInfo = () => {
             {/* alubm or playlist info */}
             <div className="flex flex-col justify-center space-y-4">
               {/* image */}
-              <div className="">
-                <img
-                  src={dataList.thumbnail}
+              <div className="mx-auto">
+                <ImageLazyLoad
+                  src={dataList.thumbnailM}
                   alt={dataList.title}
-                  loading="lazy"
-                  className="w-[200px] h-[200px] mx-auto rounded-full"
+                  className="rounded-full"
+                  width={200}
+                  height={200}
                 />
               </div>
+
               {/* Info include title and artist name */}
               <div className="flex flex-col items-center space-y-4">
                 <h2 className="text-2xl tracking-wider font-semibold text-center">
@@ -107,11 +113,19 @@ const AlbumInfo = () => {
                   {dataList.artistNames || dataList.artistsNames}
                 </h6>
               </div>
-              {/* Button Play playlist */}
-              <div>
-                <button className="button-lg mx-auto" onClick={handleClickPlayList}>
-                  Phát
-                </button>
+
+              {/* Button Play playlist and add playlist to list */}
+              <div className="flex items-center justify-center gap-8 text-28">
+                <Tippy content="Phát danh sách nhạc" animation="fade">
+                  <div className="icon-player text-primary" onClick={handleClickPlayList}>
+                    <RiPlayFill />
+                  </div>
+                </Tippy>
+                <Tippy content="Thêm vào yêu thích" animation="fade">
+                  <div className="icon-player text-red-600">
+                    <IoMdHeartEmpty />
+                  </div>
+                </Tippy>
               </div>
             </div>
 

@@ -8,6 +8,7 @@ import { initPrivatePlaylist, setPlayBySongIndex } from '../reducer/playlistSlic
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongApi, SongPlaying } from '../types';
 import checkSongInList from '../utils/checkSongInList';
+import ImageLazyLoad from './ImageLazyLoad';
 
 interface Props {
   song: SongApi;
@@ -63,13 +64,12 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
         </div>
       ) : (
         <div className="min-w-[60px] flex items-center justify-center">
-          <img
-            src={song.thumbnailM}
-            alt=""
-            loading="lazy"
+          <ImageLazyLoad
+            src={song.thumbnail}
+            alt={song.alias}
+            className="rounded-sm"
             width={40}
             height={40}
-            className="rounded-sm"
           />
         </div>
       )}
