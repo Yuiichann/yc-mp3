@@ -13,12 +13,12 @@ const ListGridItem = ({ tabInfo, type }: Props) => {
   return (
     <div className="p-1" key={tabInfo.encodeId}>
       {/* Image component */}
-      <div className="relative overflow-hidden rounded-sm group">
+      <div className="relative overflow-hidden rounded-md group">
         {/* UI with type === album | playlist */}
         {type !== 'song' && (
           <Link to={`/${type}?id=${tabInfo.encodeId}`}>
             <div
-              className="pt-[100%] bg-center bg-no-repeat bg-cover scale-100 group-hover:scale-110 effect"
+              className="pt-[100%] bg-center bg-no-repeat bg-cover scale-100 group-hover:scale-110 effect duration-300"
               style={{ backgroundImage: `url(${tabInfo.thumbnailM})` }}
             ></div>
           </Link>

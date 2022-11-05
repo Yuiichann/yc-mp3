@@ -233,7 +233,6 @@ const Audio = ({ linkMp3 }: Props) => {
       if (!isLoop) {
         handlePauseMusic(true);
         toast.info('Trình phát nhạc tắt!');
-        return;
       } else {
         handlePauseMusic(true);
         setTimeout(() => {
