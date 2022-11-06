@@ -36,15 +36,12 @@ const AudioTimeProcess = ({
     setProgressBarWidth(centerProgressBar);
   }, [percentage]);
 
-  const convertTime = useCallback(
-    (time: number) => {
-      const mm = Number((time / 60).toFixed(0));
-      const ss = Number((time % 60).toFixed(0));
+  const convertTime = useCallback((time: number) => {
+    const mm = Math.floor(time / 60);
+    const ss = Math.floor(time - mm * 60);
 
-      return `${mm === 0 ? '00' : `0${mm}`}:${ss < 10 ? `0${ss}` : ss}`;
-    },
-    [currentTime, duration]
-  );
+    return `0${mm}:${ss < 10 ? `0${ss}` : ss}`;
+  }, []);
 
   if (!isMobile) {
     return (

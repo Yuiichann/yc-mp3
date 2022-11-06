@@ -1,8 +1,25 @@
 import Tippy from '@tippyjs/react';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
-import React from 'react';
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  Timestamp,
+  where,
+} from 'firebase/firestore';
+import React, { useCallback } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { IoMdAddCircleOutline, IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
+import { AiOutlineLoading } from 'react-icons/ai';
+import {
+  IoMdAdd,
+  IoMdAddCircleOutline,
+  IoMdHeart,
+  IoMdHeartEmpty,
+  IoMdRemove,
+} from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -21,7 +38,7 @@ import checkSongInList from '../utils/checkSongInList';
 
 interface Props {
   songInfo: SongApi;
-  component: 'SongInfo' | 'ListGridItem' | 'ChartListItem' | 'ListSongItem' | 'ChartItemsTop100';
+  component: 'SongInfo' | 'ListGridItem' | 'ChartListItem' | 'Private' | 'ChartItemsTop100';
 }
 
 // component xử lý thao tác audio ở ngoài file audio
@@ -32,10 +49,10 @@ const AudioHandler = ({ songInfo, component }: Props) => {
   const [user] = useAuthState(auth);
 
   // hooks kiểm tra bài nhạc có nằm trong danh sách yêu thích của user không ==> true or false
-  const isLiked = useCheckSongIsLiked(songInfo.encodeId);
+  const { isFavoriteSong, loading } = useCheckSongIsLiked(songInfo.encodeId);
 
   // handle play song
-  const handlePlayCurrentSong = () => {
+  const handlePlayCurrentSong = useCallback(() => {
     // check if song already in playlist, dispatch index of song
     const checkSongInPlaylist = checkSongInList(songInfo.encodeId, songs.items);
     if (checkSongInPlaylist >= 0) {
@@ -60,10 +77,10 @@ const AudioHandler = ({ songInfo, component }: Props) => {
       dispatch(setPlayBySongIndex(-1));
       dispatch(fetchDataMp3(songDetail));
     }
-  };
+  }, [songInfo]);
 
   // handle add song to playlist
-  const handleAddToPlaylist = () => {
+  const handleAddToPlaylist = useCallback(() => {
     // check if song in playlist, alert and return
     const findSong = songs.items.find((song) => song.encodeId === songInfo.encodeId);
 
@@ -84,10 +101,10 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     // dispatch action add song to playlist
     dispatch(addSongToPlaylist(songInfo));
     toast.success('Đã thêm vào danh sách phát');
-  };
+  }, [songInfo]);
 
   // handle when click add song to favorites list
-  const handleCLickLikeButton = async () => {
+  const handleCLickLikeButton = useCallback(async () => {
     if (!user) {
       toast.error('Vui lòng đăng nhập để sử dụng tính năng này!!!');
       return;
@@ -104,7 +121,35 @@ const AudioHandler = ({ songInfo, component }: Props) => {
       console.log(error);
       toast.error('Lỗi trong quá trình!');
     }
-  };
+  }, [songInfo]);
+
+  const handleClickRemoveFavoriteSong = useCallback(async () => {
+    if (!user) return;
+
+    try {
+      // get favorites collection
+      const favoriteRef = collection(db, 'favorite_songs');
+      const favoriteList = await getDocs(favoriteRef);
+
+      // tìm kiếm bài hát mún xóa trong collection, nếu có return ref của nó
+      const findItemDelete = favoriteList.docs.find((item) => {
+        const data = item.data();
+
+        if (data.email === user.email && data.data.encodeId === songInfo.encodeId) {
+          return item;
+        }
+      });
+
+      // gọi api xóa bài hát khi tìm thấy
+      if (findItemDelete) {
+        await deleteDoc(doc(db, 'favorite_songs', findItemDelete.id));
+        toast.success('Đã xóa bài hát khỏi danh sách yêu thích');
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error('Lỗi trong quá trình!');
+    }
+  }, [songInfo]);
 
   //   tùy vào component sẽ có giao diện khác nhau
   //   component === SongInfo
@@ -128,8 +173,15 @@ const AudioHandler = ({ songInfo, component }: Props) => {
         </div>
 
         {/* liked */}
-        {isLiked ? (
-          <div className="icon-player text-red-600 relative group">
+        {loading ? (
+          <div className="p-1 text-20 animate-spin text-primary">
+            <AiOutlineLoading />
+          </div>
+        ) : isFavoriteSong ? (
+          <div
+            className="icon-player text-red-600 relative group"
+            onClick={handleClickRemoveFavoriteSong}
+          >
             <IoMdHeart />
             <div className="toolip-container">
               <p>Xóa khỏi yêu thích</p>
@@ -152,9 +204,16 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     return (
       <div className="w-full flex items-center text-2xl xl:text-3xl justify-around">
         {/* Button favorite */}
-        {isLiked ? (
+        {loading ? (
+          <div className="p-1 text-20 animate-spin text-primary">
+            <AiOutlineLoading />
+          </div>
+        ) : isFavoriteSong ? (
           <Tippy content="Xóa khỏi danh sách yêu thích">
-            <div className="text-red-500 p-2 hover:scale-110 cursor-pointer effect">
+            <div
+              className="text-red-500 p-2 hover:scale-110 cursor-pointer effect"
+              onClick={handleClickRemoveFavoriteSong}
+            >
               <IoMdHeart />
             </div>
           </Tippy>
@@ -207,9 +266,13 @@ const AudioHandler = ({ songInfo, component }: Props) => {
           </div>
         </Tippy>
 
-        {isLiked ? (
+        {loading ? (
+          <div className="p-1 text-20 animate-spin text-primary">
+            <AiOutlineLoading />
+          </div>
+        ) : isFavoriteSong ? (
           <Tippy content="Xóa khỏi danh sách yêu thích">
-            <div className="icon-player text-red-600">
+            <div className="icon-player text-red-600" onClick={handleClickRemoveFavoriteSong}>
               <IoMdHeart />
             </div>
           </Tippy>
@@ -224,23 +287,31 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     );
   }
 
-  // component === ListSongItem
-  if (component === 'ListSongItem') {
-    return (
-      <div>
-        {isLiked ? (
-          <Tippy content="Xóa khỏi danh sách yêu thích">
-            <div className="icon-player text-red-600">
-              <IoMdHeart />
-            </div>
-          </Tippy>
-        ) : (
-          <Tippy content="Thêm vào danh sách yêu thích">
-            <div className="icon-player text-red-600" onClick={handleCLickLikeButton}>
-              <IoMdHeartEmpty />
-            </div>
-          </Tippy>
-        )}
+  // component === Private
+  if (component === 'Private') {
+    return loading ? (
+      <div className="p-1 text-20 animate-spin text-primary">
+        <AiOutlineLoading />
+      </div>
+    ) : isFavoriteSong ? (
+      <div
+        className="flex items-center space-x-2 select-none px-2 py-1 cursor-pointer border border-red-600 rounded-xl hover:bg-red-100 effect"
+        onClick={handleClickRemoveFavoriteSong}
+      >
+        <div className="text-24 text-red-600">
+          <IoMdRemove />
+        </div>
+        <span className="text-14">Xóa khỏi yêu thích</span>
+      </div>
+    ) : (
+      <div
+        className="flex items-center space-x-2 select-none px-2 py-1 cursor-pointer border border-red-600 rounded-xl hover:bg-red-100 effect"
+        onClick={handleCLickLikeButton}
+      >
+        <div className="text-24 text-red-600">
+          <IoMdAdd />
+        </div>
+        <span className="text-14">Thêm vào yêu thích</span>
       </div>
     );
   }

@@ -8,7 +8,6 @@ import { initPrivatePlaylist, setPlayBySongIndex } from '../reducer/playlistSlic
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongApi, SongPlaying } from '../types';
 import checkSongInList from '../utils/checkSongInList';
-import AudioHandler from './AudioHandler';
 import ImageLazyLoad from './ImageLazyLoad';
 
 interface Props {
@@ -87,8 +86,6 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
         </Link>
         <p className="text-14 text-gray-500 tracking-wide truncate">{song.artistsNames}</p>
       </div>
-
-      <AudioHandler component="ListSongItem" songInfo={song} />
 
       {/* Button Play current Music -- check UI only show in page ca nhan */}
       {index === currentSongIndex && loading === 'pending' && location.pathname === '/ca-nhan' ? (

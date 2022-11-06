@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { BsPlayCircleFill } from 'react-icons/bs';
 import { FcMusic } from 'react-icons/fc';
 import { ImLoop, ImVolumeHigh, ImVolumeMute2 } from 'react-icons/im';
@@ -7,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import IconPlaying from '../assets/gif/icon-playing.gif';
+import AudioHandler from '../components/AudioHandler';
 import InputRangeVolumn from '../components/InputRangeVolumn';
 import ListSong from '../components/ListSong';
 import { SkeletionPrivateAudio } from '../components/Skeleton';
@@ -18,6 +20,7 @@ import {
   setVolumnAudio,
 } from '../reducer/audioStatus';
 import { removePlaylist } from '../reducer/playlistSlice';
+import { SongApi } from '../types';
 
 const Private = () => {
   const { statusAudio, isLoop, volumn, isPlaylist } = useSelector(
@@ -28,28 +31,28 @@ const Private = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   // set play or pause music
-  const handleSetStatusAudio = () => {
+  const handleSetStatusAudio = useCallback(() => {
     dispatch(setStatusAudio(statusAudio === 'pause' ? 'playing' : 'pause'));
-  };
+  }, [statusAudio]);
 
   // handle change volumn
-  const handleChangeVolumn = (volumnString: string) => {
+  const handleChangeVolumn = useCallback((volumnString: string) => {
     const volumnNumber = Number(volumnString);
 
     dispatch(setVolumnAudio(volumnNumber));
-  };
+  }, []);
 
   // handle toggle mute song
-  const handleToggleMuteSong = () => {
+  const handleToggleMuteSong = useCallback(() => {
     if (volumn != 0) {
       dispatch(setVolumnAudio(0));
     } else {
       dispatch(setVolumnAudio(1));
     }
-  };
+  }, [volumn]);
 
   // handle toggle isLoop Song
-  const handleSetLoop = () => {
+  const handleSetLoop = useCallback(() => {
     const valueLoop = () => {
       if (isPlaylist && isLoop === 'single') return 'multi';
 
@@ -57,17 +60,17 @@ const Private = () => {
     };
 
     dispatch(setLoopAudio(valueLoop()));
-  };
+  }, [isPlaylist, isLoop]);
 
   // handle when click remove playlist
-  const handleRemovePlaylist = () => {
+  const handleRemovePlaylist = useCallback(() => {
     if (!isPlaylist) return;
 
     // dispatch action
     dispatch(removePlaylist());
     dispatch(setIsPlaylist(false)); // set isPlaylist in audioStatus ==> false
     toast.success('Xóa playlist thành công!');
-  };
+  }, [isPlaylist]);
 
   return (
     <section className="pt-1 lg:px-2 min-h-[calc(100vh-180px)]">
@@ -103,6 +106,9 @@ const Private = () => {
                   )}
                 </div>
               </div>
+
+              {/* add Favorite */}
+              <AudioHandler songInfo={currentDetails as SongApi} component="Private" />
 
               {/* Song info */}
               <div className="flex flex-col items-center space-y-2">

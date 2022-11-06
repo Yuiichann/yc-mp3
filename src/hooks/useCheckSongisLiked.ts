@@ -2,12 +2,14 @@ import { useGetFavoriteSongs } from './useGetFavoriteSongs';
 
 // check song is in favorites list
 export const useCheckSongIsLiked = (encodeId: string) => {
-  const { favoriteSongs } = useGetFavoriteSongs();
+  const { favoriteSongs, loading } = useGetFavoriteSongs();
+
+  let isFavoriteSong: boolean = false;
 
   if (favoriteSongs && favoriteSongs.length > 0) {
     const checkSong = favoriteSongs.find((song) => song.encodeId === encodeId);
-    return checkSong ? true : false;
+    isFavoriteSong = checkSong ? true : false;
   }
 
-  return false;
+  return { isFavoriteSong, loading };
 };
