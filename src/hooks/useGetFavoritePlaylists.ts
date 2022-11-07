@@ -1,25 +1,23 @@
 import { collection, query, where } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../config/firebase';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { SongApi } from '../types';
+import { auth, db } from '../config/firebase';
+import { AlbumApi } from '../types';
 
-// hooks get favorites song by email logged
-export const useGetFavoriteSongs = () => {
+export const useGetFavoritePlaylists = () => {
   const [userLogged, _loading, _error] = useAuthState(auth);
 
   const collectionQuery = query(
-    collection(db, 'favorite_songs'),
+    collection(db, 'favorite_playlists'),
     where('email', '==', userLogged?.email || '')
   );
 
   const [snapshot, loading, error] = useCollection(collectionQuery);
 
-  const favoriteSongs = snapshot?.docs.map((item) => item.data().data) as SongApi[];
+  const favoritePlaylists = snapshot?.docs.map((item) => item.data().data) as AlbumApi[];
 
-  // return favorites list by email, loading, and error
   return {
-    favoriteSongs,
+    favoritePlaylists,
     loading,
     error,
   };

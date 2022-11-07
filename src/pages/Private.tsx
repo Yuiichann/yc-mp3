@@ -108,7 +108,9 @@ const Private = () => {
               </div>
 
               {/* add Favorite */}
-              <AudioHandler songInfo={currentDetails as SongApi} component="Private" />
+              <div className="min-h-[50px] flex items-center justify-center">
+                <AudioHandler songInfo={currentDetails as SongApi} component="Private" />
+              </div>
 
               {/* Song info */}
               <div className="flex flex-col items-center space-y-2">

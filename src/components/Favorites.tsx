@@ -2,8 +2,11 @@ import Tippy from '@tippyjs/react';
 import { memo } from 'react';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import { ReactComponent as PlaylistsIcon } from '../assets/icons/playlist.svg';
 import { ReactComponent as SongsIcon } from '../assets/icons/songs.svg';
 import { AppDispatch } from '../config/store';
+import { useGetFavoritePlaylists } from '../hooks/useGetFavoritePlaylists';
 import { useGetFavoriteSongs } from '../hooks/useGetFavoriteSongs';
 import { setIsPlaylist } from '../reducer/audioStatus';
 import { initNewPlaylist } from '../reducer/playlistSlice';
@@ -11,7 +14,7 @@ import ListGrid from './ListGrid';
 import { SkeletonNewRelease } from './Skeleton';
 
 export const FavoriteSongs = memo(() => {
-  const { favoriteSongs, loading, error } = useGetFavoriteSongs();
+  const { favoriteSongs, loading } = useGetFavoriteSongs();
   const dispatch = useDispatch<AppDispatch>();
 
   //   handle when click play all favorite songs
@@ -37,6 +40,8 @@ export const FavoriteSongs = memo(() => {
       if (favoriteSongs.length > 1) {
         dispatch(setIsPlaylist(true));
       }
+    } else {
+      toast.info('Danh sách rỗng!');
     }
   };
 
@@ -60,7 +65,31 @@ export const FavoriteSongs = memo(() => {
         ) : favoriteSongs && favoriteSongs.length > 0 ? (
           <ListGrid data={favoriteSongs} type="song" />
         ) : (
-          <h1 className="mt-4 my-6 text-center">Danh sách rỗng</h1>
+          <h1 className="my-12 text-center">Danh sách rỗng</h1>
+        )}
+      </div>
+    </>
+  );
+});
+
+export const FavoritePlaylists = memo(() => {
+  const { favoritePlaylists, loading } = useGetFavoritePlaylists();
+
+  return (
+    <>
+      <div className="flex items-center space-x-2">
+        <PlaylistsIcon />
+        <h1 className="select-none font-medium">Playlists</h1>
+      </div>
+
+      {/* data in here */}
+      <div>
+        {loading ? (
+          <SkeletonNewRelease />
+        ) : favoritePlaylists && favoritePlaylists.length > 0 ? (
+          <ListGrid type="playlist" data={favoritePlaylists} />
+        ) : (
+          <h1 className="my-12 text-center">Danh sách rỗng</h1>
         )}
       </div>
     </>

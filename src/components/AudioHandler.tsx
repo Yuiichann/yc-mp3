@@ -1,15 +1,5 @@
 import Tippy from '@tippyjs/react';
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  Timestamp,
-  where,
-} from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, Timestamp } from 'firebase/firestore';
 import React, { useCallback } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { AiOutlineLoading } from 'react-icons/ai';
@@ -18,7 +8,7 @@ import {
   IoMdAddCircleOutline,
   IoMdHeart,
   IoMdHeartEmpty,
-  IoMdRemove,
+  IoMdRemove
 } from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,7 +20,7 @@ import { setIsPlaylist } from '../reducer/audioStatus';
 import {
   addSongToPlaylist,
   initPrivatePlaylist,
-  setPlayBySongIndex,
+  setPlayBySongIndex
 } from '../reducer/playlistSlice';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongApi } from '../types';
@@ -111,11 +101,21 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     }
 
     try {
-      await addDoc(collection(db, 'favorite_songs'), {
+      // create object data
+      const songItem = {
         email: user.email,
         createAt: Timestamp.now(),
-        data: songInfo,
-      });
+        data: {
+          encodeId: songInfo.encodeId,
+          title: songInfo.title,
+          artistsNames: songInfo.artistsNames || '',
+          releaseDate: songInfo.releaseDate || '',
+          thumbnail: songInfo.thumbnail,
+          thumbnailM: songInfo.thumbnailM,
+        },
+      };
+      // call api add doccument
+      await addDoc(collection(db, 'favorite_songs'), songItem);
       toast.success('Đã thêm vào danh sách yêu thích!!!');
     } catch (error) {
       console.log(error);
@@ -123,6 +123,7 @@ const AudioHandler = ({ songInfo, component }: Props) => {
     }
   }, [songInfo]);
 
+  // handle click remove songs to favorites list
   const handleClickRemoveFavoriteSong = useCallback(async () => {
     if (!user) return;
 
@@ -131,20 +132,15 @@ const AudioHandler = ({ songInfo, component }: Props) => {
       const favoriteRef = collection(db, 'favorite_songs');
       const favoriteList = await getDocs(favoriteRef);
 
-      // tìm kiếm bài hát mún xóa trong collection, nếu có return ref của nó
-      const findItemDelete = favoriteList.docs.find((item) => {
+      // tìm kiếm bài hát mún xóa trong collection theo email và encodeId của bài hát ==> xóa nó
+      favoriteList.docs.forEach(async (item) => {
         const data = item.data();
 
         if (data.email === user.email && data.data.encodeId === songInfo.encodeId) {
-          return item;
+          await deleteDoc(doc(db, 'favorite_songs', item.id));
+          toast.success('Đã xóa khỏi danh sách yêu thích!');
         }
       });
-
-      // gọi api xóa bài hát khi tìm thấy
-      if (findItemDelete) {
-        await deleteDoc(doc(db, 'favorite_songs', findItemDelete.id));
-        toast.success('Đã xóa bài hát khỏi danh sách yêu thích');
-      }
     } catch (error) {
       console.log(error);
       toast.error('Lỗi trong quá trình!');
@@ -290,7 +286,7 @@ const AudioHandler = ({ songInfo, component }: Props) => {
   // component === Private
   if (component === 'Private') {
     return loading ? (
-      <div className="p-1 text-20 animate-spin text-primary">
+      <div className="p-2 text-20 animate-spin text-primary">
         <AiOutlineLoading />
       </div>
     ) : isFavoriteSong ? (

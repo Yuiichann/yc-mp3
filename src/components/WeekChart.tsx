@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from 'react';
 import weekChartOptions from '../constants/weekChartOptions';
 import { ChartHome, WeekChartItem } from '../types';
 import { WeekChartList } from './ChartList';
+import ImageLazyLoad from './ImageLazyLoad';
 import { SkeletionChartTop100 } from './Skeleton';
 
 interface Props {
@@ -19,6 +20,7 @@ const WeekChart = ({ weekChartData }: Props) => {
 
   //   fake loading
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
@@ -65,10 +67,8 @@ const WeekChart = ({ weekChartData }: Props) => {
         <>
           {/* Banner */}
           <div className="my-2 min-h-fit">
-            <img
+            <ImageLazyLoad
               src={currentWeekChart.banner}
-              loading="lazy"
-              height={120}
               alt="Week chart banner"
               className="w-full lg:w-10/12 mx-auto"
             />

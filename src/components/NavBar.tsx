@@ -70,8 +70,11 @@ const NavBar = () => {
                   />
                 </Link>
 
-                <ul className="absolute hidden group-hover:block top-full right-0 text-14 w-[120px] text-center bg-secondary text-white">
-                  <li className="px-2 py-1 cursor-pointer" onClick={handleSignOut}>
+                <ul className="absolute hidden group-hover:block top-full right-0 text-14 w-[120px] bg-secondary rounded-md overflow-hidden text-center text-white">
+                  <li className="p-2 cursor-pointer hover:opacity-70">
+                    <Link to="/tai-khoan">Thư viên</Link>
+                  </li>
+                  <li className="p-2 cursor-pointer hover:opacity-70" onClick={handleSignOut}>
                     Đăng xuất
                   </li>
                 </ul>
