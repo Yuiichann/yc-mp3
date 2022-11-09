@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ChartHome from '../components/ChartHome';
 import ListGrid from '../components/ListGrid';
 import Loading from '../components/Loading';
-import Slide, { Slider, SliderSpotlight } from '../components/Slide';
+import { Slider, SliderBannerDeskTop, SliderSpotlight } from '../components/Slide';
 import { RootState } from '../config/store';
 
 const newReleaseType = [
@@ -41,10 +41,18 @@ const Home = () => {
         <>
           <div className="pt-1">
             {/* Slider */}
-            <Slide data={banner} />
+            {/* <Slide data={banner} /> */}
+            <div className="min-h-fit">
+              <div className="hidden lg:block">
+                <SliderBannerDeskTop data={banner} />
+              </div>
+              <div className="block lg:hidden">
+                <SliderBannerDeskTop data={banner} onMobile={true} />
+              </div>
+            </div>
 
             {/* New Release */}
-            <div className="mt-8">
+            <div className="mt-1">
               {/* title */}
               <h1 className="title-underline">{newRelease.title}</h1>
               {/* Button change Type */}

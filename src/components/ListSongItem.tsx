@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { AiOutlineLoading } from 'react-icons/ai';
 import { BsDisc, BsPlayCircle } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,10 +19,18 @@ interface Props {
 const ListSongItem = ({ song, enbleIndex, index }: Props) => {
   const { currentDetails, loading } = useSelector((state: RootState) => state.songPlaying);
   const { songs, currentSongIndex } = useSelector((state: RootState) => state.playlist);
+  const songRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
   // check path
   const location = useLocation();
+
+  // scroll into song is playing
+  useEffect(() => {
+    if (location.pathname === '/ca-nhan' && currentDetails.encodeId === song.encodeId) {
+      songRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, []);
 
   const handleClickPlaySong = () => {
     // if song in playylist, set currentIndexSong ==> index of song in playlist
@@ -56,6 +64,7 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
         currentDetails.encodeId === song.encodeId ? 'bg-gray-100' : ''
       }`}
       key={song.encodeId}
+      ref={songRef}
     >
       {/* STT */}
       {enbleIndex ? (

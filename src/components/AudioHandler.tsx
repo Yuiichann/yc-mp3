@@ -8,7 +8,7 @@ import {
   IoMdAddCircleOutline,
   IoMdHeart,
   IoMdHeartEmpty,
-  IoMdRemove
+  IoMdRemove,
 } from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ import { setIsPlaylist } from '../reducer/audioStatus';
 import {
   addSongToPlaylist,
   initPrivatePlaylist,
-  setPlayBySongIndex
+  setPlayBySongIndex,
 } from '../reducer/playlistSlice';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongApi } from '../types';
@@ -152,45 +152,35 @@ const AudioHandler = ({ songInfo, component }: Props) => {
   if (component === 'SongInfo') {
     return (
       <div className="flex justify-center items-center gap-5 text-3xl">
-        <div className="icon-player text-secondary relative group" onClick={handlePlayCurrentSong}>
-          <RiPlayFill />
-
-          <div className="toolip-container">
-            <p>Phát bài hát</p>
+        <Tippy content="Phát bài hát" animation="fade">
+          <div className="icon-player text-secondary" onClick={handlePlayCurrentSong}>
+            <RiPlayFill />
           </div>
-        </div>
+        </Tippy>
 
-        <div className="icon-player text-secondary relative group" onClick={handleAddToPlaylist}>
-          <IoMdAddCircleOutline />
-
-          <div className="toolip-container">
-            <p>Thêm vào danh sách phát</p>
+        <Tippy content="Thêm vào danh sách phát" animation="fade">
+          <div className="icon-player text-secondary" onClick={handleAddToPlaylist}>
+            <IoMdAddCircleOutline />
           </div>
-        </div>
+        </Tippy>
 
         {/* liked */}
         {loading ? (
-          <div className="p-1 text-20 animate-spin text-primary">
+          <div className="icon-player animate-spin text-primary">
             <AiOutlineLoading />
           </div>
         ) : isFavoriteSong ? (
-          <div
-            className="icon-player text-red-600 relative group"
-            onClick={handleClickRemoveFavoriteSong}
-          >
-            <IoMdHeart />
-            <div className="toolip-container">
-              <p>Xóa khỏi yêu thích</p>
+          <Tippy content="Xóa khỏi danh sách yêu thích" animation="fade">
+            <div className="icon-player text-red-600" onClick={handleClickRemoveFavoriteSong}>
+              <IoMdHeart />
             </div>
-          </div>
+          </Tippy>
         ) : (
-          <div className="icon-player text-red-600 relative group" onClick={handleCLickLikeButton}>
-            <IoMdHeartEmpty />
-
-            <div className="toolip-container">
-              <p>Thêm vào yêu thích</p>
+          <Tippy content="Thêm vào danh sách yêu thích" animation="fade">
+            <div className="icon-player text-red-600" onClick={handleCLickLikeButton}>
+              <IoMdHeartEmpty />
             </div>
-          </div>
+          </Tippy>
         )}
       </div>
     );

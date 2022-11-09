@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { A11y, Autoplay, EffectFade, Navigation, Pagination, Scrollbar } from 'swiper';
+import { A11y, Autoplay, EffectCards, EffectFade, Navigation, Pagination, Scrollbar } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
+import 'swiper/css/effect-cards';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
@@ -13,88 +14,62 @@ import ImageLazyLoad from './ImageLazyLoad';
 
 interface Props {
   data: BannerApi[];
-  isRanking?: boolean;
+  onMobile?: boolean;
 }
+const handleChooseType = (numType?: number, textType?: string) => {
+  let type: string = '';
 
-// Slider using banner api in getHome zingmp3
-const Slide = ({ data, isRanking }: Props) => {
-  // chose type
-  const handleChooseType = (numType?: number, textType?: string) => {
-    let type: string = '';
+  if (typeof numType !== 'undefined') {
+    type = getUrlByType(numType);
+  }
 
-    if (typeof numType !== 'undefined') {
-      type = getUrlByType(numType);
-    }
+  if (typeof textType !== 'undefined') {
+    type = textType.toLowerCase();
+  }
 
-    if (typeof textType !== 'undefined') {
-      type = textType.toLowerCase();
-    }
-
-    return type;
-  };
-
-  return (
-    <>
-      {/* Slider on Desktop */}
-      <div className={`hidden md:block ${isRanking ? 'px-5' : ''}`}>
-        <Swiper
-          modules={[Navigation, Scrollbar, A11y, Autoplay]}
-          grabCursor={true}
-          autoplay={{
-            delay: 4000,
-          }}
-          spaceBetween={isRanking ? 10 : 20}
-          slidesPerView={isRanking ? 5 : 2}
-          navigation
-        >
-          {data.map((item, index) => (
-            <SwiperSlide key={index}>
-              <Link to={`/${handleChooseType(item.type, item.textType)}?id=${item.encodeId}`}>
-                <ImageLazyLoad
-                  src={item.banner || item.thumbnailM || ''}
-                  alt={item.title}
-                  className="rounded-xl"
-                />
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-
-      {/* Slider on Mobile */}
-      <div className="block md:hidden">
-        <Swiper
-          modules={
-            isRanking
-              ? [Scrollbar, A11y, Autoplay]
-              : [Scrollbar, A11y, EffectFade, Autoplay, Pagination]
-          }
-          autoplay={{
-            delay: 4000,
-          }}
-          pagination={{ clickable: true }}
-          effect={!isRanking ? 'fade' : undefined}
-          spaceBetween={5}
-          slidesPerView={isRanking ? 3 : 1}
-        >
-          {data.map((item, index) => (
-            <SwiperSlide key={index}>
-              <Link to={`/${handleChooseType(item.type, item.textType)}?id=${item.encodeId}`}>
-                <img
-                  src={item.banner || item.thumbnailM}
-                  alt={item.title}
-                  className="rounded-md w-full"
-                />
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    </>
-  );
+  return type;
 };
 
-export default memo(Slide);
+// Slider Banner desktop
+export const SliderBannerDeskTop = memo(({ data, onMobile }: Props) => {
+  return (
+    <Swiper
+      modules={onMobile ? [EffectCards, Autoplay, Pagination] : [EffectCards, Autoplay]}
+      autoplay={{
+        delay: 2500,
+        disableOnInteraction: false,
+      }}
+      loop={true}
+      effect="cards"
+      cardsEffect={{
+        slideShadows: false,
+        perSlideOffset: onMobile ? 1 : 8,
+      }}
+      pagination={
+        onMobile && {
+          clickable: true,
+          dynamicBullets: true,
+        }
+      }
+      grabCursor={true}
+    >
+      {data.map((item, index) => (
+        <SwiperSlide key={`${item.encodeId}-${index}`}>
+          <Link
+            to={`/${handleChooseType(item.type, item.textType)}`}
+            className="pb-8 flex items-center justify-center select-none"
+          >
+            <ImageLazyLoad
+              src={item.thumbnailM || item.banner || ''}
+              alt={item.title}
+              className="rounded-md"
+            />
+          </Link>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+});
 
 interface SliderProps {
   data: AlbumApi[];

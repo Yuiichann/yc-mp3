@@ -17,7 +17,9 @@ const SideBar = () => {
       <ul className="flex flex-col font-normal space-y-4">
         {sideBarItem.map((item) => (
           <li
-            className={`sidebar-item ${location.pathname === item.path && 'sidebar-item--active'}`}
+            className={`sidebar-item select-none ${
+              location.pathname === item.path && 'sidebar-item--active'
+            }`}
             key={item.path}
             onClick={() => handleNavigate(item.path)}
           >

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { ReactComponent as RecentlyIcon } from '../assets/icons/gan_day.svg';
 import { FavoritePlaylists, FavoriteSongs } from '../components/Favorites';
 import Loading from '../components/Loading';
 import ProtectedLayout from '../components/ProtectedLayout';
@@ -22,14 +21,7 @@ const Account = () => {
             <h1 className="title text-center text-primary">Thư viện của bạn</h1>
 
             {/* Recently */}
-            {/* <div className="mt-12">
-              <div className="flex items-center space-x-2">
-                <RecentlyIcon />
-                <h1 className="select-none font-medium">Nghe Gần Đây</h1>
-              </div>
-
-              <div></div>
-            </div> */}
+            {/* <div className="mt-12"></div> */}
 
             {/* Song Favorites */}
             <div className="mt-12">

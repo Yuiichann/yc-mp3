@@ -1,8 +1,10 @@
 import { memo, useEffect } from 'react';
 import Marquee from 'react-fast-marquee';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { auth } from '../config/firebase';
 import { AppDispatch, RootState } from '../config/store';
 import { fetchDataMp3 } from '../reducer/songPlayingSlice';
 import { SongPlaying } from '../types';
@@ -20,6 +22,9 @@ const MusicPlayer = () => {
     (state: RootState) => state.playlist
   );
   const { statusAudio } = useSelector((state: RootState) => state.audioStatus);
+
+  // get user logged
+  const [userLogged] = useAuthState(auth);
 
   // play first song when add new List
   // and listen playlistDetail.encode and currentSongIndex changed ==> when play song with index current

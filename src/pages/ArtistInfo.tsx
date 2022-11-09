@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import ycMp3 from '../api/ycmp3Api';
+import ListGrid from '../components/ListGrid';
+import ListMv from '../components/ListMv';
 import ListSong from '../components/ListSong';
 import Loading from '../components/Loading';
-import { Slider } from '../components/Slide';
+import { SliderSpotlight } from '../components/Slide';
 import { AppDispatch, RootState } from '../config/store';
 import { addTempArtist } from '../reducer/tempGlobalState';
-import { AlbumApi, ArtistDetail, SongApi } from '../types';
+import { ArtistDetail } from '../types';
 import NotFound from './NotFound';
 
 const ArtistInfo = () => {
@@ -52,8 +54,7 @@ const ArtistInfo = () => {
     }
   }, [artistAlias]);
 
-  // console.log(artistInfo);
-
+  // return not found
   if (!artistAlias) {
     return <NotFound />;
   }
@@ -101,6 +102,39 @@ const ArtistInfo = () => {
                 ))}
               </div>
             </div>
+          )}
+
+          {/* List music */}
+
+          {artistInfo.sections && (
+            <>
+              <div className="mt-12">
+                <h1 className="title text-center">Tổng hơp các bài hát</h1>
+                <div className="h-[400px] overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-primary">
+                  <ListSong
+                    type=""
+                    dataSong={{ total: 0, totalDuration: 0, items: artistInfo.sections[0].items }}
+                    enbleIndex={false}
+                  />
+                </div>
+              </div>
+
+              {artistInfo.sections.map(
+                (sec, index) =>
+                  index > 0 && (
+                    <div className="mt-12">
+                      <h1 className="title">{sec.title}</h1>
+                      {sec.sectionType === 'playlist' && (
+                        <ListGrid type="playlist" data={sec.items} />
+                      )}
+                      {sec.sectionType === 'artist' && (
+                        <SliderSpotlight data={sec.items} space={5} slidePerView={4} />
+                      )}
+                      {sec.sectionType === 'video' && <ListMv data={sec.items} />}
+                    </div>
+                  )
+              )}
+            </>
           )}
         </section>
       ) : (

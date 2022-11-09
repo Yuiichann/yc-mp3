@@ -1,5 +1,5 @@
 export default {
-  'auth/wrong-password': 'The password is invalid or the user does not have a password.',
+  'auth/wrong-password': 'Mật khẩu không đúng hoặc Email không tồn tại!',
   'auth/claims-too-large':
     'The claims payload provided to setCustomUserClaims() exceeds the maximum allowed size of 1000 bytes.',
   'auth/email-already-exists':
