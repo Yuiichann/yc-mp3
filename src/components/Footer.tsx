@@ -3,13 +3,13 @@ import { BsFacebook, BsGithub } from 'react-icons/bs';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[whitesmoke] shadow-sm effect pb-player">
+    <footer className="w-full bg-gray-100 shadow-sm effect pb-player">
       <div className="container text-[13px] text-secondary tracking-widest">
         <div className="h-footer flex flex-col items-center justify-center select-none space-y-2">
           <p>Copyright © 2022 - YC Entertainment</p>
           <div className="flex items-center justify-center space-x-2">
             <h2>Contact: </h2>
-            <ul className="flex items-center justify-center gap-3 text-xl text-black">
+            <ul className="flex items-center justify-center gap-3 text-xl text-primary">
               <li className="hover:opacity-60">
                 <a href="https://facebook.com/hiiradesu" target="_blank">
                   <BsFacebook />

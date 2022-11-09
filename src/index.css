@@ -107,7 +107,7 @@ body {
   }
 
   .title {
-    @apply text-xl lg:text-2xl tracking-widest font-medium select-none mb-4;
+    @apply text-xl lg:text-2xl tracking-widest font-medium select-none mb-4 text-primary;
   }
 
   .title-underline {

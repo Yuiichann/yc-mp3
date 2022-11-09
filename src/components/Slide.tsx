@@ -16,6 +16,8 @@ interface Props {
   data: BannerApi[];
   onMobile?: boolean;
 }
+
+// handle choose type of banner
 const handleChooseType = (numType?: number, textType?: string) => {
   let type: string = '';
 
@@ -30,21 +32,25 @@ const handleChooseType = (numType?: number, textType?: string) => {
   return type;
 };
 
-// Slider Banner desktop
-export const SliderBannerDeskTop = memo(({ data, onMobile }: Props) => {
+// Slider Banner Home
+export const SliderBanner = memo(({ data, onMobile }: Props) => {
   return (
     <Swiper
-      modules={onMobile ? [EffectCards, Autoplay, Pagination] : [EffectCards, Autoplay]}
+      modules={onMobile ? [EffectFade, Autoplay, Pagination] : [EffectCards, Autoplay]}
       autoplay={{
         delay: 2500,
         disableOnInteraction: false,
       }}
       loop={true}
-      effect="cards"
-      cardsEffect={{
-        slideShadows: false,
-        perSlideOffset: onMobile ? 1 : 8,
-      }}
+      effect={onMobile ? 'fade' : 'cards'}
+      cardsEffect={
+        !onMobile
+          ? {
+              slideShadows: false,
+              perSlideOffset: onMobile ? 1 : 8,
+            }
+          : {}
+      }
       pagination={
         onMobile && {
           clickable: true,
@@ -56,7 +62,7 @@ export const SliderBannerDeskTop = memo(({ data, onMobile }: Props) => {
       {data.map((item, index) => (
         <SwiperSlide key={`${item.encodeId}-${index}`}>
           <Link
-            to={`/${handleChooseType(item.type, item.textType)}`}
+            to={`/${handleChooseType(item.type, item.textType)}?id=${item.encodeId}`}
             className="pb-8 flex items-center justify-center select-none"
           >
             <ImageLazyLoad
@@ -108,6 +114,7 @@ interface SliderSpotlightProps {
   navigate?: boolean;
 }
 
+// slider Artist
 export const SliderSpotlight = ({ data, navigate, slidePerView, space }: SliderSpotlightProps) => {
   return (
     <Swiper

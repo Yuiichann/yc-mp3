@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { FavoritePlaylists, FavoriteSongs } from '../components/Favorites';
 import Loading from '../components/Loading';
 import ProtectedLayout from '../components/ProtectedLayout';
+import { auth } from '../config/firebase';
 
 const Account = () => {
   const [isLoading, setIsLoading] = useState(true);

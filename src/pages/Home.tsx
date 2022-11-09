@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ChartHome from '../components/ChartHome';
 import ListGrid from '../components/ListGrid';
 import Loading from '../components/Loading';
-import { Slider, SliderBannerDeskTop, SliderSpotlight } from '../components/Slide';
+import { Slider, SliderBanner, SliderSpotlight } from '../components/Slide';
 import { RootState } from '../config/store';
 
 const newReleaseType = [
@@ -21,8 +21,18 @@ const newReleaseType = [
 // Home and Discover
 const Home = () => {
   const [typeNewRelease, setTypeNewRelease] = useState<'vPop' | 'others'>('vPop');
-  const { banner, newRelease, weekend, newSongSlider, top100, artistSpotlight, isLoading, error } =
-    useSelector((state: RootState) => state.mainInfo);
+  const {
+    banner,
+    newRelease,
+    weekend,
+    newSongSlider,
+    favoriteArtists,
+    top100,
+    xone,
+    artistSpotlight,
+    isLoading,
+    error,
+  } = useSelector((state: RootState) => state.mainInfo);
 
   // change type of tab new release
   const handleChangeTypeNewRealse = (type: typeof typeNewRelease) => {
@@ -42,12 +52,12 @@ const Home = () => {
           <div className="pt-1">
             {/* Slider */}
             {/* <Slide data={banner} /> */}
-            <div className="min-h-fit">
+            <div className="min-h-fit overflow-hidden">
               <div className="hidden lg:block">
-                <SliderBannerDeskTop data={banner} />
+                <SliderBanner data={banner} />
               </div>
               <div className="block lg:hidden">
-                <SliderBannerDeskTop data={banner} onMobile={true} />
+                <SliderBanner data={banner} onMobile={true} />
               </div>
             </div>
 
@@ -83,11 +93,24 @@ const Home = () => {
               <ListGrid type="playlist" data={weekend.items} />
             </div>
 
+            {/* Favorites Artist */}
+            <div className="mt-8">
+              <h1 className="title">{favoriteArtists.title}</h1>
+              <ListGrid type="playlist" data={favoriteArtists.items} />
+            </div>
+
             {/* New Song Slider */}
             <div className="mt-6">
               <h1 className="title">{newSongSlider.title}</h1>
 
               <ListGrid type="playlist" data={newSongSlider.items} />
+            </div>
+
+            {/* XONE's CORNER */}
+            <div className="mt-6">
+              <h1 className="title">{xone.title}</h1>
+
+              <ListGrid type="playlist" data={xone.items} />
             </div>
 
             {/* Chart  */}

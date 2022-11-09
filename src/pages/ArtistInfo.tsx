@@ -1,6 +1,9 @@
+import Tippy from '@tippyjs/react';
 import { useEffect, useState } from 'react';
+import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ycMp3 from '../api/ycmp3Api';
 import ListGrid from '../components/ListGrid';
 import ListMv from '../components/ListMv';
@@ -8,8 +11,10 @@ import ListSong from '../components/ListSong';
 import Loading from '../components/Loading';
 import { SliderSpotlight } from '../components/Slide';
 import { AppDispatch, RootState } from '../config/store';
+import { setIsPlaylist } from '../reducer/audioStatus';
+import { initNewPlaylist } from '../reducer/playlistSlice';
 import { addTempArtist } from '../reducer/tempGlobalState';
-import { ArtistDetail } from '../types';
+import { ArtistDetail, SongApi } from '../types';
 import NotFound from './NotFound';
 
 const ArtistInfo = () => {
@@ -53,6 +58,34 @@ const ArtistInfo = () => {
       }
     }
   }, [artistAlias]);
+
+  // handle click play all song of artist
+  const handlePlayAllSong = () => {
+    if (artistInfo && artistInfo.sections[0].items.length > 0) {
+      dispatch(
+        initNewPlaylist({
+          playlistDetail: {
+            encodeId: `playlist-song-of-${artistInfo.alias}`,
+            thumbnail: '',
+            artistsNames: '',
+            title: '',
+          },
+          songs: {
+            total: 0,
+            totalDuration: 0,
+            items: artistInfo.sections[0].items as SongApi[],
+          },
+          currentSongIndex: 0,
+        })
+      );
+
+      if (artistInfo.sections[0].items.length > 1) {
+        dispatch(setIsPlaylist(true));
+      }
+    } else {
+      toast.warning('Danh sách rỗng');
+    }
+  };
 
   // return not found
   if (!artistAlias) {
@@ -109,20 +142,31 @@ const ArtistInfo = () => {
           {artistInfo.sections && (
             <>
               <div className="mt-12">
-                <h1 className="title text-center">Tổng hơp các bài hát</h1>
+                <div className="flex items-center justify-center space-x-3 my-2">
+                  <h1 className="title m-0">Tổng hơp các bài hát</h1>
+                  <Tippy content="Phát tất cả" animation="fade">
+                    <div className="icon-player text-20 text-primary" onClick={handlePlayAllSong}>
+                      <RiPlayFill />
+                    </div>
+                  </Tippy>
+                </div>
                 <div className="h-[400px] overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-primary">
-                  <ListSong
-                    type=""
-                    dataSong={{ total: 0, totalDuration: 0, items: artistInfo.sections[0].items }}
-                    enbleIndex={false}
-                  />
+                  {artistInfo.sections[0].items.length > 0 ? (
+                    <ListSong
+                      type=""
+                      dataSong={{ total: 0, totalDuration: 0, items: artistInfo.sections[0].items }}
+                      enbleIndex={false}
+                    />
+                  ) : (
+                    <h1 className="title text-center">Rỗng Rỗng and Rỗng</h1>
+                  )}
                 </div>
               </div>
 
               {artistInfo.sections.map(
                 (sec, index) =>
                   index > 0 && (
-                    <div className="mt-12">
+                    <div className="mt-12" key={`${sec.sectionType}-${sec.title}`}>
                       <h1 className="title">{sec.title}</h1>
                       {sec.sectionType === 'playlist' && (
                         <ListGrid type="playlist" data={sec.items} />

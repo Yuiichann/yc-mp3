@@ -18,7 +18,7 @@ const ChartHome = () => {
         </Link>
       </div>
 
-      <div className="flex flex-col-reverse lg:flex-row items-start text-white gap-4 lg:gap-0">
+      <div className="flex flex-col-reverse lg:flex-row items-start text-black gap-4 lg:gap-0">
         <div className="w-full lg:w-4/12">
           <ChartlistHome dataList={chart.items} />
         </div>

@@ -109,6 +109,7 @@ interface MainInfo {
   banner: BannerApi[];
   newRelease: NewReleaseApi;
   weekend: MainInfoSlider;
+  favoriteArtists: MainInfoSlider;
   newSongSlider: MainInfoSlider;
   top100: MainInfoSlider;
   liveStream: MainInfoStream;
@@ -116,6 +117,8 @@ interface MainInfo {
     title: string;
     items: Artist[];
   };
+  //xone la cai gi do ma no co ten nhu v
+  xone: MainInfoSlider;
   chart: ChartData;
 
   albumYc: SongApi[];

@@ -39,7 +39,7 @@ const ChartListItem = ({ song, index }: Props) => {
         <p className="truncate opacity-60 text-12">{song.artistsNames}</p>
       </div>
       {/* % ranking */}
-      <div className="font-semibold p-1">
+      <div className="font-semibold p-1 text-rose-900">
         {Math.round((song.score / chart.chart.totalScore) * 100)}%
       </div>
     </div>
@@ -108,7 +108,18 @@ export const ChartItemsTop100 = memo(({ song, index }: Props) => {
         >
           {song.title}
         </Link>
-        <p className="truncate text-12 opacity-80 select-none">{song.artistsNames}</p>
+        <div className="truncate text-12 opacity-80 flex items-center space-x-1">
+          {song.artists.map((artist, index) => (
+            <Link
+              to={`/ca-si?name=${artist.alias}`}
+              className="truncate hover:text-primary"
+              key={artist.alias}
+            >
+              {artist.name}
+              {index < song.artists.length - 1 ? ',' : ''}
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* audio handler */}

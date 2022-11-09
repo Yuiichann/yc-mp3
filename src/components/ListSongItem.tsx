@@ -93,7 +93,23 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
         >
           {song.title}
         </Link>
-        <p className="text-14 text-gray-500 tracking-wide truncate">{song.artistsNames}</p>
+        {/* aritst link */}
+        <div className="text-14 text-gray-500 tracking-wide truncate flex items-center space-x-1">
+          {song.artists ? (
+            song.artists.map((artist, index) => (
+              <Link
+                to={`/ca-si?name=${artist.alias}`}
+                className="truncate hover:text-primary"
+                key={artist.alias}
+              >
+                {artist.name}
+                {index < song.artists.length - 1 ? ',' : ''}
+              </Link>
+            ))
+          ) : (
+            <span className="truncate">{song.artistsNames}</span>
+          )}
+        </div>
       </div>
 
       {/* Button Play current Music -- check UI only show in page ca nhan */}

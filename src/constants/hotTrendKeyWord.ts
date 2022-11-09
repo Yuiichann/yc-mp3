@@ -18,8 +18,8 @@ export const hotKeyword: HotKey[] = [
   },
   {
     rank: 4,
-    value: 'Bài này không để đi diễn',
-  }
+    value: 'Pink venom',
+  },
 ];
 
 export const hotArtistKey: HotKey[] = [
@@ -29,7 +29,7 @@ export const hotArtistKey: HotKey[] = [
   },
   {
     rank: 2,
-    value: 'Sơn Tùng M-TP',
+    value: 'Black Pink',
   },
   {
     rank: 3,

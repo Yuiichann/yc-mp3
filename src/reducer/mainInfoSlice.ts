@@ -13,6 +13,14 @@ const initialState: MainInfo = {
     title: '',
     items: [],
   },
+  favoriteArtists: {
+    title: '',
+    items: [],
+  },
+  xone: {
+    title: '',
+    items: [],
+  },
   newSongSlider: {
     title: '',
     items: [],
