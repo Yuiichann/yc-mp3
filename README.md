@@ -61,7 +61,7 @@
   - View songs, albums and artists info
   - Search:
     - Save the last 6 keywords in local storage
-  - Login:
+  - Login with email / password, Google, Facebook:
     - Add a songs or albums to your favorites list or remove it
   - Logout
 
