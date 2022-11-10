@@ -10,7 +10,7 @@ const ListMv = ({ data }: Props) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-2">
       {data.map((video) => (
-        <ListMvItem video={video} />
+        <ListMvItem video={video} key={video.encodeId} />
       ))}
     </div>
   );

@@ -1,15 +1,13 @@
 import { Form, Formik, FormikHelpers } from 'formik';
 import { memo } from 'react';
-import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
-import { signInSchema, signUpSchema } from '../schema/yupSchema';
-import CustomInput from './CustomInput';
 import {
   useCreateUserWithEmailAndPassword,
-  useSignInWithEmailAndPassword,
+  useSignInWithEmailAndPassword
 } from 'react-firebase-hooks/auth';
+import { Link } from 'react-router-dom';
 import { auth } from '../config/firebase';
-import { AiOutlineLoading } from 'react-icons/ai';
+import { signInSchema, signUpSchema } from '../schema/yupSchema';
+import CustomInput from './CustomInput';
 import { FacebookSignIn, GoogleSignIn } from './SignInWith3Party';
 
 interface SignUpValues {
@@ -170,7 +168,7 @@ export const FormSignIn = memo(() => {
         <GoogleSignIn />
       </div>
 
-      <div className='my-3'>
+      <div className="my-3">
         <FacebookSignIn />
       </div>
     </>

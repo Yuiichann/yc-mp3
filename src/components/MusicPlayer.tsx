@@ -62,6 +62,24 @@ const MusicPlayer = () => {
     }
   }, [loading]);
 
+  // nếu nhạc đang phát mà người dùng lick muốn rời khỏi thì xác nhận 1 lần nữa mới cho đi
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      const confirmationMessage = 'Bạn thực sự muốn đóng ứng dụng?';
+
+      (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+      return confirmationMessage;
+    };
+
+    if (statusAudio === 'playing') {
+      window.addEventListener('beforeunload', handleBeforeUnload);
+    } else {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    }
+
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [statusAudio]);
+
   return (
     <>
       <div className="fixed z-10 h-player effect left-0 w-screen bg-tertiary bg-main bottom-0 text-white select-none shadow-musicplayer">

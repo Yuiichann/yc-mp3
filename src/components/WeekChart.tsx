@@ -66,7 +66,7 @@ const WeekChart = ({ weekChartData }: Props) => {
       ) : (
         <>
           {/* Banner */}
-          <div className="my-2 min-h-fit">
+          <div className="my-2 flex items-center justify-center min-h-[150px] lg:min-h-[190px]">
             <ImageLazyLoad
               src={currentWeekChart.banner}
               alt="Week chart banner"

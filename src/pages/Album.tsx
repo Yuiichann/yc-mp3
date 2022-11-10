@@ -5,7 +5,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { RiPlayFill } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ycMp3 from '../api/ycmp3Api';
 import ImageLazyLoad from '../components/ImageLazyLoad';
@@ -172,9 +172,18 @@ const AlbumInfo = () => {
                 <h2 className="text-2xl tracking-wider font-semibold text-center">
                   {dataList.title}
                 </h2>
-                <h6 className="text-xl tracking-wider font-semibold text-gray-500 text-center">
-                  {dataList.artistNames || dataList.artistsNames}
-                </h6>
+                <div className="font-semibold text-gray-500 italic flex items-center space-x-1">
+                  {dataList.artists.map((artist, index) => (
+                    <Link
+                      to={`/ca-si?name=${artist.alias}`}
+                      key={artist.alias}
+                      className="hover:text-primary"
+                    >
+                      {artist.name}
+                      {index < dataList.artists.length - 1 ? ',' : ''}
+                    </Link>
+                  ))}
+                </div>
               </div>
 
               {/* Button Play playlist and add/remove playlist to list */}

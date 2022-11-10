@@ -36,6 +36,8 @@ interface Props {
 const AudioHandler = ({ songInfo, component }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const { songs } = useSelector((state: RootState) => state.playlist);
+  const songPlaying = useSelector((state: RootState) => state.songPlaying);
+  const loadingSong = songPlaying.loading;
   const [user] = useAuthState(auth);
 
   // hooks kiểm tra bài nhạc có nằm trong danh sách yêu thích của user không ==> true or false
@@ -43,6 +45,9 @@ const AudioHandler = ({ songInfo, component }: Props) => {
 
   // handle play song
   const handlePlayCurrentSong = useCallback(() => {
+    // ngan click phat bai khac khi dang pending
+    if (loadingSong === 'pending') return;
+
     // check if song already in playlist, dispatch index of song
     const checkSongInPlaylist = checkSongInList(songInfo.encodeId, songs.items);
     if (checkSongInPlaylist >= 0) {
@@ -67,7 +72,7 @@ const AudioHandler = ({ songInfo, component }: Props) => {
       dispatch(setPlayBySongIndex(-1));
       dispatch(fetchDataMp3(songDetail));
     }
-  }, [songInfo]);
+  }, [songInfo, loadingSong]);
 
   // handle add song to playlist
   const handleAddToPlaylist = useCallback(() => {

@@ -128,16 +128,18 @@ const Private = () => {
               {/* Handle with audio */}
               <div className="flex items-center justify-evenly space-x-2 w-full">
                 {/* change volumn */}
-                <div className="flex space-x-1 items-center justify-center">
+                <div className="flex space-x-1 items-center justify-center group relative">
                   <div className="text-24 icon-player" onClick={handleToggleMuteSong}>
                     {volumn != 0 ? <ImVolumeHigh /> : <ImVolumeMute2 />}
                   </div>
-                  <div className="flex items-center justify-center">
-                    <InputRangeVolumn
-                      volumnValue={volumn}
-                      handleChangeVolumn={handleChangeVolumn}
-                      isChildOfComponent="private"
-                    />
+                  <div className="hidden group-hover:block absolute top-0 -translate-y-full left-1/2 -translate-x-1/2 bg-red-100 rounded-md shadow-md">
+                    <div className="flex items-center justify-center min-h-[30px] px-3">
+                      <InputRangeVolumn
+                        volumnValue={volumn}
+                        handleChangeVolumn={handleChangeVolumn}
+                        isChildOfComponent="private"
+                      />
+                    </div>
                   </div>
                 </div>
 

@@ -33,6 +33,9 @@ const ListSongItem = ({ song, enbleIndex, index }: Props) => {
   }, []);
 
   const handleClickPlaySong = () => {
+    // chặn lại khi đang fetch 1 bài khác
+    if (loading === 'pending') return;
+
     // if song in playylist, set currentIndexSong ==> index of song in playlist
     const checkSongInPlaylist = checkSongInList(song.encodeId, songs.items);
     if (checkSongInPlaylist >= 0) {
