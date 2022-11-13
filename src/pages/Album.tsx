@@ -151,27 +151,27 @@ const AlbumInfo = () => {
     <div className="pt-1">
       {isLoading ? (
         <Loading />
-      ) : (
-        dataList && (
-          <>
-            {/* alubm or playlist info */}
-            <div className="flex flex-col justify-center space-y-4">
-              {/* image */}
-              <div className="mx-auto">
-                <ImageLazyLoad
-                  src={dataList.thumbnailM}
-                  alt={dataList.title}
-                  className="rounded-full"
-                  width={200}
-                  height={200}
-                />
-              </div>
+      ) : dataList ? (
+        <>
+          {/* alubm or playlist info */}
+          <div className="flex flex-col justify-center space-y-4">
+            {/* image */}
+            <div className="mx-auto">
+              <ImageLazyLoad
+                src={dataList.thumbnailM}
+                alt={dataList.title}
+                className="rounded-full"
+                width={200}
+                height={200}
+              />
+            </div>
 
-              {/* Info include title and artist name */}
-              <div className="flex flex-col items-center space-y-4">
-                <h2 className="text-2xl tracking-wider font-semibold text-center">
-                  {dataList.title}
-                </h2>
+            {/* Info include title and artist name */}
+            <div className="flex flex-col items-center space-y-4">
+              <h2 className="text-2xl tracking-wider font-semibold text-center">
+                {dataList.title}
+              </h2>
+              {dataList.artists && (
                 <div className="font-semibold text-gray-500 italic flex items-center space-x-1">
                   {dataList.artists.map((artist, index) => (
                     <Link
@@ -184,46 +184,50 @@ const AlbumInfo = () => {
                     </Link>
                   ))}
                 </div>
-              </div>
+              )}
+            </div>
 
-              {/* Button Play playlist and add/remove playlist to list */}
-              <div className="flex items-center justify-center gap-8 text-28">
-                {/* Button play playlist */}
-                <Tippy content="Phát danh sách nhạc" animation="fade">
-                  <div className="icon-player text-primary" onClick={handleClickPlayList}>
-                    <RiPlayFill />
+            {/* Button Play playlist and add/remove playlist to list */}
+            <div className="flex items-center justify-center gap-8 text-28">
+              {/* Button play playlist */}
+              <Tippy content="Phát danh sách nhạc" animation="fade">
+                <div className="icon-player text-primary" onClick={handleClickPlayList}>
+                  <RiPlayFill />
+                </div>
+              </Tippy>
+
+              {/* Button add/remove to favorite */}
+              {loading ? (
+                'Loading...'
+              ) : isFavoritePlaylist ? (
+                <Tippy content="Xóa khỏi yêu thích" animation="fade">
+                  <div className="icon-player text-red-600" onClick={handleClickRemoveToFavorite}>
+                    <IoMdHeart />
                   </div>
                 </Tippy>
-
-                {/* Button add/remove to favorite */}
-                {loading ? (
-                  'Loading...'
-                ) : isFavoritePlaylist ? (
-                  <Tippy content="Xóa khỏi yêu thích" animation="fade">
-                    <div className="icon-player text-red-600" onClick={handleClickRemoveToFavorite}>
-                      <IoMdHeart />
-                    </div>
-                  </Tippy>
-                ) : (
-                  <Tippy content="Thêm vào yêu thích" animation="fade">
-                    <div className="icon-player text-red-600" onClick={handleClickAddToFavorite}>
-                      <IoMdHeartEmpty />
-                    </div>
-                  </Tippy>
-                )}
-              </div>
+              ) : (
+                <Tippy content="Thêm vào yêu thích" animation="fade">
+                  <div className="icon-player text-red-600" onClick={handleClickAddToFavorite}>
+                    <IoMdHeartEmpty />
+                  </div>
+                </Tippy>
+              )}
             </div>
+          </div>
 
-            {/* List Song */}
-            <div className="mt-8">
-              <h1 className="text-underline text-2xl font-bold tracking-widest mx-auto mb-3">
-                Danh sách: {dataList.song.total} Bài
-              </h1>
+          {/* List Song */}
+          <div className="mt-8">
+            <h1 className="text-underline text-2xl font-bold tracking-widest mx-auto mb-3">
+              Danh sách: {dataList.song.total} Bài
+            </h1>
 
-              <ListSong dataSong={dataList.song} type={dataList.textType} enbleIndex={true} />
-            </div>
-          </>
-        )
+            <ListSong dataSong={dataList.song} type={dataList.textType} enbleIndex={true} />
+          </div>
+        </>
+      ) : (
+        <div>
+          <NotFound />
+        </div>
       )}
     </div>
   );

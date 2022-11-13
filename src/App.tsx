@@ -36,7 +36,7 @@ const App = () => {
 
       if (res.msg === 'Success' && resAlbumYc.msg === 'Success') {
         const resItems: any = res.data.items;
-        console.log(resItems);
+        // console.log(resItems);
         const banner = resItems.find((item: any) => item.sectionType === 'banner'); // banner api
         const newRelease = resItems.find((item: any) => item.sectionType === 'new-release'); // new release items
         const artistSpotlight = resItems.find(
