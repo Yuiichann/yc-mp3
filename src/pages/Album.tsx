@@ -172,7 +172,7 @@ const AlbumInfo = () => {
                 {dataList.title}
               </h2>
               {dataList.artists && (
-                <div className="font-semibold text-gray-500 italic flex items-center space-x-1">
+                <div className="font-semibold text-gray-500 italic flex items-center flex-wrap space-x-1">
                   {dataList.artists.map((artist, index) => (
                     <Link
                       to={`/ca-si?name=${artist.alias}`}
