@@ -85,6 +85,7 @@ interface SliderProps {
 }
 // slider for small slider
 export const Slider = ({ data, slidePerView, space, navigate }: SliderProps) => {
+  console.log(data);
   return (
     <Swiper
       modules={[Navigation, Scrollbar, A11y, Autoplay]}
@@ -98,7 +99,9 @@ export const Slider = ({ data, slidePerView, space, navigate }: SliderProps) => 
     >
       {data.map((item, index) => (
         <SwiperSlide key={index}>
-          <Link to={`/${item.textType.toLowerCase()}?id=${item.encodeId}`}>
+          <Link
+            to={`/${item.textType ? item.textType.toLowerCase() : 'bai-hat'}?id=${item.encodeId}`}
+          >
             <ImageLazyLoad src={item.thumbnailM} alt={item.title} className="rounded-xl" />
           </Link>
         </SwiperSlide>
