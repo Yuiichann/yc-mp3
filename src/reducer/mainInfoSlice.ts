@@ -8,11 +8,12 @@ const initialState: MainInfo = {
     title: '',
     vPop: [],
     others: [],
+    all: [],
   },
-  weekend: {
-    title: '',
-    items: [],
-  },
+  // weekend: {
+  //   title: '',
+  //   items: [],
+  // },
   favoriteArtists: {
     title: '',
     items: [],

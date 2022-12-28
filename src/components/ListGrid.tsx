@@ -18,7 +18,9 @@ const ListGrid = ({ data, type }: Props) => {
     setTimeout(() => {
       setLoading(false);
     }, 400);
-  }, [type]);
+  }, [type]); 
+
+  console.log(data);
 
   return loading ? (
     <>

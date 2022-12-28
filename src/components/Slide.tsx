@@ -85,7 +85,6 @@ interface SliderProps {
 }
 // slider for small slider
 export const Slider = ({ data, slidePerView, space, navigate }: SliderProps) => {
-  console.log(data);
   return (
     <Swiper
       modules={[Navigation, Scrollbar, A11y, Autoplay]}

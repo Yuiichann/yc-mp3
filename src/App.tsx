@@ -37,6 +37,7 @@ const App = () => {
       if (res.msg === 'Success' && resAlbumYc.msg === 'Success') {
         const resItems: any = res.data.items;
         // console.log(resItems);
+
         const banner = resItems.find((item: any) => item.sectionType === 'banner'); // banner api
         const newRelease = resItems.find((item: any) => item.sectionType === 'new-release'); // new release items
         const artistSpotlight = resItems.find(
@@ -44,7 +45,7 @@ const App = () => {
         ); // artist spolight
         const xone = resItems.find((item: any) => item.sectionId === 'hXone') as MainInfoSlider; // XONE NE`
         const chartData = resItems.find((item: any) => item.sectionType === 'RTChart'); // get data chart
-        const weekend: MainInfoSlider = resItems[4]; // weekend items
+        // const weekend: MainInfoSlider = resItems[4]; // weekend items
         const favoriteArtists: MainInfoSlider = resItems[5]; // nghe si yeu thichs
         const newSongSlider: MainInfoSlider = resItems[6]; // get new song slider
         const top100: MainInfoSlider = resItems[10]; // get top 100
@@ -68,7 +69,7 @@ const App = () => {
             },
             favoriteArtists,
             // weekend
-            weekend: weekend,
+            // weekend: weekend,
             // xone la gi ne
             xone,
             // new Song

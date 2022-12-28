@@ -108,7 +108,7 @@ interface TempState {
 interface MainInfo {
   banner: BannerApi[];
   newRelease: NewReleaseApi;
-  weekend: MainInfoSlider;
+  // weekend: MainInfoSlider;
   favoriteArtists: MainInfoSlider;
   newSongSlider: MainInfoSlider;
   top100: MainInfoSlider;
@@ -219,6 +219,7 @@ interface BannerApi {
 // New Release Api of main info
 interface NewReleaseApi {
   title: string;
+  all: SongApi[];
   vPop: SongApi[];
   others: AlbumApi[];
 }

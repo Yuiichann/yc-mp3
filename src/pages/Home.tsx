@@ -21,10 +21,11 @@ const newReleaseType = [
 // Home and Discover
 const Home = () => {
   const [typeNewRelease, setTypeNewRelease] = useState<'vPop' | 'others'>('vPop');
+
   const {
     banner,
     newRelease,
-    weekend,
+    // weekend,
     newSongSlider,
     favoriteArtists,
     top100,
@@ -38,8 +39,6 @@ const Home = () => {
   const handleChangeTypeNewRealse = (type: typeof typeNewRelease) => {
     setTypeNewRelease(type);
   };
-
-  // console.log('home-render');
 
   return (
     <section className="px-1 lg:px-2">
@@ -87,11 +86,11 @@ const Home = () => {
             </div>
 
             {/* Weekend */}
-            <div className="mt-8">
+            {/* <div className="mt-8">
               <h1 className="title">{weekend.title}</h1>
 
               <ListGrid type="playlist" data={weekend.items} />
-            </div>
+            </div> */}
 
             {/* Favorites Artist */}
             <div className="mt-8">
