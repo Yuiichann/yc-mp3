@@ -29,7 +29,6 @@ const Home = () => {
     newSongSlider,
     favoriteArtists,
     top100,
-    xone,
     artistSpotlight,
     isLoading,
     error,
@@ -39,6 +38,7 @@ const Home = () => {
   const handleChangeTypeNewRealse = (type: typeof typeNewRelease) => {
     setTypeNewRelease(type);
   };
+
 
   return (
     <section className="px-1 lg:px-2">
@@ -106,11 +106,11 @@ const Home = () => {
             </div>
 
             {/* XONE's CORNER */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <h1 className="title">{xone.title}</h1>
 
               <ListGrid type="playlist" data={xone.items} />
-            </div>
+            </div> */}
 
             {/* Chart  */}
             <div className="mt-6">

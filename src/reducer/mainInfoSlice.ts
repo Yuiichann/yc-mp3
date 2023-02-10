@@ -18,10 +18,10 @@ const initialState: MainInfo = {
     title: '',
     items: [],
   },
-  xone: {
-    title: '',
-    items: [],
-  },
+  // xone: {
+  //   title: '',
+  //   items: [],
+  // },
   newSongSlider: {
     title: '',
     items: [],

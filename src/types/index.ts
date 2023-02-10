@@ -118,7 +118,6 @@ interface MainInfo {
     items: Artist[];
   };
   //xone la cai gi do ma no co ten nhu v
-  xone: MainInfoSlider;
   chart: ChartData;
 
   albumYc: SongApi[];
