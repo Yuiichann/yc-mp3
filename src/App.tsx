@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-lazy-load-image-component/src/effects/blur.css';
 import 'tippy.js/dist/tippy.css';
 import ycMp3 from './api/ycmp3Api';
 import Footer from './components/Footer';
@@ -14,8 +14,8 @@ import { AppDispatch, RootState } from './config/store';
 import { setDataOfMainInfo, setErrorApp } from './reducer/mainInfoSlice';
 import routes from './routes';
 import { BannerApi, MainInfoSlider, MainInfoStream, NewReleaseApi, RoutesProps } from './types';
-import alertMessApp from './utils/alertMessApp';
 import ScrollTopAction from './utils/ScrollTopAction';
+import alertMessApp from './utils/alertMessApp';
 
 const App = () => {
   const { error } = useSelector((state: RootState) => state.mainInfo);
@@ -53,6 +53,10 @@ const App = () => {
           (item: any) => item.sectionType === 'livestream'
         );
 
+        const happyWeekend: MainInfoSlider = resItems.find(
+          (item: any) => item.title === 'Happy weekend'
+        );
+
         dispatch(
           setDataOfMainInfo({
             // set data banner
@@ -65,8 +69,14 @@ const App = () => {
             // data artist spotlight
             artistSpotlight: {
               title: 'Spotlight',
-              items: artistSpotlight.items,
+              items: artistSpotlight?.items ?? [],
             },
+
+            happyWeeked: {
+              title: 'Happy Weekend',
+              items: happyWeekend?.items ?? [],
+            },
+
             favoriteArtists,
             // weekend
             // weekend: weekend,

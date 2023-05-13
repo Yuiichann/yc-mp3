@@ -18,6 +18,11 @@ const initialState: MainInfo = {
     title: '',
     items: [],
   },
+
+  happyWeeked: {
+    title: '',
+    items: [],
+  },
   // xone: {
   //   title: '',
   //   items: [],

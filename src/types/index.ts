@@ -117,6 +117,7 @@ interface MainInfo {
     title: string;
     items: Artist[];
   };
+  happyWeeked: MainInfoSlider;
   //xone la cai gi do ma no co ten nhu v
   chart: ChartData;
 

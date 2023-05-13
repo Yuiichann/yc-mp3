@@ -30,6 +30,7 @@ const Home = () => {
     favoriteArtists,
     top100,
     artistSpotlight,
+    happyWeeked,
     isLoading,
     error,
   } = useSelector((state: RootState) => state.mainInfo);
@@ -38,7 +39,6 @@ const Home = () => {
   const handleChangeTypeNewRealse = (type: typeof typeNewRelease) => {
     setTypeNewRelease(type);
   };
-
 
   return (
     <section className="px-1 lg:px-2">
@@ -140,33 +140,71 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Artist Spotlight */}
-            <div className="mt-6">
-              <h1 className="title-underline">{artistSpotlight.title}</h1>
+            {happyWeeked.items.length > 0 && (
+              <div className="mt-6">
+                <div className="flex justify-between items-start">
+                  <h1 className="title-underline">{happyWeeked.title}</h1>
+                </div>
 
-              <div className="block sm:hidden lg:hidden">
-                <SliderSpotlight
-                  data={artistSpotlight.items}
-                  slidePerView={3}
-                  space={4}
-                  navigate={false}
-                />
+                <div className="block sm:hidden lg:hidden">
+                  <Slider
+                    data={happyWeeked.items}
+                    slidePerView={3}
+                    space={4}
+                    navigate={false}
+                    isPlaylist={true}
+                  />
+                </div>
+                <div className="hidden sm:block lg:hidden">
+                  <Slider
+                    data={happyWeeked.items}
+                    slidePerView={4}
+                    space={4}
+                    navigate={false}
+                    isPlaylist={true}
+                  />
+                </div>
+                <div className="hidden lg:block">
+                  <Slider
+                    data={happyWeeked.items}
+                    slidePerView={happyWeeked.items.length < 6 ? happyWeeked.items.length : 6}
+                    isPlaylist={true}
+                  />
+                </div>
               </div>
-              <div className="hidden sm:block lg:hidden">
-                <SliderSpotlight
-                  data={artistSpotlight.items}
-                  slidePerView={4}
-                  space={4}
-                  navigate={false}
-                />
+            )}
+
+            {/* Artist Spotlight */}
+            {artistSpotlight.items.length > 0 && (
+              <div className="mt-6">
+                <h1 className="title-underline">{artistSpotlight.title}</h1>
+
+                <div className="block sm:hidden lg:hidden">
+                  <SliderSpotlight
+                    data={artistSpotlight.items}
+                    slidePerView={3}
+                    space={4}
+                    navigate={false}
+                  />
+                </div>
+                <div className="hidden sm:block lg:hidden">
+                  <SliderSpotlight
+                    data={artistSpotlight.items}
+                    slidePerView={4}
+                    space={4}
+                    navigate={false}
+                  />
+                </div>
+                <div className="hidden lg:block">
+                  <SliderSpotlight
+                    data={artistSpotlight.items}
+                    slidePerView={
+                      artistSpotlight.items.length < 6 ? artistSpotlight.items.length : 6
+                    }
+                  />
+                </div>
               </div>
-              <div className="hidden lg:block">
-                <SliderSpotlight
-                  data={artistSpotlight.items}
-                  slidePerView={artistSpotlight.items.length < 6 ? artistSpotlight.items.length : 6}
-                />
-              </div>
-            </div>
+            )}
           </div>
         </>
       )}
